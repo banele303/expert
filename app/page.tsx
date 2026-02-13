@@ -5,10 +5,6 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useQuery } from "convex/react";
-import { api } from "@/convex/_generated/api";
-import CarCard from "@/components/CarCard";
-import DealOfWeek from "@/components/DealOfWeek";
 import Image from "next/image";
 import {
   ArrowRight,
@@ -33,7 +29,9 @@ import {
   Bike,
   Globe,
   Package,
+  FileCheck,
 } from "lucide-react";
+import NextImage from "next/image";
 
 // Animation variants
 const fadeInUp = {
@@ -50,156 +48,185 @@ const staggerContainer = {
 };
 
 export default function Home() {
-  const featuredCars = useQuery(api.cars.getFeatured, { limit: 6 });
-  const dealOfWeek = useQuery(api.cars.getDealOfWeek);
-  const carMakes = useQuery(api.cars.getMakes);
-
   return (
     <div className="flex flex-col">
-      {/* Hero Section - Upgraded with Split Layout & Cinematic feel */}
-      <section className="relative min-h-screen flex items-center overflow-hidden pt-20 md:pt-32">
-        {/* Cinematic Background */}
+      {/* Hero Section - The "WOW" Factor */}
+      <section className="relative min-h-screen flex items-center overflow-hidden bg-[#020202]">
+        {/* Deep Space Background with Glows */}
         <div className="absolute inset-0 z-0">
-          <div className="absolute inset-0 bg-gradient-to-r from-background via-background/40 to-transparent z-10" />
-          <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-background/20 z-10" />
-          <Image
-            src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?q=80&w=2670&auto=format&fit=crop"
-            alt="Premium Automotive"
-            fill
-            className="object-cover object-right lg:object-center brightness-[0.4] scale-105 animate-float"
-            priority
-          />
+          <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-primary/20 blur-[200px] rounded-full animate-pulse-slow" />
+          <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-blue-500/10 blur-[200px] rounded-full animate-pulse-slow" />
+          
+          {/* Mobile Background Image - NEW */}
+          <div className="absolute inset-0 lg:hidden block">
+            <NextImage 
+              src="/repair-services.png" 
+              alt="Repair Background" 
+              fill 
+              className="object-cover brightness-[0.2]" 
+              priority
+            />
+          </div>
+
+          <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-10" />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/80 to-black lg:from-transparent lg:via-black/50 lg:to-black" />
         </div>
 
-        <div className="container mx-auto px-6 relative z-20">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
+        <div className="container mx-auto px-6 relative z-20 pt-32 md:pt-40 pb-12">
+          <div className="flex flex-col lg:grid lg:grid-cols-2 gap-12 lg:gap-20 items-center text-center lg:text-left">
+            {/* Left Content */}
             <motion.div
               initial="hidden"
               animate="visible"
               variants={staggerContainer}
-              className="max-w-3xl"
+              className="relative"
             >
               <motion.div
                 variants={fadeInUp}
-                className="inline-flex items-center gap-2 px-4 py-2 glass-premium rounded-full mb-6 lg:mb-8"
+                className="inline-flex items-center gap-3 px-6 py-2 glass-premium rounded-none border-l-4 border-primary mb-10"
               >
-                <Sparkles className="h-4 w-4 text-accent animate-pulse" />
-                <span className="text-xs md:text-sm font-semibold tracking-wider uppercase text-accent">
-                  Excellence in Motion
+                <div className="flex gap-1">
+                  {[...Array(5)].map((_, i) => <Star key={i} className="h-3 w-3 fill-primary text-primary" />)}
+                </div>
+                <span className="text-[10px] font-black uppercase tracking-[0.5em] text-white">
+                  Elite Restoration Studio
                 </span>
               </motion.div>
 
               <motion.h1
                 variants={fadeInUp}
-                className="text-4xl sm:text-5xl md:text-8xl lg:text-9xl font-bold leading-[0.9] mb-4 md:mb-6 lg:mb-8 tracking-tighter"
+                className="text-5xl sm:text-7xl md:text-9xl lg:text-[11rem] font-bold leading-[0.8] mb-6 md:mb-8 tracking-tighter"
                 style={{ fontFamily: "'Outfit', sans-serif" }}
               >
-                <span className="gradient-text drop-shadow-[0_0_30px_rgba(237,137,54,0.3)]">GOSHEN</span>
+                <span className="text-white drop-shadow-[0_10px_30px_rgba(255,255,255,0.1)]">MASTER</span>
                 <br />
-                <span className="text-foreground text-4xl md:text-6xl lg:text-7xl">AUTO PARTS</span>
+                <span className="gradient-text italic opacity-90 drop-shadow-[0_0_80px_rgba(237,137,54,0.4)]">PIECE.</span>
               </motion.h1>
 
               <motion.p
                 variants={fadeInUp}
-                className="text-base sm:text-lg md:text-2xl text-muted-foreground mb-6 md:mb-8 lg:mb-12 max-w-xl leading-relaxed font-light"
+                className="text-lg md:text-3xl text-muted-foreground mb-10 md:mb-12 max-w-xl leading-[1.1] font-light italic"
               >
-                We sell: <span className="text-primary font-medium">CARS</span> •{" "}
-                <span className="text-primary font-medium">BICYCLES</span> •{" "}
-                <span className="text-primary font-medium">TOOLS</span>
-                <br />
-                <span className="text-accent/80 mt-2 block text-sm md:text-base">IMPORTATION SERVICE AVAILABLE GLOBALLY</span>
+                Beyond repair. We specialize in <span className="text-white font-black not-italic decoration-primary decoration-4 underline-offset-8 text-base md:text-2xl">TOTAL REBIRTH</span> of your automotive assets.
               </motion.p>
 
               <motion.div
                 variants={fadeInUp}
-                className="flex flex-col sm:flex-row items-start sm:items-center gap-6"
+                className="flex flex-col sm:flex-row items-center lg:items-center justify-center lg:justify-start gap-6 md:gap-8"
               >
                 <Button
                   asChild
                   size="xl"
-                  className="w-full sm:w-auto btn-primary rounded-full px-10 py-8 text-xl font-bold group"
+                  className="btn-primary rounded-none h-20 md:h-24 px-10 md:px-16 text-xl md:text-2xl font-black uppercase tracking-widest group relative overflow-hidden"
                 >
-                  <Link href="/dealership">
-                    Explore Inventory
-                    <ArrowRight className="ml-3 h-6 w-6 group-hover:translate-x-2 transition-transform" />
+                  <Link href="/services">
+                    <span className="relative z-10 flex items-center gap-4">
+                      Explore Services
+                      <ArrowRight className="h-6 w-6 md:h-8 md:w-8 group-hover:translate-x-3 transition-transform" />
+                    </span>
+                    <div className="absolute inset-0 bg-white/20 -translate-x-full group-hover:translate-x-0 transition-transform duration-500" />
                   </Link>
                 </Button>
                 
-                <div className="flex items-center gap-4">
-                  <div className="flex -space-x-4">
-                    {[1, 2, 3, 4].map((i) => (
-                      <div key={i} className="w-10 h-10 md:w-12 md:h-12 rounded-full border-2 border-background overflow-hidden relative glass">
-                        <Image 
-                          src={`https://i.pravatar.cc/150?u=${i}`} 
-                          alt="Customer" 
-                          fill
-                          className="object-cover"
-                        />
-                      </div>
-                    ))}
-                    <div className="w-10 h-10 md:w-12 md:h-12 rounded-full border-2 border-background bg-secondary flex items-center justify-center text-[10px] font-bold">
-                      500+
-                    </div>
-                  </div>
-                  <div className="text-sm">
-                    <div className="flex items-center gap-1 text-accent">
-                      {[...Array(5)].map((_, i) => <Star key={i} className="h-3 w-3 fill-current" />)}
-                    </div>
-                    <p className="text-muted-foreground">Trusted by 500+ Clients</p>
-                  </div>
+                <div className="flex flex-col">
+                  <span className="text-[10px] uppercase tracking-widest text-primary font-black mb-1">Direct Hotline</span>
+                  <a href="tel:0837086050" className="text-3xl font-display font-bold text-white hover:text-primary transition-colors tracking-tighter">083 708 6050</a>
                 </div>
               </motion.div>
             </motion.div>
 
-            {/* Right Side: Floating Composition */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.8, x: 50 }}
-              animate={{ opacity: 1, scale: 1, x: 0 }}
-              transition={{ duration: 1, ease: "easeOut" }}
-              className="hidden lg:block relative aspect-square"
-            >
-              <div className="absolute inset-0 bg-primary/20 rounded-full blur-[120px] animate-pulse" />
-              <div className="relative z-10 w-full h-full glass-premium rounded-[4rem] border border-white/10 overflow-hidden shadow-2xl rotate-3">
-                 <Image
-                  src="https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e?q=80&w=2670&auto=format&fit=crop"
-                  alt="Luxury Car Showcase"
-                  fill
-                  className="object-cover"
-                />
-              </div>
-              {/* Floating badges */}
-              <motion.div
-                animate={{ y: [0, -20, 0] }}
-                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                className="absolute -top-10 -right-10 glass-premium p-6 rounded-3xl z-20 shadow-2xl border-accent/20"
-              >
-                 <Bike className="h-12 w-12 text-primary mb-2" />
-                 <p className="font-bold">Premium Bicycles</p>
-                 <span className="text-xs text-muted-foreground">High-End Quality</span>
-              </motion.div>
-              <motion.div
-                 animate={{ y: [0, 20, 0] }}
-                 transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-                 className="absolute -bottom-10 -left-10 glass-premium p-6 rounded-3xl z-20 shadow-2xl border-primary/20"
-              >
-                 <Wrench className="h-12 w-12 text-accent mb-2" />
-                 <p className="font-bold">Pro Tools</p>
-                 <span className="text-xs text-muted-foreground">Lifetime Warranty</span>
-              </motion.div>
-            </motion.div>
-          </div>
-        </div>
+            {/* Right Side: Futuristic 3D Visual */}
+            <div className="relative h-[400px] md:h-[600px] lg:h-[800px] w-full flex items-center justify-center lg:mt-0 mt-12">
+               {/* Orbital Glow */}
+               <div className="absolute w-[80%] h-[80%] border border-primary/20 rounded-full animate-spin-slow" />
+               <div className="absolute w-[90%] h-[90%] border border-blue-500/10 rounded-full animate-spin-reverse-slow" />
+               
+               {/* Main "COOL" Visual: ximage.png with 3D Float */}
+               <motion.div
+                 initial={{ opacity: 0, scale: 0.8, rotateY: 30, z: -100 }}
+                 animate={{ opacity: 1, scale: 1, rotateY: 0, z: 0 }}
+                 transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
+                 className="relative z-10 w-full h-full flex items-center justify-center"
+               >
+                  <motion.div
+                    animate={{ 
+                      y: [0, -30, 0],
+                      rotate: [0, 2, 0]
+                    }}
+                    transition={{ 
+                      duration: 8, 
+                      repeat: Infinity, 
+                      ease: "easeInOut" 
+                    }}
+                    className="relative w-full h-full drop-shadow-[0_50px_100px_rgba(0,0,0,0.8)]"
+                  >
+                    <Image
+                      src="/vehicle-maintenance.png"
+                      alt="Expert Vehicle Maintenance"
+                      fill
+                      className="object-contain"
+                      priority
+                    />
+                  </motion.div>
+               </motion.div>
 
-        {/* Bottom Scroll Reveal */}
-        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 z-20 opacity-50">
-           <motion.div
-            animate={{ y: [0, 10, 0] }}
-            transition={{ duration: 2, repeat: Infinity }}
-            className="flex flex-col items-center gap-2"
-           >
-             <span className="text-[10px] uppercase tracking-[0.3em] font-bold">Discover</span>
-             <div className="w-px h-12 bg-gradient-to-b from-primary to-transparent" />
-           </motion.div>
+               {/* Floating Elements */}
+               <motion.div
+                 animate={{ y: [20, -20, 20] }}
+                 transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+                 className="absolute top-20 right-0 glass-premium p-6 rounded-none border border-white/20 z-20 backdrop-blur-3xl"
+               >
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 bg-primary rounded-none flex items-center justify-center">
+                      <Shield className="h-6 w-6 text-white" />
+                    </div>
+                    <div>
+                      <p className="text-xs font-black text-white uppercase tracking-widest leading-none">Insurance</p>
+                      <p className="text-[10px] text-primary font-bold">Approved Provider</p>
+                    </div>
+                  </div>
+               </motion.div>
+
+               <motion.div
+                 animate={{ x: [-20, 20, -20] }}
+                 transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+                 className="absolute bottom-40 left-0 glass-premium p-6 rounded-none border border-white/20 z-20"
+               >
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 bg-white rounded-none flex items-center justify-center">
+                      <CheckCircle className="h-6 w-6 text-black" />
+                    </div>
+                    <div>
+                      <p className="text-xs font-black text-white uppercase tracking-widest leading-none">Quality</p>
+                      <p className="text-[10px] text-muted-foreground font-bold">100% Guaranteed</p>
+                    </div>
+                  </div>
+               </motion.div>
+            </div>
+          </div>
+
+          {/* Bottom High-Tech Stats Bar */}
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1, duration: 1 }}
+            className="mt-20 lg:mt-32 grid grid-cols-2 md:grid-cols-4 gap-px bg-white/10 border border-white/10"
+          >
+            {[
+              { label: "Workshop Capacity", val: "50+ Vehicles", icon: Car },
+              { label: "Years Experience", val: "25+ Expertly", icon: Award },
+              { label: "Success Rate", val: "99.9% Perfect", icon: Gauge },
+              { label: "Claims Processed", val: "10k+ Done", icon: FileCheck },
+            ].map((stat, i) => (
+              <div key={i} className="bg-black/40 backdrop-blur-xl p-6 md:p-8 group hover:bg-primary transition-colors duration-500">
+                <div className="flex items-center gap-4 mb-2">
+                  <stat.icon className="h-4 w-4 md:h-5 md:w-5 text-primary group-hover:text-white" />
+                  <span className="text-[10px] font-black uppercase tracking-[0.3em] text-muted-foreground group-hover:text-white/70">{stat.label}</span>
+                </div>
+                <p className="text-xl md:text-2xl font-display font-bold text-white group-hover:text-white">{stat.val}</p>
+              </div>
+            ))}
+          </motion.div>
         </div>
       </section>
 
@@ -209,23 +236,23 @@ export default function Home() {
           {[...Array(3)].map((_, i) => (
             <div key={i} className="flex items-center gap-6 md:gap-12 mx-6 md:mx-12">
               <span className="text-sm md:text-lg font-semibold text-primary-foreground flex items-center gap-2">
-                <Sparkles className="h-4 w-4 md:h-5 md:w-5" /> Goshen Auto Parts And More Ltd
+                <Sparkles className="h-4 w-4 md:h-5 md:w-5" /> Xpert Panel Beaters
               </span>
               <span className="text-sm md:text-lg text-primary-foreground/60">•</span>
               <span className="text-sm md:text-lg font-semibold text-primary-foreground flex items-center gap-2">
-                <Car className="h-4 w-4 md:h-5 md:w-5" /> Premium Cars
+                <Hammer className="h-4 w-4 md:h-5 md:w-5" /> Professional Panel Beating
               </span>
               <span className="text-sm md:text-lg text-primary-foreground/60">•</span>
               <span className="text-sm md:text-lg font-semibold text-primary-foreground flex items-center gap-2">
-                <Bike className="h-4 w-4 md:h-5 md:w-5" /> High-End Bicycles
+                <SprayCan className="h-4 w-4 md:h-5 md:w-5" /> Showroom Spray Painting
               </span>
               <span className="text-sm md:text-lg text-primary-foreground/60">•</span>
               <span className="text-sm md:text-lg font-semibold text-primary-foreground flex items-center gap-2">
-                <Wrench className="h-4 w-4 md:h-5 md:w-5" /> Pro Tools
+                <Package className="h-4 w-4 md:h-5 md:w-5" /> Auto Body Parts Supplier
               </span>
               <span className="text-sm md:text-lg text-primary-foreground/60">•</span>
               <span className="text-sm md:text-lg font-semibold text-primary-foreground flex items-center gap-2">
-                <Globe className="h-4 w-4 md:h-5 md:w-5" /> Global Importation
+                <Shield className="h-4 w-4 md:h-5 md:w-5" /> Insurance Approved Fixes
               </span>
               <span className="text-sm md:text-lg text-primary-foreground/60">•</span>
             </div>
@@ -248,7 +275,7 @@ export default function Home() {
               variants={fadeInUp}
               className="inline-block px-4 py-2 glass-premium rounded-full text-[10px] md:text-xs font-bold tracking-[0.2em] uppercase text-primary mb-4 md:mb-6"
             >
-              The Goshen Experience
+              The Xpert Experience
             </motion.span>
             <motion.h2
               variants={fadeInUp}
@@ -273,31 +300,31 @@ export default function Home() {
           >
             {[
               {
-                icon: Car,
-                title: "PREMIUM CARS",
-                subtitle: "Luxury & Performance",
-                description: "Handpicked high-performance vehicles, certified and road-ready.",
+                icon: Hammer,
+                title: "PANEL BEATING",
+                subtitle: "Precision Repair",
+                description: "Expert restoring of vehicle bodies to their original factory condition.",
                 gradient: "from-blue-500/20 to-indigo-500/10",
               },
               {
-                icon: Bike,
-                title: "BICYCLES",
-                subtitle: "Elite Motion",
-                description: "From carbon road racers to rugged mountain explorers.",
+                icon: SprayCan,
+                title: "SPRAY PAINTING",
+                subtitle: "Factory Finish",
+                description: "Computerized color matching and high-quality oven-baked finish.",
                 gradient: "from-emerald-500/20 to-green-500/10",
               },
               {
-                icon: Wrench,
-                title: "PRO TOOLS",
-                subtitle: "Master Hardware",
-                description: "Professional-grade equipment for the ultimate workshop.",
+                icon: Package,
+                title: "BODY PARTS",
+                subtitle: "Quality Supplier",
+                description: "Wide range of genuine and aftermarket auto body parts in Johannesburg.",
                 gradient: "from-amber-500/20 to-orange-500/10",
               },
               {
-                icon: Globe,
-                title: "IMPORTATION",
-                subtitle: "Global Sourcing",
-                description: "Seamless global logistics for your specialized needs.",
+                icon: Shield,
+                title: "INSURANCE",
+                subtitle: "Approved Repairs",
+                description: "Seamless processing of insurance claims for all major providers.",
                 gradient: "from-purple-500/20 to-pink-500/10",
               },
             ].map((feature, index) => (
@@ -329,342 +356,297 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Workshop Services Section - Redesigned */}
-      <section className="py-12 md:py-20 lg:py-32 relative overflow-hidden bg-secondary/30">
+      {/* Workshop Section - High-End Aesthetic */}
+      <section className="py-20 md:py-32 lg:py-48 relative overflow-hidden bg-[#0a0a0a]">
         <div className="container mx-auto px-6">
-          <div className="grid lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+          <div className="grid lg:grid-cols-2 gap-20 lg:gap-32 items-center">
             <motion.div
-              initial={{ opacity: 0, x: -30 }}
+              initial={{ opacity: 0, x: -50 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              className="lg:col-span-5 space-y-6 md:space-y-8"
+              className="space-y-10"
             >
-              <span className="inline-block px-4 py-2 glass-premium rounded-full text-[10px] font-bold tracking-[0.3em] uppercase text-accent">
-                RMI CERTIFIED WORKSHOP
-              </span>
-              <h2 className="text-4xl md:text-6xl font-display font-medium tracking-tighter leading-tight">
-                Masterpiece <br />
-                <span className="gradient-text italic">Maintenance.</span>
-              </h2>
-              <p className="text-lg md:text-xl text-muted-foreground font-light leading-relaxed">
-                Our state-of-the-art facility combines precision technology with artisanal mechanical expertise to keep your machine in peak condition.
+              <div>
+                <span className="inline-block px-4 py-2 bg-primary/10 border border-primary/20 rounded-none text-[10px] font-black tracking-[0.4em] uppercase text-primary mb-6">
+                  Elite Craftsmanship
+                </span>
+                <h2 className="text-5xl md:text-8xl font-display font-medium tracking-tighter leading-[0.85] text-white">
+                  THE <span className="gradient-text italic">GOLD</span> <br />
+                  STANDARD.
+                </h2>
+              </div>
+              
+              <p className="text-xl md:text-2xl text-muted-foreground font-light leading-relaxed max-w-xl">
+                Our state-of-the-art facility in Johannesburg isn't just a workshop—it's a sanctuary for automotive perfection. 
               </p>
               
-              <div className="space-y-4 pt-4 md:pt-6">
+              <div className="grid sm:grid-cols-2 gap-8 pt-6">
                 {[
-                  { title: "Precision Panel Beating", icon: Hammer },
-                  { title: "Showroom Spray Painting", icon: SprayCan },
-                  { title: "Expert Mechanical Diagnostics", icon: Settings },
+                  { title: "Artisanal Panel Beating", desc: "Hand-crafted precision for complex bodywork.", icon: Hammer },
+                  { title: "Spectro Color Match", desc: "Digital color matching for a flawless finish.", icon: SprayCan },
+                  { title: "Structural Integrity", desc: "Rigorous chassis realignment to factory spec.", icon: Gauge },
+                  { title: "Insurance Direct", desc: "Seamless handling of all major providers.", icon: Shield },
                 ].map((item, i) => (
-                  <div key={i} className="flex items-center gap-4 group">
-                    <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center group-hover:bg-primary transition-colors">
-                      <item.icon className="h-4 w-4 text-primary group-hover:text-white" />
+                  <div key={i} className="space-y-3 group">
+                    <div className="w-12 h-12 rounded-none border border-white/10 flex items-center justify-center group-hover:bg-primary group-hover:border-primary transition-all duration-300">
+                      <item.icon className="h-5 w-5 text-primary group-hover:text-white" />
                     </div>
-                    <span className="text-base md:text-lg font-medium group-hover:text-primary transition-colors">{item.title}</span>
+                    <h4 className="text-lg font-bold text-white uppercase tracking-tight">{item.title}</h4>
+                    <p className="text-sm text-muted-foreground leading-snug">{item.desc}</p>
                   </div>
                 ))}
               </div>
 
-              <Button
-                asChild
-                size="lg"
-                className="w-full sm:w-auto btn-gold rounded-full px-8 py-7 mt-8"
-              >
-                <Link href="/services">
-                  View Full Service Menu <ArrowRight className="ml-2 h-5 w-5" />
-                </Link>
-              </Button>
+              <div className="pt-10 flex flex-col sm:flex-row gap-6">
+                <Button
+                  asChild
+                  size="xl"
+                  className="btn-gold rounded-none px-12 py-8 text-lg font-black uppercase tracking-widest"
+                >
+                  <Link href="/services">
+                    Our Expertise
+                  </Link>
+                </Button>
+                <Button
+                  asChild
+                  size="xl"
+                  variant="outline"
+                  className="glass border-white/10 rounded-none px-12 py-8 text-lg font-black uppercase tracking-widest"
+                >
+                  <Link href="/contact">
+                    Find Us
+                  </Link>
+                </Button>
+              </div>
             </motion.div>
 
+            {/* Showcase Visuals: x2image.png */}
             <motion.div
-              initial={{ opacity: 0, x: 30 }}
-              whileInView={{ opacity: 1, x: 0 }}
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
-              className="lg:col-span-7 grid grid-cols-2 gap-4 md:gap-6"
+              className="relative"
             >
-              <div className="space-y-4 md:space-y-6">
-                <div className="relative aspect-[4/5] rounded-[2rem] md:rounded-[3rem] overflow-hidden glass-premium border border-white/10 group">
-                  <Image src="/workshop-services.png" alt="Workshop" fill className="object-cover group-hover:scale-110 transition-transform duration-700" />
+              <div className="absolute inset-0 bg-primary/20 blur-[120px] rounded-full animate-float-slow" />
+              <div className="relative z-10 grid grid-cols-12 gap-4">
+                <div className="col-span-8 space-y-4">
+                  <div className="relative aspect-[4/5] rounded-none overflow-hidden border border-white/10 shadow-3xl">
+                    <Image 
+                      src="/work-shop.png" 
+                      alt="Workshop Excellence" 
+                      fill 
+                      className="object-cover hover:scale-110 transition-transform duration-[2s]" 
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
+                    <div className="absolute bottom-6 left-6">
+                       <span className="text-3xl font-black text-white italic tracking-tighter">Elite Facility</span>
+                    </div>
+                  </div>
                 </div>
-                <div className="bg-primary p-6 md:p-8 rounded-[2rem] md:rounded-[3rem] text-primary-foreground">
-                   <div className="text-3xl md:text-4xl font-black mb-2 tracking-tighter">100%</div>
-                   <p className="text-[10px] md:text-sm font-bold uppercase tracking-widest opacity-80">Guaranteed Service Quality</p>
-                </div>
-              </div>
-              <div className="space-y-4 md:space-y-6 pt-8 md:pt-12">
-                <div className="bg-accent p-6 md:p-8 rounded-[2rem] md:rounded-[3rem] text-accent-foreground">
-                   <div className="text-3xl md:text-4xl font-black mb-2 tracking-tighter">RMI</div>
-                   <p className="text-[10px] md:text-sm font-bold uppercase tracking-widest opacity-80">Approved Association</p>
-                </div>
-                <div className="relative aspect-[4/5] rounded-[2rem] md:rounded-[3rem] overflow-hidden glass-premium border border-white/10 group">
-                  <Image src="/repair-services.png" alt="Repair" fill className="object-cover group-hover:scale-110 transition-transform duration-700" />
+                <div className="col-span-4 space-y-4 pt-12">
+                   <div className="relative aspect-[3/4] rounded-none overflow-hidden border border-white/10 grayscale hover:grayscale-0 transition-all duration-700">
+                    <Image 
+                      src="/panel-pitting.png" 
+                      alt="Artisan Work" 
+                      fill 
+                      className="object-cover" 
+                    />
+                  </div>
+                  <div className="bg-primary p-8 rounded-none flex flex-col justify-end aspect-square">
+                     <span className="text-4xl font-black text-white tracking-tighter">100%</span>
+                     <span className="text-[10px] uppercase font-bold text-white/70 tracking-widest leading-tight">Accurate Alignment</span>
+                  </div>
                 </div>
               </div>
             </motion.div>
           </div>
-          {/* CTA for Services */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mt-12 md:mt-16"
-          >
-            <Button
-              asChild
-              size="lg"
-              className="w-full sm:w-auto btn-primary rounded-full px-8 py-6 text-lg"
-            >
-              <Link href="/services">
-                View All Services <ArrowRight className="ml-2 h-5 w-5" />
-              </Link>
-            </Button>
-          </motion.div>
         </div>
       </section>
 
-      {/* Deal of the Week */}
-      {dealOfWeek && <DealOfWeek car={dealOfWeek} />}
+      {/* Process Section - Cinematic Steps */}
+      <section className="py-24 md:py-48 relative overflow-hidden bg-background">
+         <div className="container mx-auto px-6">
+            <motion.div 
+               initial={{ opacity: 0, y: 30 }}
+               whileInView={{ opacity: 1, y: 0 }}
+               viewport={{ once: true }}
+               className="text-center mb-24 md:mb-32"
+            >
+               <span className="text-[10px] font-black uppercase tracking-[0.5em] text-primary mb-6 block">The Master Workflow</span>
+               <h2 className="text-5xl md:text-8xl font-display font-medium tracking-tighter text-white">
+                  FROM CRASH TO <span className="gradient-text italic">CONCOURS.</span>
+               </h2>
+            </motion.div>
 
-      {/* Featured Collection */}
+            <div className="grid md:grid-cols-3 gap-0 border border-white/5 divide-x divide-white/5">
+                {[
+                  {
+                    step: "01",
+                    title: "ASSESSMENT",
+                    desc: "Precision digital appraisal and insurance integration."
+                  },
+                  {
+                    step: "02",
+                    title: "RESTORATION",
+                    desc: "Artisanal panel beating and factory-grade finishes."
+                  },
+                  {
+                    step: "03",
+                    title: "DELIVERY",
+                    desc: "Final concours-level inspection and showroom reveal."
+                  }
+                ].map((item, i) => (
+                  <motion.div 
+                    key={i}
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: i * 0.2 }}
+                    className="p-12 md:p-20 group hover:bg-white/[0.02] transition-colors"
+                  >
+                     <span className="text-7xl md:text-[10rem] font-black text-white/5 group-hover:text-primary/10 transition-colors leading-none tracking-tighter mb-8 block">{item.step}</span>
+                     <h3 className="text-2xl font-black text-white mb-4 tracking-tight">{item.title}</h3>
+                     <p className="text-muted-foreground font-light leading-relaxed">{item.desc}</p>
+                  </motion.div>
+                ))}
+            </div>
+         </div>
+      </section>
+
+      {/* Blog Preview Section */}
       <section className="py-12 md:py-20 lg:py-32">
         <div className="container mx-auto px-6">
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={staggerContainer}
-            className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-8 md:mb-12"
-          >
-            <motion.div variants={fadeInUp}>
+          <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-12">
+            <div>
               <span className="inline-block px-4 py-2 glass rounded-full text-xs md:text-sm font-medium text-primary mb-4">
-                <Car className="inline h-4 w-4 mr-2" />
-                Our Collection
+                Our Blog
               </span>
-              <h2 className="text-2xl sm:text-3xl md:text-5xl font-display font-bold">
-                Handpicked. Road-Ready.{" "}
-                <span className="gradient-text">Yours.</span>
+              <h2 className="text-3xl md:text-5xl font-display font-bold">
+                Latest Insights & <span className="gradient-text">Pro Tips.</span>
               </h2>
-            </motion.div>
-            <motion.div variants={fadeInUp}>
-              <Button
-                asChild
-                variant="outline"
-                size="lg"
-                className="w-full md:w-auto rounded-full glass border-white/20"
-              >
-                <Link href="/dealership">
-                  View All Cars <ArrowRight className="ml-2 h-4 w-4" />
-                </Link>
-              </Button>
-            </motion.div>
-          </motion.div>
-
-          {/* Loading Skeletons */}
-          {!featuredCars && (
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {[...Array(6)].map((_, index) => (
-                <div key={index} className="glass rounded-3xl overflow-hidden border border-border">
-                  <Skeleton className="aspect-[16/10] w-full" />
-                  <div className="p-6 space-y-4">
-                    <div className="space-y-2">
-                      <Skeleton className="h-6 w-3/4" />
-                      <Skeleton className="h-4 w-1/2" />
-                    </div>
-                    <div className="flex gap-2">
-                      <Skeleton className="h-8 w-20" />
-                      <Skeleton className="h-8 w-20" />
-                      <Skeleton className="h-8 w-20" />
-                    </div>
-                    <Skeleton className="h-10 w-full" />
-                  </div>
-                </div>
-              ))}
             </div>
-          )}
+            <Button asChild variant="outline" className="rounded-full px-8 py-6 glass border-white/20">
+              <Link href="/blog">View All Posts <ArrowRight className="ml-2 h-4 w-4" /></Link>
+            </Button>
+          </div>
 
-          {/* Actual Cars */}
-          {featuredCars && featuredCars.length > 0 && (
-            <motion.div
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              variants={staggerContainer}
-              className="grid md:grid-cols-2 lg:grid-cols-3 gap-6"
-            >
-              {featuredCars.map((car, index) => (
-                <motion.div key={car._id} variants={fadeInUp}>
-                  <CarCard car={car} />
-                </motion.div>
-              ))}
-            </motion.div>
-          )}
-        </div>
-      </section>
-
-      {/* Process Section */}
-      <section className="py-12 md:py-20 lg:py-32 relative overflow-hidden bg-gradient-to-b from-background to-muted/20">
-        <div className="container mx-auto px-6">
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={staggerContainer}
-            className="text-center mb-12 md:mb-16"
-          >
-            <motion.span
-              variants={fadeInUp}
-              className="inline-block px-4 py-2 glass rounded-full text-xs md:text-sm font-medium text-accent mb-4"
-            >
-              How It Works
-            </motion.span>
-            <motion.h2
-              variants={fadeInUp}
-              className="text-3xl md:text-5xl font-display font-bold"
-            >
-              Smart Savings <span className="gradient-text-gold">Start Here</span>
-            </motion.h2>
-          </motion.div>
-
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={staggerContainer}
-            className="grid md:grid-cols-3 gap-8"
-          >
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {[
               {
-                step: "01",
-                title: "Browse Collection",
-                description:
-                  "Explore our handpicked selection of quality pre-owned vehicles. Filter by make, model, or budget.",
+                title: "How to Maintain Your Car's Paint Job",
+                excerpt: "Discover the best practices for keeping your vehicle's spray paint looking fresh and vibrant for years.",
+                date: "Feb 12, 2026",
+                image: "/spray-paint.png"
               },
               {
-                step: "02",
-                title: "Contact Us",
-                description:
-                  "Reach out via WhatsApp, call, or visit us. Our team is ready to help you find your perfect match.",
+                title: "Understanding Insurance Deductibles",
+                excerpt: "Navigating the world of insurance claims can be tricky. We break down what you need to know about deductibles.",
+                date: "Feb 10, 2026",
+                image: "/workshop-services.png"
               },
               {
-                step: "03",
-                title: "Drive Away Happy",
-                description:
-                  "Complete your purchase with flexible finance options and drive away with warranty coverage.",
-              },
-            ].map((item, index) => (
+                title: "Finding the Right Replacement Parts",
+                excerpt: "When to choose OEM vs. aftermarket body parts. An expert guide for Johannesburg car owners.",
+                date: "Feb 08, 2026",
+                image: "/repair-services.png"
+              }
+            ].map((post, i) => (
               <motion.div
-                key={index}
-                variants={fadeInUp}
-                className="relative group"
+                key={i}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1 }}
+                className="glass-card rounded-[2rem] overflow-hidden border border-white/5 group"
               >
-                <div className="glass rounded-3xl p-6 md:p-8 h-full border border-border card-hover">
-                  <div className="text-5xl md:text-6xl font-display font-bold gradient-text-gold opacity-30 mb-4">
-                    {item.step}
+                <div className="relative aspect-[16/10] overflow-hidden">
+                  <Image src={post.image} alt={post.title} fill className="object-cover group-hover:scale-110 transition-transform duration-500" />
+                  <div className="absolute top-4 left-4 glass px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest">
+                    Repair Guide
                   </div>
-                  <h3 className="text-xl md:text-2xl font-display font-bold mb-4">
-                    {item.title}
-                  </h3>
-                  <p className="text-sm md:text-base text-muted-foreground leading-relaxed">
-                    {item.description}
-                  </p>
                 </div>
-                {index < 2 && (
-                  <div className="hidden md:block absolute top-1/2 -right-4 transform -translate-y-1/2 z-10">
-                    <ChevronRight className="h-8 w-8 text-accent/50" />
-                  </div>
-                )}
+                <div className="p-8">
+                  <span className="text-xs text-accent font-bold mb-2 block">{post.date}</span>
+                  <h3 className="text-xl font-bold mb-4 group-hover:text-primary transition-colors">{post.title}</h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed mb-6">{post.excerpt}</p>
+                  <Link href="/blog" className="text-sm font-bold flex items-center gap-2 group/link">
+                    Read More <ArrowRight className="h-4 w-4 group-hover/link:translate-x-1 transition-transform" />
+                  </Link>
+                </div>
               </motion.div>
             ))}
-          </motion.div>
+          </div>
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-12 md:py-20 lg:py-32 relative overflow-hidden">
-        <div
-          className="absolute inset-0 bg-cover bg-center"
-          style={{
-            backgroundImage: `url('https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?q=80&w=2566&auto=format&fit=crop')`,
-          }}
-        />
-        <div className="absolute inset-0 bg-gradient-to-r from-background via-background/95 to-background/80" />
+      {/* CTA Section - Aggressive & Premium */}
+      <section className="relative py-24 md:py-48 overflow-hidden">
+        <div className="absolute inset-0 z-0">
+          <NextImage
+            src="/work-shop.png"
+            alt="Final Result"
+            fill
+            className="object-cover brightness-[0.2]"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-background" />
+          <div className="absolute inset-0 bg-primary/10 mix-blend-overlay" />
+        </div>
 
         <div className="container mx-auto px-6 relative z-10">
-          <div className="max-w-2xl">
-            <motion.div
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              variants={staggerContainer}
-            >
-              <motion.h2
-                variants={fadeInUp}
-                className="text-3xl md:text-5xl lg:text-6xl font-display font-bold mb-4 md:mb-6"
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            className="max-w-4xl mx-auto text-center"
+          >
+            <h2 className="text-6xl md:text-9xl font-display font-medium tracking-tighter text-white mb-10">
+              READY FOR <br />
+              <span className="gradient-text italic">PERFECTION?</span>
+            </h2>
+            
+            <p className="text-xl md:text-3xl text-muted-foreground font-light mb-16 max-w-2xl mx-auto italic">
+              Don't settle for "fixed." Demand <span className="text-white font-medium not-italic">restored.</span> 
+              Contact Johannesburg's elite panel beating team today.
+            </p>
+
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-8">
+              <Button
+                asChild
+                size="xl"
+                className="w-full sm:w-auto btn-gold rounded-none px-16 py-10 text-2xl font-black uppercase tracking-widest hover:scale-105 transition-transform"
               >
-                Come Visit Us!
-              </motion.h2>
-              <motion.p
-                variants={fadeInUp}
-                className="text-2xl md:text-3xl font-display gradient-text-gold mb-8"
-              >
-                And drive away with your new car!
-              </motion.p>
-              <motion.div
-                variants={fadeInUp}
-                className="space-y-4 mb-10 text-lg"
-              >
-                <a
-                  href="mailto:sales@goshenauto.co.za"
-                  className="flex items-center gap-3 text-muted-foreground hover:text-foreground transition"
-                >
-                  <CheckCircle className="h-5 w-5 text-primary" />
-                  sales@goshenauto.co.za
+                <a href="tel:0837086050">
+                  <Phone className="mr-4 h-8 w-8" />
+                  Call 083 708 6050
                 </a>
-                <a
-                  href="https://maps.google.com/?q=391+Steve+Biko+Road+Gezina"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-3 text-muted-foreground hover:text-foreground transition"
-                >
-                  <MapPin className="h-5 w-5 text-primary" />
-                  391 Steve Biko Road, Gezina
-                </a>
-                <a
-                  href="tel:0662011492"
-                  className="flex items-center gap-3 text-muted-foreground hover:text-foreground transition"
-                >
-                  <Phone className="h-5 w-5 text-primary" />
-                  Tel: 066 201 1492
-                </a>
-              </motion.div>
-              <motion.div
-                variants={fadeInUp}
-                className="flex flex-col sm:flex-row gap-4"
+              </Button>
+              <Button
+                asChild
+                size="xl"
+                className="w-full sm:w-auto btn-primary rounded-none px-16 py-10 text-2xl font-black uppercase tracking-widest hover:scale-105 transition-transform"
               >
-                <Button
-                  asChild
-                  size="lg"
-                  className="btn-gold rounded-full px-8 py-6 text-lg font-semibold"
-                >
-                  <a href="tel:0662011492">
-                    <Phone className="mr-2 h-5 w-5" />
-                    Call Now
-                  </a>
-                </Button>
-                <Button
-                  asChild
-                  size="lg"
-                  variant="outline"
-                  className="rounded-full px-8 py-6 text-lg glass border-border"
-                >
-                  <a href="https://wa.me/27662011492" target="_blank" rel="noopener noreferrer">
-                    <MessageCircle className="mr-2 h-5 w-5 text-green-400" />
-                    WhatsApp
-                  </a>
-                </Button>
-              </motion.div>
-            </motion.div>
-          </div>
+                <a href="https://wa.me/27837086050" target="_blank" rel="noopener noreferrer">
+                  <MessageCircle className="mr-4 h-8 w-8 text-green-400" />
+                  WhatsApp Us
+                </a>
+              </Button>
+            </div>
+
+            <div className="mt-20 flex flex-wrap justify-center gap-12 opacity-50 grayscale hover:grayscale-0 transition-all duration-500">
+               <div className="flex items-center gap-3">
+                  <MapPin className="h-6 w-6 text-primary" />
+                  <span className="text-sm font-bold uppercase tracking-widest text-white">Johannesburg, ZA</span>
+               </div>
+               <div className="flex items-center gap-3">
+                  <Shield className="h-6 w-6 text-primary" />
+                  <span className="text-sm font-bold uppercase tracking-widest text-white">Insurance Approved</span>
+               </div>
+               <div className="flex items-center gap-3">
+                  <Star className="h-6 w-6 text-primary" />
+                  <span className="text-sm font-bold uppercase tracking-widest text-white">Top Rated Choice</span>
+               </div>
+            </div>
+          </motion.div>
         </div>
       </section>
     </div>

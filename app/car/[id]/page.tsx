@@ -101,7 +101,7 @@ export default function CarDetailPage() {
           </Link>
           <span>/</span>
           <Link href="/dealership" className="hover:text-foreground transition">
-            Collection
+            Parts Inventory
           </Link>
           <span>/</span>
           <span className="text-foreground">
@@ -316,9 +316,9 @@ export default function CarDetailPage() {
               </h3>
               <div className="flex flex-col sm:flex-row gap-4">
                 <Button asChild size="lg" className="btn-gold rounded-full flex-1">
-                  <a href="tel:0662011492">
+                  <a href="tel:0837086050">
                     <Phone className="mr-2 h-5 w-5" />
-                    Call: 066 201 1492
+                    Call: 083 708 6050
                   </a>
                 </Button>
                 <Button
@@ -328,7 +328,7 @@ export default function CarDetailPage() {
                   className="rounded-full glass border-white/20 flex-1"
                 >
                   <a
-                    href={`https://wa.me/27662011492?text=${whatsappMessage}`}
+                    href={`https://wa.me/27837086050?text=${whatsappMessage}`}
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -347,7 +347,7 @@ export default function CarDetailPage() {
             >
               <Link href="/dealership">
                 <ArrowLeft className="mr-2 h-4 w-4" />
-                Back to Collection
+                Back to Inventory
               </Link>
             </Button>
           </motion.div>

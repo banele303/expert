@@ -103,7 +103,7 @@ export default function VehicleSalesPage() {
                 variant="outline"
                 className="rounded-full glass border-white/20"
               >
-                <a href="https://wa.me/27662011492" target="_blank" rel="noopener noreferrer">
+                <a href="https://wa.me/27837086050" target="_blank" rel="noopener noreferrer">
                   <MessageCircle className="mr-2 h-5 w-5 text-green-400" />
                   Chat on WhatsApp
                 </a>
@@ -232,9 +232,9 @@ export default function VehicleSalesPage() {
                 </Link>
               </Button>
               <Button asChild size="lg" variant="outline" className="rounded-full glass border-white/20">
-                <a href="tel:0662011492">
+                <a href="tel:0837086050">
                   <Phone className="mr-2 h-5 w-5" />
-                  Call: 066 201 1492
+                  Call: 083 708 6050
                 </a>
               </Button>
             </div>

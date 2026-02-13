@@ -62,317 +62,220 @@ export default function ContactPage() {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="relative py-20 md:py-32 overflow-hidden">
-        <div className="absolute inset-0 hero-gradient" />
-        <div className="absolute top-1/2 left-1/4 w-[500px] h-[500px] bg-primary/20 rounded-full blur-[180px] -translate-y-1/2" />
+      <section className="relative py-20 md:py-32 lg:py-48 overflow-hidden pt-32 md:pt-48">
+        <div className="absolute inset-0 z-0">
+          <div className="absolute inset-0 bg-gradient-to-b from-background via-transparent to-background" />
+          <div className="absolute top-1/2 left-1/4 w-[500px] h-[500px] bg-primary/20 rounded-full blur-[180px] -translate-y-1/2" />
+        </div>
 
-        <div className="container mx-auto px-6 relative z-10">
+        <div className="container mx-auto px-6 relative z-10 text-center">
           <motion.div
             initial="hidden"
             animate="visible"
             variants={staggerContainer}
-            className="text-center max-w-4xl mx-auto"
+            className="max-w-4xl mx-auto"
           >
             <motion.span
               variants={fadeInUp}
-              className="inline-flex items-center gap-2 px-4 py-2 glass rounded-full text-sm font-medium text-primary mb-6"
+              className="inline-flex items-center gap-2 px-4 py-2 glass-premium rounded-full text-xs font-medium text-primary mb-8"
             >
               <MessageCircle className="h-4 w-4" />
-              Get in Touch
+              Contact Our Experts
             </motion.span>
             <motion.h1
               variants={fadeInUp}
-              className="text-4xl md:text-5xl lg:text-6xl font-display font-bold mb-6"
+              className="text-5xl md:text-8xl font-display font-medium tracking-tighter leading-[0.9] mb-8"
             >
-              Goshen Auto Parts
-              <br />
-              <span className="gradient-text-gold">
-                And More Ltd
-              </span>
+              Let's <span className="gradient-text italic">Connect.</span>
             </motion.h1>
             <motion.p
               variants={fadeInUp}
-              className="text-xl text-muted-foreground max-w-2xl mx-auto"
+              className="text-lg md:text-2xl text-muted-foreground font-light max-w-2xl mx-auto"
             >
-              We sell: CARS, BICYCLES, TOOLS AND IMPORTATION SERVICE IS AVAILABLE. 
-              Contact us today for all your automotive and hardware needs.
+              Professional auto body assessment and parts supply in Johannesburg. Get in touch for a free quote or expert advice.
             </motion.p>
           </motion.div>
         </div>
       </section>
 
       {/* Main Content */}
-      <section className="py-12 md:py-20">
+      <section className="pb-12 md:pb-24">
         <div className="container mx-auto px-6">
-          <div className="grid lg:grid-cols-2 gap-12">
+          <div className="grid lg:grid-cols-2 gap-12 lg:gap-24">
             {/* Contact Info */}
             <motion.div
               initial={{ opacity: 0, x: -30 }}
-              animate={{ opacity: 1, x: 0 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
               transition={{ duration: 0.6 }}
-              className="space-y-8"
+              className="space-y-12"
             >
               <div>
-                <h2 className="text-3xl font-display font-bold mb-6">
-                  Contact Information
+                <h2 className="text-4xl md:text-5xl font-display font-medium tracking-tighter mb-6">
+                  Visit the <br/><span className="gradient-text italic">Facility.</span>
                 </h2>
-                <p className="text-muted-foreground leading-relaxed">
-                  Visit our dealership or reach out through any of the channels
-                  below. We're here to help you find your perfect vehicle.
+                <p className="text-lg text-muted-foreground font-light leading-relaxed">
+                  Located in the heart of Johannesburg's industrial hub, our state-of-the-art facility is equipped for any restoration challenge.
                 </p>
               </div>
 
               {/* Contact Cards */}
-              <div className="space-y-4">
+              <div className="grid gap-4">
                 <a
-                  href="mailto:sales@goshenauto.co.za"
-                  className="flex items-center gap-4 p-5 glass rounded-2xl hover:bg-white/10 transition-colors group"
+                  href="mailto:info@xpertpanelbeaters.co.za"
+                  className="flex items-center gap-6 p-6 glass-premium rounded-[2rem] border border-white/5 hover:border-primary/20 transition-all duration-500 group"
                 >
-                  <div className="w-14 h-14 rounded-xl bg-primary/20 flex items-center justify-center group-hover:bg-primary/30 transition">
-                    <Mail className="h-6 w-6 text-primary" />
+                  <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center group-hover:scale-110 transition-transform">
+                    <Mail className="h-7 w-7 text-primary" />
                   </div>
                   <div>
-                    <div className="text-sm text-muted-foreground">Email</div>
-                    <div className="font-semibold">
-                      sales@goshenauto.co.za
-                    </div>
+                    <div className="text-[10px] text-accent font-bold uppercase tracking-widest leading-none mb-1">Email</div>
+                    <div className="text-xl font-bold">info@xpertpanelbeaters.co.za</div>
                   </div>
                 </a>
 
                 <a
-                  href="tel:0662011492"
-                  className="flex items-center gap-4 p-5 glass rounded-2xl hover:bg-white/10 transition-colors group"
+                  href="tel:0837086050"
+                  className="flex items-center gap-6 p-6 glass-premium rounded-[2rem] border border-white/5 hover:border-primary/20 transition-all duration-500 group"
                 >
-                  <div className="w-14 h-14 rounded-xl bg-accent/20 flex items-center justify-center group-hover:bg-accent/30 transition">
-                    <Phone className="h-6 w-6 text-accent" />
+                  <div className="w-16 h-16 rounded-2xl bg-accent/10 flex items-center justify-center group-hover:scale-110 transition-transform">
+                    <Phone className="h-7 w-7 text-accent" />
                   </div>
                   <div>
-                    <div className="text-sm text-muted-foreground">Phone</div>
-                    <div className="font-semibold">066 201 1492</div>
+                    <div className="text-[10px] text-accent font-bold uppercase tracking-widest leading-none mb-1">Phone</div>
+                    <div className="text-xl font-bold">083 708 6050</div>
                   </div>
                 </a>
 
                 <a
-                  href="https://maps.google.com/?q=391+Steve+Biko+Road+Gezina"
+                  href="https://maps.google.com/?q=Main+Reef+Rd,+Elcedes,+Johannesburg,+1431"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-4 p-5 glass rounded-2xl hover:bg-white/10 transition-colors group"
+                  className="flex items-center gap-6 p-6 glass-premium rounded-[2rem] border border-white/5 hover:border-primary/20 transition-all duration-500 group"
                 >
-                  <div className="w-14 h-14 rounded-xl bg-green-500/20 flex items-center justify-center group-hover:bg-green-500/30 transition">
-                    <MapPin className="h-6 w-6 text-green-400" />
+                  <div className="w-16 h-16 rounded-2xl bg-green-500/10 flex items-center justify-center group-hover:scale-110 transition-transform">
+                    <MapPin className="h-7 w-7 text-green-500" />
                   </div>
                   <div>
-                    <div className="text-sm text-muted-foreground">Address</div>
-                    <div className="font-semibold">
-                      391 Steve Biko Road, Gezina
-                    </div>
+                    <div className="text-[10px] text-accent font-bold uppercase tracking-widest leading-none mb-1">Location</div>
+                    <div className="text-xl font-bold">Main Reef Rd, Elcedes, JHB</div>
                   </div>
                 </a>
 
-                <div className="flex items-center gap-4 p-5 glass rounded-2xl">
-                  <div className="w-14 h-14 rounded-xl bg-purple-500/20 flex items-center justify-center">
-                    <Clock className="h-6 w-6 text-purple-400" />
+                <div className="flex items-center gap-6 p-6 glass-premium rounded-[2rem] border border-white/5">
+                  <div className="w-16 h-16 rounded-2xl bg-purple-500/10 flex items-center justify-center">
+                    <Clock className="h-7 w-7 text-purple-500" />
                   </div>
                   <div>
-                    <div className="text-sm text-muted-foreground">
-                      Business Hours
-                    </div>
-                    <div className="font-semibold">
-                      Mon-Fri: 8:00-17:00 | Sat: 8:00-13:00
-                    </div>
+                    <div className="text-[10px] text-accent font-bold uppercase tracking-widest leading-none mb-1">Hours</div>
+                    <div className="text-lg font-bold">Mon-Fri: 8:00 - 17:00 | Sat: 8:00 - 13:00</div>
                   </div>
                 </div>
               </div>
 
               {/* Rating Badge */}
-              <div className="glass rounded-2xl p-6 border border-accent/20">
-                <div className="flex items-center gap-4">
-                  <div className="flex flex-col items-center">
-                    <div className="text-4xl font-display font-bold gradient-text-gold">
-                      5.0
-                    </div>
-                    <div className="flex items-center gap-0.5 mt-1">
+              <div className="glass-premium rounded-[2.5rem] p-8 border border-white/5">
+                <div className="flex items-center gap-8">
+                  <div className="text-center">
+                    <div className="text-5xl font-display font-black gradient-text">4.9</div>
+                    <div className="flex items-center gap-1 mt-2">
                       {[...Array(5)].map((_, i) => (
-                        <Star
-                          key={i}
-                          className="h-4 w-4 fill-accent text-accent"
-                        />
+                        <Star key={i} className="h-4 w-4 fill-accent text-accent" />
                       ))}
                     </div>
                   </div>
-                  <div className="h-12 w-px bg-white/10" />
+                  <div className="h-16 w-px bg-white/10" />
                   <div>
-                    <div className="font-semibold">10 Reviews</div>
-                    <div className="text-sm text-muted-foreground">
-                      Trusted by 500+ customers
-                    </div>
+                    <div className="text-xl font-bold mb-1">50+ Reviews</div>
+                    <div className="text-muted-foreground font-light">Trusted Excellence in Johannesburg</div>
                   </div>
                 </div>
-              </div>
-
-              {/* Quick Actions */}
-              <div className="flex flex-col sm:flex-row gap-4">
-                <Button
-                  asChild
-                  size="lg"
-                  className="btn-gold rounded-full flex-1"
-                >
-                  <a href="tel:0662011492">
-                    <Phone className="mr-2 h-5 w-5" />
-                    Call Now
-                  </a>
-                </Button>
-                <Button
-                  asChild
-                  size="lg"
-                  variant="outline"
-                  className="rounded-full glass border-white/20 flex-1"
-                >
-                  <a
-                    href="https://wa.me/27662011492"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <MessageCircle className="mr-2 h-5 w-5 text-green-400" />
-                    WhatsApp
-                  </a>
-                </Button>
               </div>
             </motion.div>
 
             {/* Contact Form */}
             <motion.div
               initial={{ opacity: 0, x: 30 }}
-              animate={{ opacity: 1, x: 0 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.2 }}
             >
-              <div className="glass rounded-3xl p-8 border border-white/10">
+              <div className="glass-premium rounded-[3rem] p-8 md:p-12 border border-white/5">
                 {isSubmitted ? (
                   <motion.div
                     initial={{ opacity: 0, scale: 0.9 }}
                     animate={{ opacity: 1, scale: 1 }}
-                    className="text-center py-12"
+                    className="text-center py-20"
                   >
-                    <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-green-500/20 flex items-center justify-center">
-                      <CheckCircle className="h-10 w-10 text-green-400" />
+                    <div className="w-24 h-24 mx-auto mb-8 rounded-full bg-green-500/10 flex items-center justify-center">
+                      <CheckCircle className="h-12 w-12 text-green-500" />
                     </div>
-                    <h3 className="text-2xl font-display font-bold mb-4">
-                      Message Sent!
-                    </h3>
-                    <p className="text-muted-foreground mb-6">
-                      Thank you for contacting us. We'll get back to you soon.
-                    </p>
+                    <h3 className="text-3xl font-display font-bold mb-4">Message Received!</h3>
+                    <p className="text-lg text-muted-foreground font-light mb-10">Our restoration experts will contact you shortly.</p>
                     <Button
                       onClick={() => setIsSubmitted(false)}
                       variant="outline"
-                      className="glass border-white/20"
+                      className="glass rounded-full px-8 py-6 h-auto text-sm font-bold uppercase tracking-widest"
                     >
                       Send Another Message
                     </Button>
                   </motion.div>
                 ) : (
                   <>
-                    <h3 className="text-2xl font-display font-bold mb-6">
-                      Send Us a Message
-                    </h3>
-                    <form onSubmit={handleSubmit} className="space-y-5">
-                      <div>
-                        <label className="block text-sm font-medium mb-2">
-                          Full Name
-                        </label>
+                    <h3 className="text-3xl font-display font-bold mb-8">Send an <span className="gradient-text italic">Inquiry.</span></h3>
+                    <form onSubmit={handleSubmit} className="space-y-6">
+                      <div className="space-y-2">
+                        <label className="text-xs font-bold uppercase tracking-widest text-muted-foreground ml-4">Full Name</label>
                         <input
                           type="text"
                           required
                           value={formData.name}
-                          onChange={(e) =>
-                            setFormData({ ...formData, name: e.target.value })
-                          }
-                          className="w-full px-4 py-3 rounded-xl glass border border-white/10 bg-transparent focus:border-primary focus:ring-1 focus:ring-primary outline-none transition"
+                          onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                          className="w-full px-6 py-5 rounded-[1.5rem] glass border border-white/10 bg-transparent focus:border-primary focus:ring-1 focus:ring-primary outline-none transition text-lg font-light"
                           placeholder="John Doe"
                         />
                       </div>
-                      <div className="grid sm:grid-cols-2 gap-5">
-                        <div>
-                          <label className="block text-sm font-medium mb-2">
-                            Email
-                          </label>
+                      <div className="grid md:grid-cols-2 gap-6">
+                        <div className="space-y-2">
+                          <label className="text-xs font-bold uppercase tracking-widest text-muted-foreground ml-4">Email</label>
                           <input
                             type="email"
                             required
                             value={formData.email}
-                            onChange={(e) =>
-                              setFormData({ ...formData, email: e.target.value })
-                            }
-                            className="w-full px-4 py-3 rounded-xl glass border border-white/10 bg-transparent focus:border-primary focus:ring-1 focus:ring-primary outline-none transition"
+                            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                            className="w-full px-6 py-5 rounded-[1.5rem] glass border border-white/10 bg-transparent focus:border-primary focus:ring-1 focus:ring-primary outline-none transition text-lg font-light"
                             placeholder="john@example.com"
                           />
                         </div>
-                        <div>
-                          <label className="block text-sm font-medium mb-2">
-                            Phone
-                          </label>
+                        <div className="space-y-2">
+                          <label className="text-xs font-bold uppercase tracking-widest text-muted-foreground ml-4">Phone</label>
                           <input
                             type="tel"
                             required
                             value={formData.phone}
-                            onChange={(e) =>
-                              setFormData({ ...formData, phone: e.target.value })
-                            }
-                            className="w-full px-4 py-3 rounded-xl glass border border-white/10 bg-transparent focus:border-primary focus:ring-1 focus:ring-primary outline-none transition"
-                            placeholder="066 123 4567"
+                            onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                            className="w-full px-6 py-5 rounded-[1.5rem] glass border border-white/10 bg-transparent focus:border-primary focus:ring-1 focus:ring-primary outline-none transition text-lg font-light"
+                            placeholder="083 708 6050"
                           />
                         </div>
                       </div>
-                      <div>
-                        <label className="block text-sm font-medium mb-2">
-                          Message
-                        </label>
+                      <div className="space-y-2">
+                        <label className="text-xs font-bold uppercase tracking-widest text-muted-foreground ml-4">Message</label>
                         <textarea
                           required
-                          rows={5}
+                          rows={4}
                           value={formData.message}
-                          onChange={(e) =>
-                            setFormData({ ...formData, message: e.target.value })
-                          }
-                          className="w-full px-4 py-3 rounded-xl glass border border-white/10 bg-transparent focus:border-primary focus:ring-1 focus:ring-primary outline-none transition resize-none"
-                          placeholder="I'm interested in..."
+                          onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                          className="w-full px-6 py-5 rounded-[2rem] glass border border-white/10 bg-transparent focus:border-primary focus:ring-1 focus:ring-primary outline-none transition resize-none text-lg font-light"
+                          placeholder="Describe your restoration needs..."
                         />
                       </div>
                       <Button
                         type="submit"
                         disabled={isSubmitting}
-                        className="w-full btn-primary rounded-full py-6 text-lg"
+                        className="w-full btn-primary rounded-full py-8 text-sm font-black uppercase tracking-[0.2em] shadow-xl shadow-primary/20 h-auto"
                       >
-                        {isSubmitting ? (
-                          <>
-                            <svg
-                              className="animate-spin -ml-1 mr-3 h-5 w-5"
-                              xmlns="http://www.w3.org/2000/svg"
-                              fill="none"
-                              viewBox="0 0 24 24"
-                            >
-                              <circle
-                                className="opacity-25"
-                                cx="12"
-                                cy="12"
-                                r="10"
-                                stroke="currentColor"
-                                strokeWidth="4"
-                              />
-                              <path
-                                className="opacity-75"
-                                fill="currentColor"
-                                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                              />
-                            </svg>
-                            Sending...
-                          </>
-                        ) : (
-                          <>
-                            <Send className="mr-2 h-5 w-5" />
-                            Send Message
-                          </>
-                        )}
+                        {isSubmitting ? "Processing..." : "Submit Inquiry"}
                       </Button>
                     </form>
                   </>
@@ -384,18 +287,18 @@ export default function ContactPage() {
       </section>
 
       {/* Map Section */}
-      <section className="py-12 md:py-20">
+      <section className="py-12 md:py-24">
         <div className="container mx-auto px-6">
-          <div className="glass rounded-3xl overflow-hidden border border-white/10">
+          <div className="glass-premium rounded-[3rem] overflow-hidden border border-white/5 relative h-[500px]">
             <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3592.5!2d28.2068!3d-25.7247!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjXCsDQzJzI5LjAiUyAyOMKwMTInMjQuNSJF!5e0!3m2!1sen!2sza!4v1234567890"
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d114589.65825316134!2d27.9333!3d-26.2333!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1e9509657067883f%3A0x6a10061e8886369c!2sJohannesburg!5e0!3m2!1sen!2sza!4v1707817000000!5m2!1sen!2sza"
               width="100%"
-              height="400"
+              height="100%"
               style={{ border: 0 }}
               allowFullScreen
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
-              className="grayscale opacity-80 hover:grayscale-0 hover:opacity-100 transition-all duration-500"
+              className="grayscale brightness-90 hover:grayscale-0 hover:brightness-100 transition-all duration-1000"
             />
           </div>
         </div>

@@ -31,44 +31,44 @@ const TikTokIcon = () => (
 
 const quickLinks = [
   { name: "Home", href: "/" },
-  { name: "Our Cars", href: "/dealership" },
   { name: "Services", href: "/services" },
+  { name: "Blog", href: "/blog" },
   { name: "About Us", href: "/about" },
   { name: "Contact", href: "/contact" },
 ];
 
 const services = [
-  "Premium Cars",
-  "Bicycles",
-  "Professional Tools",
-  "Importation Services",
-  "Workshop Services",
-  "Vehicle Finance",
+  "Panel Beating",
+  "Spray Painting",
+  "Auto Body Parts",
+  "Chassis Straightening",
+  "Dent Removal",
+  "Insurance Claims",
 ];
 
 const socialLinks = [
   {
     name: "WhatsApp",
     icon: MessageCircle,
-    href: "https://wa.me/27662011492",
+    href: "https://wa.me/27837086050",
     color: "hover:text-green-400",
   },
   {
     name: "Instagram",
     icon: Instagram,
-    href: "https://instagram.com/goshenauto",
+    href: "#",
     color: "hover:text-pink-400",
   },
   {
     name: "TikTok",
     icon: TikTokIcon,
-    href: "https://tiktok.com/@goshenauto",
+    href: "#",
     color: "hover:text-white",
   },
   {
     name: "Facebook",
     icon: Facebook,
-    href: "https://facebook.com/goshenauto",
+    href: "#",
     color: "hover:text-blue-400",
   },
 ];
@@ -92,26 +92,18 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
           {/* Brand Column */}
           <div className="space-y-6">
-            <Link href="/" className="flex items-center gap-4 group">
-              <div className="relative w-16 h-16 transition-transform duration-500 group-hover:scale-110">
+            <Link href="/" className="group block">
+              <div className="relative w-48 h-20 transition-transform duration-500 group-hover:scale-110 mb-8">
                 <NextImage
-                  src="/goshen-logo.png"
-                  alt="Goshen Logo"
+                  src="/expert-log.png"
+                  alt="Xpert Logo"
                   fill
                   className="object-contain"
                 />
               </div>
-              <div className="flex flex-col">
-                <span className="text-2xl font-bold tracking-tight font-display gradient-text leading-none">
-                  GOSHEN
-                </span>
-                <span className="text-[10px] text-muted-foreground tracking-[0.3em] uppercase mt-1">
-                  Auto Parts & More
-                </span>
-              </div>
             </Link>
             <p className="text-muted-foreground leading-relaxed">
-              Your one-stop shop for Premium Cars, High-End Bicycles, Professional Tools, and Global Importation Services.
+              Johannesburg's leading auto body parts supplier and panel beating experts. Restoring your vehicle to factory perfection.
             </p>
 
             {/* Rating Badge */}
@@ -125,9 +117,9 @@ export default function Footer() {
                 ))}
               </div>
               <div className="flex flex-col">
-                <span className="font-bold text-lg">5.0</span>
+                <span className="font-bold text-lg">4.9</span>
                 <span className="text-xs text-muted-foreground">
-                  10 REVIEWS
+                  50+ REVIEWS
                 </span>
               </div>
             </div>
@@ -175,33 +167,33 @@ export default function Footer() {
             </h3>
             <div className="space-y-4">
               <a
-                href="https://maps.google.com/?q=391+Steve+Biko+Road+Gezina"
+                href="https://maps.google.com/?q=Main+Reef+Rd,+Elcedes,+Johannesburg,+1431"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-start gap-3 text-muted-foreground hover:text-foreground transition-colors group"
               >
                 <MapPin className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
                 <span>
-                  391 Steve Biko Road
+                  Main Reef Rd, Elcedes
                   <br />
-                  Gezina, Pretoria
+                  Johannesburg, 1431
                 </span>
               </a>
 
               <a
-                href="tel:0662011492"
+                href="tel:0837086050"
                 className="flex items-center gap-3 text-muted-foreground hover:text-foreground transition-colors"
               >
                 <Phone className="h-5 w-5 text-primary flex-shrink-0" />
-                <span>066 201 1492</span>
+                <span>083 708 6050</span>
               </a>
 
               <a
-                href="mailto:sales@goshenauto.co.za"
+                href="mailto:info@xpertpanelbeaters.co.za"
                 className="flex items-center gap-3 text-muted-foreground hover:text-foreground transition-colors"
               >
                 <Mail className="h-5 w-5 text-primary flex-shrink-0" />
-                <span>sales@goshenauto.co.za</span>
+                <span>info@xpertpanelbeaters.co.za</span>
               </a>
 
               <div className="flex items-start gap-3 text-muted-foreground">
@@ -241,9 +233,9 @@ export default function Footer() {
               <Car className="h-5 w-5 text-accent" />
             </div>
             <div className="text-sm">
-              <span className="font-semibold text-accent">RMI Approved</span>
+              <span className="font-semibold text-accent">Insurance Approved</span>
               <p className="text-xs text-muted-foreground">
-                Certified Workshop
+                Certified Repairer
               </p>
             </div>
           </div>
@@ -251,7 +243,7 @@ export default function Footer() {
 
         {/* Bottom Bar */}
         <div className="pt-8 border-t border-white/5 text-center text-sm text-muted-foreground">
-          <p>© {currentYear} Goshen Auto Parts And More Ltd. All rights reserved.</p>
+          <p>© {currentYear} Xpert Panel Beaters. All rights reserved.</p>
         </div>
       </div>
     </footer>

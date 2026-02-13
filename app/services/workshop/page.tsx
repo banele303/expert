@@ -75,7 +75,7 @@ export default function WorkshopServicesPage() {
   return (
     <div className="min-h-screen">
       {/* Hero */}
-      <section className="relative min-h-[80vh] flex items-center justify-center overflow-hidden">
+      <section className="relative min-h-[80vh] flex items-center justify-center overflow-hidden pt-20">
         {/* Background Image */}
         <div className="absolute inset-0 z-0">
           <NextImage
@@ -111,7 +111,7 @@ export default function WorkshopServicesPage() {
             >
               Master Craftsmen <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-white to-primary animate-gradient bg-300%">
-                For Your Machine
+                For Your Ride
               </span>
             </motion.h1>
 
@@ -119,31 +119,29 @@ export default function WorkshopServicesPage() {
               variants={fadeInUp}
               className="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto mb-10 leading-relaxed font-light"
             >
-              Experience automotive excellence with our RMI-approved workshop. 
-              Where state-of-the-art diagnostics meet traditional mechanical expertise.
+              Experience automotive restoration excellence at our Johannesburg facility. 
+              Where precision panel beating meets factory-grade spray painting.
             </motion.p>
 
             <motion.div
               variants={fadeInUp}
               className="flex flex-col sm:flex-row items-center justify-center gap-6"
             >
-              <Button asChild size="lg" className="btn-primary rounded-full px-10 py-7 text-lg hover:scale-105 transition-all duration-300 shadow-xl shadow-primary/25">
-                <a href="https://wa.me/27662011492" target="_blank" rel="noopener noreferrer">
-                  <svg className="mr-3 h-6 w-6 text-[#25D366]" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
-                  </svg>
-                  Book Priority Service
+              <Button asChild size="xl" className="btn-primary rounded-full px-12 py-8 text-lg hover:scale-105 transition-all duration-300 shadow-xl shadow-primary/25">
+                <a href="https://wa.me/27837086050" target="_blank" rel="noopener noreferrer">
+                  <MessageCircle className="mr-3 h-6 w-6 text-white" />
+                  Request a Quote
                 </a>
               </Button>
               <Button
                 asChild
-                size="lg"
+                size="xl"
                 variant="outline"
-                className="rounded-full px-10 py-7 text-lg glass border-white/20 hover:bg-white/10 hover:border-white/40 transition-all duration-300"
+                className="rounded-full px-12 py-8 text-lg glass border-white/20 hover:bg-white/10 hover:border-white/40 transition-all duration-300"
               >
-                <a href="tel:0662011492">
+                <a href="tel:0837086050">
                   <Phone className="mr-3 h-5 w-5" />
-                  Speak to an Expert
+                  Talk to a Specialist
                 </a>
               </Button>
             </motion.div>
@@ -165,10 +163,10 @@ export default function WorkshopServicesPage() {
               <motion.div
                 key={index}
                 variants={fadeInUp}
-                className="glass rounded-3xl p-6 border border-white/5 card-hover overflow-hidden"
+                className="glass rounded-[2.5rem] p-8 border border-white/5 card-hover overflow-hidden"
               >
                 {/* Image Section */}
-                <div className="relative aspect-[16/10] overflow-hidden rounded-2xl mb-6">
+                <div className="relative aspect-[16/10] overflow-hidden rounded-3xl mb-8">
                   <NextImage
                     src={service.image}
                     alt={service.title}
@@ -177,22 +175,24 @@ export default function WorkshopServicesPage() {
                   />
                 </div>
 
-                <div className="flex items-center gap-4 mb-4">
-                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary/30 to-primary/10 flex items-center justify-center">
+                <div className="flex items-center gap-4 mb-6">
+                  <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-primary/30 to-primary/10 flex items-center justify-center">
                     <service.icon className="h-6 w-6 text-primary" />
                   </div>
-                  <h3 className="text-2xl font-bold" style={{ fontFamily: "'Outfit', sans-serif" }}>
+                  <h3 className="text-3xl font-display font-bold">
                     {service.title}
                   </h3>
                 </div>
                 
-                <p className="text-muted-foreground mb-6 leading-relaxed">
+                <p className="text-lg text-muted-foreground mb-8 leading-relaxed font-light">
                   {service.description}
                 </p>
-                <div className="space-y-3">
+                <div className="space-y-4">
                   {service.features.map((feature, i) => (
                     <div key={i} className="flex items-center gap-3">
-                      <CheckCircle className="h-5 w-5 text-primary flex-shrink-0" />
+                      <div className="flex-shrink-0 w-6 h-6 rounded-full bg-primary/20 flex items-center justify-center">
+                         <CheckCircle className="h-4 w-4 text-primary" />
+                      </div>
                       <span className="text-muted-foreground">{feature}</span>
                     </div>
                   ))}
@@ -204,55 +204,55 @@ export default function WorkshopServicesPage() {
       </section>
 
       {/* Why Choose Us */}
-      <section className="py-20 md:py-32">
+      <section className="py-20 md:py-32 bg-secondary/10">
         <div className="container mx-auto px-6">
           <motion.div
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
             variants={staggerContainer}
-            className="max-w-4xl mx-auto"
+            className="max-w-5xl mx-auto"
           >
             <motion.h2
               variants={fadeInUp}
-              className="text-3xl md:text-4xl font-display font-bold mb-8 text-center"
+              className="text-4xl md:text-6xl font-display font-medium tracking-tighter mb-12 text-center"
             >
-              Why Choose Our <span className="gradient-text">Workshop</span>
+              The Xpert <span className="gradient-text italic">Standard.</span>
             </motion.h2>
             <motion.div
               variants={fadeInUp}
-              className="glass rounded-3xl p-8 md:p-12 border border-white/5"
+              className="glass-premium rounded-[3rem] p-10 md:p-16 border border-white/5"
             >
-              <div className="grid md:grid-cols-2 gap-6">
+              <div className="grid md:grid-cols-2 gap-10">
                 {[
                   {
                     icon: Shield,
-                    title: "RMI Certified",
-                    description: "Approved by the Retail Motor Industry",
+                    title: "Insurance Approved",
+                    description: "Accredited by all major insurance providers in South Africa.",
                   },
                   {
-                    icon: Wrench,
-                    title: "Expert Technicians",
-                    description: "Highly trained and experienced staff",
+                    icon: Hammer,
+                    title: "Master Artisans",
+                    description: "Highly skilled panel beaters with decades of cumulative experience.",
                   },
                   {
-                    icon: CheckCircle,
-                    title: "Quality Parts",
-                    description: "Genuine and quality replacement parts",
+                    icon: SprayCan,
+                    title: "Precision Color",
+                    description: "Advanced computerized color matching for a factory finish.",
                   },
                   {
                     icon: ClipboardCheck,
-                    title: "Detailed Reports",
-                    description: "Comprehensive service documentation",
+                    title: "Lifetime Warranty",
+                    description: "We stand behind our craftsmanship with comprehensive guarantees.",
                   },
                 ].map((item, index) => (
-                  <div key={index} className="flex gap-4">
-                    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary/30 to-primary/10 flex items-center justify-center flex-shrink-0">
-                      <item.icon className="h-6 w-6 text-primary" />
+                  <div key={index} className="flex gap-6">
+                    <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center flex-shrink-0">
+                      <item.icon className="h-8 w-8 text-primary" />
                     </div>
                     <div>
-                      <h4 className="font-bold mb-1">{item.title}</h4>
-                      <p className="text-sm text-muted-foreground">
+                      <h4 className="text-xl font-bold mb-2">{item.title}</h4>
+                      <p className="text-muted-foreground font-light leading-relaxed">
                         {item.description}
                       </p>
                     </div>
@@ -265,7 +265,7 @@ export default function WorkshopServicesPage() {
       </section>
 
       {/* Meet Our Team */}
-      <section className="py-20 md:py-32 bg-gradient-to-b from-background to-[oklch(0.1_0.01_260)]">
+      <section className="py-20 md:py-32 relative">
         <div className="container mx-auto px-6">
           <motion.div
             initial="hidden"
@@ -276,67 +276,54 @@ export default function WorkshopServicesPage() {
           >
             <motion.h2
               variants={fadeInUp}
-              className="text-3xl md:text-4xl font-bold mb-16 text-center"
-              style={{ fontFamily: "'Outfit', sans-serif" }}
+              className="text-4xl md:text-5xl font-bold mb-20 text-center tracking-tight"
             >
-              Meet Our <span className="gradient-text">Team</span>
+              The Restoration <span className="gradient-text italic">Specialists.</span>
             </motion.h2>
 
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
               {[
                 {
-                  role: "Owner & Chief of Operations",
-                  name: "Francois Maeder - Marais",
-                  email: "Francois@goshenauto.co.za",
-                  phone: "+27 71 685 9859",
+                  role: "Director",
+                  name: "Francois Marais",
+                  email: "francois@xpertpanelbeaters.co.za",
+                  phone: "083 708 6050",
                 },
                 {
-                  role: "Chief of Finance",
-                  name: "Albertus Maeder Marais",
-                  email: "Albertus@goshenauto.co.za",
-                  phone: "+27 83 341 7572",
+                  role: "Operations Manager",
+                  name: "Albertus Marais",
+                  email: "albertus@xpertpanelbeaters.co.za",
+                  phone: "083 708 6050",
                 },
                 {
-                  role: "Marketing Manager & Sales Executive",
-                  name: "Lijan Cilliers",
-                  email: "Lijan@goshenauto.co.za",
-                  phone: "+27 66 201 1492",
-                },
-                {
-                  role: "Panel Beating & Spray Painting Manager",
+                  role: "Production & Estimating",
                   name: "Logan Richardson",
-                  email: "Logan@goshenauto.co.za",
-                  phone: "+27 66 201 1492",
-                },
-                {
-                  role: "Workshop Manager",
-                  name: "Duan Coetzee",
-                  email: "workshop@goshenauto.co.za",
-                  phone: "+27 67 046 2135",
+                  email: "logan@xpertpanelbeaters.co.za",
+                  phone: "083 708 6050",
                 },
               ].map((member, index) => (
                 <motion.div
                   key={index}
                   variants={fadeInUp}
-                  className="glass rounded-3xl p-8 border border-white/5 card-hover text-center group"
+                  className="glass-premium rounded-[2.5rem] p-10 border border-white/5 card-hover text-center group"
                 >
-                  <div className="w-16 h-16 rounded-full bg-primary/10 mx-auto mb-6 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
-                    <span className="text-2xl font-bold text-primary">
+                  <div className="w-20 h-20 rounded-2xl bg-primary/10 mx-auto mb-8 flex items-center justify-center group-hover:scale-110 transition-transform">
+                    <span className="text-3xl font-display font-black text-primary">
                       {member.name.charAt(0)}
                     </span>
                   </div>
-                  <h3 className="text-xl font-bold mb-2" style={{ fontFamily: "'Outfit', sans-serif" }}>
+                  <h3 className="text-2xl font-bold mb-2">
                     {member.name}
                   </h3>
-                  <p className="text-sm font-medium text-primary mb-6 uppercase tracking-wider">
+                  <p className="text-xs font-bold text-accent mb-8 uppercase tracking-widest">
                     {member.role}
                   </p>
-                  <div className="space-y-3">
-                    <a href={`mailto:${member.email}`} className="flex items-center justify-center gap-2 text-sm text-muted-foreground hover:text-white transition-colors">
+                  <div className="space-y-4 pt-6 border-t border-white/5">
+                    <a href={`mailto:${member.email}`} className="flex items-center justify-center gap-3 text-sm text-muted-foreground hover:text-primary transition-colors">
                       <Mail className="h-4 w-4" />
                       {member.email}
                     </a>
-                    <a href={`tel:${member.phone.replace(/\s/g, "")}`} className="flex items-center justify-center gap-2 text-sm text-muted-foreground hover:text-white transition-colors">
+                    <a href={`tel:${member.phone.replace(/\s/g, "")}`} className="flex items-center justify-center gap-3 text-sm text-muted-foreground hover:text-primary transition-colors font-bold">
                       <Phone className="h-4 w-4" />
                       {member.phone}
                     </a>
@@ -347,11 +334,11 @@ export default function WorkshopServicesPage() {
 
             <motion.div 
               variants={fadeInUp}
-              className="mt-20 text-center"
+              className="mt-24 text-center"
             >
-              <div className="inline-flex items-center gap-3 glass px-8 py-4 rounded-full border border-primary/20">
-                <MapPin className="h-5 w-5 text-primary" />
-                <span className="text-lg font-medium">Come visit us!</span>
+              <div className="inline-flex items-center gap-4 glass-premium px-10 py-5 rounded-full border border-primary/20">
+                <MapPin className="h-6 w-6 text-primary" />
+                <span className="text-xl font-medium">Main Reef Rd, Johannesburg</span>
               </div>
             </motion.div>
           </motion.div>
@@ -359,32 +346,32 @@ export default function WorkshopServicesPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 md:py-32 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-primary/20 via-transparent to-accent/20" />
+      <section className="py-24 md:py-32 relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-transparent to-accent/10" />
 
         <div className="container mx-auto px-6 relative z-10">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
-            className="glass rounded-3xl p-8 md:p-12 text-center border border-white/10"
+            className="glass-premium rounded-[4rem] p-12 md:p-20 text-center border border-white/5 max-w-5xl mx-auto"
           >
-            <h2 className="text-3xl md:text-4xl font-display font-bold mb-4">
-              Ready to Service Your Vehicle?
+            <h2 className="text-4xl md:text-6xl font-display font-medium tracking-tighter mb-8 italic">
+              Restore Your Car to <span className="gradient-text not-italic font-black">Perfection.</span>
             </h2>
-            <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
-              Book your service appointment today and experience professional automotive care
+            <p className="text-lg md:text-2xl text-muted-foreground font-light mb-12 max-w-2xl mx-auto leading-relaxed">
+              Join thousands of satisfied clients in Johannesburg and get your vehicle back in showroom condition today.
             </p>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <Button asChild size="lg" className="btn-gold rounded-full px-8">
-                <a href="https://wa.me/27662011492" target="_blank" rel="noopener noreferrer">
-                  <MessageCircle className="mr-2 h-5 w-5 text-green-400" />
-                  Book on WhatsApp
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
+              <Button asChild size="xl" className="btn-gold rounded-full px-12 group">
+                <a href="https://wa.me/27837086050" target="_blank" rel="noopener noreferrer">
+                  <MessageCircle className="mr-3 h-6 w-6 text-green-500" />
+                  WhatsApp Us
                 </a>
               </Button>
-              <Button asChild size="lg" variant="outline" className="rounded-full glass border-white/20">
+              <Button asChild size="xl" variant="outline" className="rounded-full glass border-white/10 px-12">
                 <Link href="/contact">
-                  Contact Us
+                  Our Location
                 </Link>
               </Button>
             </div>

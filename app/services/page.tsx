@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import NextImage from "next/image";
+import Image from "next/image";
 import {
   Car,
   Wrench,
@@ -17,6 +17,11 @@ import {
   Bike,
   Globe,
   Package,
+  Hammer,
+  SprayCan,
+  ShieldCheck,
+  Gauge,
+  Zap,
 } from "lucide-react";
 
 const fadeInUp = {
@@ -34,169 +39,194 @@ const staggerContainer = {
 
 const services = [
   {
-    icon: Car,
-    title: "Vehicle Sales",
-    subtitle: "Handpicked Quality Cars",
+    icon: Hammer,
+    title: "Panel Beating",
+    subtitle: "Precision Body Repair",
     description:
-      "Browse our carefully curated selection of pre-owned vehicles. Each car is inspected, verified, and prepared to meet our high standards. We offer a wide range of makes and models to suit every need and budget.",
+      "Expert restoration of vehicle bodies. We use advanced techniques to remove dents and repair body damage to factory specifications.",
     features: [
-      "Thorough vehicle inspection",
-      "Verified service history",
-      "Fair market pricing",
-      "Wide selection of makes",
+      "Major & Minor body repairs",
+      "Structural alignment",
+      "Dent pull & repair",
+      "Corrosion treatment",
     ],
-    href: "/dealership",
+    href: "/contact",
     gradient: "from-orange-500/20 to-red-500/20",
   },
   {
-    icon: Wrench,
-    title: "Workshop Services",
-    subtitle: "RMI Approved Workshop",
+    icon: SprayCan,
+    title: "Spray Painting",
+    subtitle: "Showroom Finish",
     description:
-      "Our certified technicians provide professional maintenance and repairs for all vehicle makes. From routine servicing to complex repairs, trust our RMI-approved workshop for expert care.",
+      "Computerized color matching and state-of-the-art spray booths ensure a flawless, long-lasting finish for your vehicle.",
     features: [
-      "RMI certified technicians",
-      "Genuine parts available",
-      "Full service & repairs",
-      "Diagnostic services",
+      "Color matching technology",
+      "Custom paint jobs",
+      "Clear coat protection",
+      "Oven-baked finishes",
     ],
     href: "/contact",
     gradient: "from-green-500/20 to-emerald-500/20",
   },
   {
-    icon: CreditCard,
-    title: "Vehicle Finance",
-    subtitle: "Flexible Payment Options",
+    icon: Package,
+    title: "Body Parts",
+    subtitle: "Quality Supplier",
     description:
-      "Don't let budget constraints stop you from getting your dream car. We offer flexible finance options with competitive rates, making it easier than ever to drive away in your new vehicle.",
+      "We supply a wide range of genuine and certified aftermarket auto body parts for various makes and models in Johannesburg.",
     features: [
-      "Competitive interest rates",
-      "Flexible payment terms",
-      "Quick approval process",
-      "Multiple bank options",
+      "Bumper & Hood replacements",
+      "Headlights & Tail lights",
+      "Grilles & Mirrors",
+      "Bulk parts supply",
     ],
     href: "/contact",
     gradient: "from-pink-500/20 to-rose-500/20",
   },
   {
-    icon: Shield,
-    title: "Warranty Plans",
-    subtitle: "6-Month Coverage Available",
+    icon: ShieldCheck,
+    title: "Insurance Repairs",
+    subtitle: "Hassle-Free Processing",
     description:
-      "Drive with peace of mind knowing your vehicle is protected. Our comprehensive warranty plans cover major mechanical components, giving you confidence in your purchase.",
+      "We are approved by major insurance providers. We handle the paperwork and process to ensure a smooth repair journey for you.",
     features: [
-      "6-month warranty option",
-      "Major component coverage",
-      "Nationwide support",
-      "Hassle-free claims",
+      "Digital quoting (Audatex)",
+      "Direct insurance billing",
+      "Claims assistance",
+      "Accredited by major insurers",
     ],
     href: "/contact",
     gradient: "from-amber-500/20 to-orange-500/20",
   },
   {
-    icon: FileCheck,
-    title: "Trade-In Service",
-    subtitle: "Fair Value for Your Car",
+    icon: Gauge,
+    title: "Chassis Straightening",
+    subtitle: "Structural Integrity",
     description:
-      "Looking to upgrade? We offer fair trade-in values for your current vehicle. Our team will assess your car and provide a competitive offer, making the upgrade process seamless.",
+      "Using laser-guided technology to ensure your vehicle's frame and chassis are aligned perfectly for maximum safety.",
     features: [
-      "Fair market valuations",
-      "Quick assessment process",
-      "Trade-in towards purchase",
-      "No obligation quotes",
+      "Laser alignment",
+      "Frame straightening",
+      "Suspension checks",
+      "Post-accident safety checks",
     ],
     href: "/contact",
     gradient: "from-cyan-500/20 to-teal-500/20",
   },
   {
-    icon: Bike,
-    title: "Bicycles",
-    subtitle: "Premium Cycles",
+    icon: Zap,
+    title: "Dent Removal",
+    subtitle: "Paintless Solution",
     description:
-      "Explore our range of high-quality bicycles for all ages and terrains. From mountain bikes to road racers, we have the perfect ride for you.",
+      "PDR (Paintless Dent Removal) for those minor door dings and hail damage without needing a full respray.",
     features: [
-      "Mountain & Road bikes",
-      "Kids' bicycles",
-      "Accessories & Gear",
-      "Servicing & Repairs",
+      "Eco-friendly process",
+      "Original paint preserved",
+      "Faster turnaround time",
+      "Cost-effective",
     ],
     href: "/contact",
-    gradient: "from-green-500/20 to-emerald-500/20",
+    gradient: "from-blue-500/20 to-indigo-500/20",
+  },
+  {
+    icon: Shield,
+    title: "Hail Damage",
+    subtitle: "Specialized Repair",
+    description:
+      "Comprehensive hail damage repair services to bring your car back to pre-storm condition quickly and effectively.",
+    features: [
+      "Specialized PDR tools",
+      "Large scale repair capacity",
+      "Insurance approved",
+      "Guaranteed results",
+    ],
+    href: "/contact",
+    gradient: "from-purple-500/20 to-pink-500/20",
   },
   {
     icon: Wrench,
-    title: "Professional Tools",
-    subtitle: "Quality Hardware",
+    title: "Restoration",
+    subtitle: "Classic & Vintage",
     description:
-      "Equip your workshop or garage with professional-grade tools. We stock a wide variety of hand and power tools for every job.",
+      "Passionate restoration services for classic and vintage vehicles, bringing them back to their former glory with meticulous care.",
     features: [
-      "Hand tools",
-      "Power tools",
-      "Diagnostic equipment",
-      "Workshop essentials",
+      "Custom fabrication",
+      "Original part sourcing",
+      "Heritage color matching",
+      "Full rebuilds",
     ],
     href: "/contact",
-    gradient: "from-amber-500/20 to-orange-500/20",
-  },
-  {
-    icon: Globe,
-    title: "Importation Service",
-    subtitle: "Global Sourcing",
-    description:
-      "Need a specific part or vehicle? Our importation service handles everything from sourcing to delivery, ensuring you get exactly what you need.",
-    features: [
-      "Global sourcing network",
-      "Customs handling",
-      "Door-to-door delivery",
-      "Transparent pricing",
-    ],
-    href: "/contact",
-    gradient: "from-purple-500/20 to-indigo-500/20",
+    gradient: "from-indigo-500/20 to-purple-500/20",
   },
 ];
 
 export default function ServicesPage() {
   return (
     <div className="min-h-screen">
-      {/* Hero */}
-      <section className="relative py-20 md:py-32 lg:py-48 overflow-hidden">
-        <div className="absolute inset-0 z-0">
-           <NextImage 
-             src="https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?q=80&w=2670&auto=format&fit=crop" 
-             alt="Service Excellence" 
-             fill 
-             className="object-cover brightness-[0.2]"
-           />
-           <div className="absolute inset-0 bg-gradient-to-b from-background via-transparent to-background" />
+      {/* Hero Section - Elite Showcase */}
+      <section className="relative min-h-[70vh] flex items-center overflow-hidden pt-28">
+        {/* Deep Industrial Background */}
+        <div className="absolute inset-0 z-0 bg-[#080808]">
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(237,137,54,0.1),transparent_70%)]" />
+          <div className="absolute top-0 left-0 w-full h-full bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-20" />
         </div>
-        
-        <div className="container mx-auto px-6 relative z-10 text-center">
-          <motion.div
-            initial="hidden"
-            animate="visible"
-            variants={staggerContainer}
-            className="max-w-4xl mx-auto"
-          >
-            <motion.span
-              variants={fadeInUp}
-              className="inline-block px-4 py-2 glass-premium rounded-full text-[10px] font-bold tracking-[0.3em] uppercase text-primary mb-8"
-            >
-              Mastery in Motion
-            </motion.span>
-            <motion.h1
-              variants={fadeInUp}
-              className="text-4xl sm:text-5xl md:text-8xl font-display font-medium tracking-tighter mb-6 md:mb-8 leading-[0.9] md:leading-[0.8]"
-            >
-              Curated <br />
-              <span className="gradient-text italic">Services.</span>
-            </motion.h1>
-            <motion.p
-              variants={fadeInUp}
-              className="text-lg md:text-2xl text-muted-foreground font-light max-w-2xl mx-auto"
-            >
-              Precision engineering meets unparalleled care. Explore the Goshen suite of elite automotive and hardware solutions.
-            </motion.p>
-          </motion.div>
+
+        <div className="container mx-auto px-6 relative z-10">
+          <div className="grid lg:grid-cols-12 gap-12 items-center">
+            <div className="lg:col-span-7">
+              <motion.div
+                initial="hidden"
+                animate="visible"
+                variants={staggerContainer}
+              >
+                <motion.span
+                  variants={fadeInUp}
+                  className="inline-block px-5 py-2 glass-premium rounded-none text-[10px] font-black tracking-[0.4em] uppercase text-primary mb-8"
+                >
+                  Precision Engineered Solutions
+                </motion.span>
+                <motion.h1
+                  variants={fadeInUp}
+                  className="text-6xl md:text-9xl font-display font-medium tracking-tighter mb-8 leading-[0.85] text-white"
+                >
+                  ELITE <br />
+                  <span className="gradient-text italic">SERVICES.</span>
+                </motion.h1>
+                <motion.p
+                  variants={fadeInUp}
+                  className="text-xl md:text-3xl text-muted-foreground font-light max-w-xl leading-snug italic"
+                >
+                  From catastrophic damage to concours-level restoration, we provide the ultimate choice for <span className="text-white font-medium not-italic">discerning vehicle owners</span> in Johannesburg.
+                </motion.p>
+                
+                <motion.div variants={fadeInUp} className="pt-10">
+                   <Button asChild size="xl" className="btn-primary rounded-none px-12 py-8 text-xl font-black uppercase tracking-widest">
+                      <a href="https://wa.me/27837086050">Get An Assessment</a>
+                   </Button>
+                </motion.div>
+              </motion.div>
+            </div>
+
+            {/* Cinematic Visual: ximage.png */}
+            <div className="lg:col-span-5 relative hidden lg:block">
+               <motion.div
+                 initial={{ opacity: 0, scale: 0.8, x: 50 }}
+                 animate={{ opacity: 1, scale: 1, x: 0 }}
+                 transition={{ duration: 1 }}
+                 className="relative aspect-square"
+               >
+                  <div className="absolute inset-0 bg-primary/20 blur-[120px] rounded-full" />
+                  <div className="relative z-10 w-full h-full">
+                     <Image 
+                       src="/workshop-services.png" 
+                       alt="Service Excellence" 
+                       fill 
+                       className="object-contain drop-shadow-[0_35px_35px_rgba(0,0,0,0.5)]" 
+                     />
+                  </div>
+               </motion.div>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -252,7 +282,7 @@ export default function ServicesPage() {
                         <Link href={service.href}>Details</Link>
                       </Button>
                       <Button asChild variant="outline" className="glass border-white/10 rounded-full px-8 flex-1">
-                        <a href="https://wa.me/27662011492">Enquire</a>
+                        <a href="https://wa.me/27837086050">Enquire</a>
                       </Button>
                     </div>
                   </div>
@@ -278,14 +308,13 @@ export default function ServicesPage() {
               Ready to Get Started?
             </h2>
             <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
-              Contact us today to learn more about our services or schedule a
-              visit to our dealership.
+              Contact us today for a free assessment and quote. Our experts are ready to help.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <Button asChild size="lg" className="btn-gold rounded-full px-8">
-                <a href="tel:0662011492">
+                <a href="tel:0837086050">
                   <Phone className="mr-2 h-5 w-5" />
-                  Call: 066 201 1492
+                  Call: 083 708 6050
                 </a>
               </Button>
               <Button

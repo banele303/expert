@@ -58,6 +58,19 @@
 
   --animate-marquee: marquee var(--duration) linear infinite;
   --animate-marquee-vertical: marquee-vertical var(--duration) linear infinite;
+  --animate-spin-slow: spin 15s linear infinite;
+  --animate-spin-reverse-slow: spin-reverse 20s linear infinite;
+  --animate-pulse-slow: pulse 8s ease-in-out infinite;
+}
+
+@keyframes spin-reverse {
+  from {
+    transform: rotate(360deg);
+  }
+
+  to {
+    transform: rotate(0deg);
+  }
 }
 
 /* Premium Dark Theme - Main Theme */

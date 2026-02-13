@@ -100,7 +100,7 @@ export default function AdminSidebar() {
           <div className="flex h-16 items-center border-b px-6">
             <Link href="/admin" className="flex items-center space-x-2 cursor-pointer">
               <span className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-blue-600">
-                Goshen Admin
+                Xpert Admin
               </span>
             </Link>
           </div>
@@ -151,7 +151,7 @@ export default function AdminSidebar() {
               )}
             </Button>
             <div className="text-xs text-muted-foreground text-center">
-              © 2026 Goshen Auto Parts And More Ltd
+              © 2026 Xpert Panel Beaters
             </div>
           </div>
         </div>
