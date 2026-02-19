@@ -153,7 +153,7 @@ export default function CarDetailPage() {
             {/* Thumbnails */}
             {images.length > 1 && (
               <div className="flex gap-4 overflow-x-auto scrollbar-none pb-4">
-                {images.map((img, index) => (
+                {images.map((img: string, index: number) => (
                   <button
                     key={index}
                     onClick={() => setCurrentImageIndex(index)}

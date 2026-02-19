@@ -177,7 +177,7 @@ function InventoryContent() {
         ) : (
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             <AnimatePresence>
-            {products.map((car, idx) => (
+            {products.map((car: any, idx: number) => (
               <motion.div
                 key={car._id}
                 initial={{ opacity: 0, scale: 0.9 }}
