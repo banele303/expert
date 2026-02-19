@@ -2,169 +2,260 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
 import { 
   Menu, 
   X, 
-  Sun, 
-  Moon,
+  Search, 
+  ShoppingCart, 
+  ChevronDown,
   ArrowRight,
+  Zap,
+  Sparkles,
+  LogOut,
+  User,
+  
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useTheme } from "next-themes";
+import { cn } from "@/lib/utils";
+import Image from "next/image";
+import { useSession, signOut } from "@/lib/auth-client";
+import { LoginDialog } from "@/components/auth/LoginDialog";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+
 
 const navLinks = [
   { name: "Home", href: "/" },
-  { name: "Services", href: "/services" },
-  { name: "Blog", href: "/blog" },
+  { name: "Products", href: "/services" },
+  { name: "Catalog", href: "/inventory" },
+  { name: "Warehouse", href: "/services/workshop" },
   { name: "About", href: "/about" },
 ];
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
-  const { theme, setTheme } = useTheme();
+  const { data: session } = useSession();
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 10);
+      setScrolled(window.scrollY > 20);
     };
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  if (pathname?.startsWith("/admin")) return null;
-
   return (
-    <nav 
-      className={`fixed top-0 left-0 right-0 z-[100] transition-all duration-500 ${
-        isScrolled 
-          ? "bg-black/80 backdrop-blur-xl border-b border-white/10 py-3" 
-          : "bg-transparent border-transparent py-6"
-      }`}
-    >
-      <div className="max-w-[1500px] mx-auto px-6">
-        {/* Mobile Header */}
-        <div className="flex lg:hidden items-center justify-between gap-4">
-          <Link href="/" className="flex items-center shrink-0">
-            <div className="relative w-32 h-14 flex items-center justify-center">
-              <Image
-                src="/expert-log.png"
-                alt="Xpert Logo"
+    <header className="sticky top-0 z-[100] w-full bg-white text-slate-900 border-b border-slate-100 shadow-sm">
+      {/* Top Main Header */}
+      <div className="container mx-auto px-4 py-4">
+        <div className="flex items-center justify-between gap-6">
+          {/* Logo / Mascot */}
+          <Link href="/" className="flex items-center gap-2 shrink-0">
+            <div className="relative w-44 h-20">
+               <Image 
+                src="/new-lo.png" 
+                alt="~Spares City" 
                 fill
-                className="object-contain"
+                className="object-contain rounded-2xl"
                 priority
               />
             </div>
           </Link>
 
-          <div className="flex items-center gap-2">
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-              className="w-10 h-10 glass border-white/5"
-            >
-              {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
-            </Button>
-            <button
-              onClick={() => setIsOpen(!isOpen)}
-              className="w-12 h-12 flex items-center justify-center glass border-white/10"
-            >
-              <AnimatePresence mode="wait">
-                {isOpen ? (
-                  <motion.div key="x" initial={{ scale: 0 }} animate={{ scale: 1 }} exit={{ scale: 0 }}><X className="h-6 w-6" /></motion.div>
-                ) : (
-                  <motion.div key="menu" initial={{ scale: 0 }} animate={{ scale: 1 }} exit={{ scale: 0 }}><Menu className="h-6 w-6" /></motion.div>
-                )}
-              </AnimatePresence>
-            </button>
-          </div>
-        </div>
-
-        {/* Desktop Header */}
-        <div className="hidden lg:flex items-center justify-between">
-          <Link href="/" className="flex items-center group">
-            <div className="relative w-52 h-20 group-hover:scale-105 transition-transform duration-500">
-              <Image src="/expert-log.png" alt="Xpert Logo" fill className="object-contain" priority />
-            </div>
-          </Link>
-
-          <div className="flex items-center gap-12">
-            {navLinks.map((link) => (
-              <Link 
-                key={link.name} 
-                href={link.href} 
-                className={`text-[10px] font-black uppercase tracking-[0.4em] transition-all hover:text-primary relative group ${
-                  pathname === link.href ? "text-primary" : "text-white/70"
-                }`}
+          {/* Search Bar - Center */}
+          <div className="flex-1 max-w-2xl hidden md:flex">
+            <div className="relative w-full flex items-center">
+              <input
+                type="text"
+                placeholder="Search for parts, cars, or brands..."
+                className="w-full h-11 pl-4 pr-12 rounded-full bg-slate-50 text-slate-900 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all shadow-inner"
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    const query = e.currentTarget.value;
+                    if (query.trim()) {
+                      window.location.href = `/inventory?search=${encodeURIComponent(query)}`;
+                    }
+                  }
+                }}
+              />
+              <button 
+                onClick={(e) => {
+                  const input = e.currentTarget.parentElement?.querySelector('input');
+                  const query = input?.value;
+                  if (query?.trim()) {
+                    window.location.href = `/inventory?search=${encodeURIComponent(query)}`;
+                  }
+                }}
+                className="absolute right-0 h-full px-4 rounded-r-full bg-[#ef4444] hover:bg-[#dc2626] transition-colors flex items-center justify-center"
               >
-                {link.name}
-                <span className={`absolute -bottom-2 left-0 w-0 h-px bg-primary transition-all group-hover:w-full ${pathname === link.href ? "w-full" : ""}`} />
-              </Link>
-            ))}
+                <Search className="w-5 h-5 text-black" />
+              </button>
+            </div>
           </div>
 
-          <div className="flex items-center gap-6">
-            <div className="h-8 w-px bg-white/10 mx-2" />
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-              className="w-12 h-12 glass border-white/10 group overflow-hidden"
-            >
-              <div className="group-hover:rotate-45 transition-transform duration-500">
-                {theme === "dark" ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
-              </div>
-            </Button>
-            <Button asChild className="btn-primary rounded-none px-10 py-7 text-[10px] font-black uppercase tracking-[0.3em] shadow-2xl shadow-primary/40 relative overflow-hidden group">
-              <Link href="/services">
-                <span className="relative z-10">Get Estimate</span>
-                <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
+          {/* Right Actions */}
+          <div className="flex items-center gap-4">
+            <div className="hidden xl:flex items-center gap-4 text-xs font-bold uppercase tracking-wider">
+              <Link href="/inventory" className="text-[#ef4444] hover:text-slate-900 transition-colors uppercase font-black tracking-widest text-[11px] flex items-center gap-1">
+                <Search className="w-3 h-3" />
+                Inventory
               </Link>
-            </Button>
+              <Link href="/services/workshop" className="text-slate-500 hover:text-slate-900 transition-colors">Warehouse</Link>
+              <Link href="/contact" className="bg-[#ef4444] text-white px-4 py-2 rounded-full flex items-center gap-1 hover:bg-[#dc2626] transition-colors">
+                <Zap className="w-3 h-3" />
+                Request Part
+              </Link>
+            </div>
+
+            {/* Icons & Auth */}
+            <div className="flex items-center gap-3">
+              {session ? (
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <button className="flex items-center gap-3 p-1 pr-4 rounded-full bg-white hover:bg-slate-50 transition-all border border-slate-200 shadow-sm focus:ring-2 focus:ring-red-500/10 outline-none group">
+                      <Avatar className="h-9 w-9 ring-2 ring-white">
+                        <AvatarImage src={session.user.image || ""} />
+                        <AvatarFallback className="bg-gradient-to-br from-red-50 to-red-100 text-red-600 font-bold border border-red-200">
+                          {session.user.name?.charAt(0).toUpperCase() || "U"}
+                        </AvatarFallback>
+                      </Avatar>
+                      <div className="flex flex-col items-start text-xs hidden lg:flex">
+                        <span className="font-bold text-slate-900 leading-none group-hover:text-red-600 transition-colors">
+                            {session.user.name}
+                        </span>
+                        <span className="text-slate-500 leading-none mt-1 max-w-[140px] truncate block">
+                            {session.user.email}
+                        </span>
+                      </div>
+                      <ChevronDown className="w-3 h-3 text-slate-400 group-hover:text-red-500 transition-colors hidden lg:block ml-1" />
+                    </button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end" className="w-64 p-2">
+                    <DropdownMenuLabel className="font-normal">
+                      <div className="flex flex-col space-y-1 bg-slate-50 p-3 rounded-lg border border-slate-100">
+                        <p className="text-sm font-bold text-slate-900">{session.user.name}</p>
+                        <p className="text-xs text-slate-500 truncate">
+                          {session.user.email}
+                        </p>
+                      </div>
+                    </DropdownMenuLabel>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem className="cursor-pointer text-slate-600 focus:text-slate-900 focus:bg-slate-50 py-2.5">
+                      <User className="mr-2 h-4 w-4" />
+                      <span className="font-medium">My Profile</span>
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem onClick={() => signOut()} className="cursor-pointer text-red-600 focus:text-red-600 focus:bg-red-50 py-2.5">
+                      <LogOut className="mr-2 h-4 w-4" />
+                      <span className="font-medium">Log out</span>
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              ) : (
+                <div className="hidden md:block">
+                  <LoginDialog />
+                </div>
+              )}
+
+              <button className="p-2.5 rounded-full bg-slate-50 hover:bg-slate-100 transition-colors relative border border-slate-100">
+                <ShoppingCart className="w-5 h-5 text-slate-600" />
+                <span className="absolute top-0 right-0 w-4 h-4 bg-[#ef4444] text-white rounded-full text-[10px] flex items-center justify-center shadow-sm">0</span>
+              </button>
+            </div>
+
+            {/* Mobile Menu Toggle */}
+            <button className="md:hidden p-2 rounded-lg bg-slate-50 border border-slate-100" onClick={() => setIsOpen(!isOpen)}>
+              {isOpen ? <X className="text-slate-900" /> : <Menu className="text-slate-900" />}
+            </button>
           </div>
         </div>
       </div>
 
-
-      {/* Simplified Mobile Menu Dropdown */}
+      {/* Mobile Menu */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            className="lg:hidden absolute top-full left-0 right-0 bg-background border-b z-[90] overflow-hidden"
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            className="md:hidden bg-white border-t border-slate-100 shadow-xl overflow-hidden"
           >
-            <div className="flex flex-col p-6 gap-6">
-              {navLinks.map((link) => (
-                <Link key={link.name} href={link.href} onClick={() => setIsOpen(false)} className="text-3xl font-display font-medium tracking-tight">
-                  {link.name}
-                </Link>
-              ))}
-              <div className="flex flex-col gap-3 pt-6 border-t border-white/10">
-                 <Button asChild className="w-full btn-primary rounded-none py-7 text-sm font-black uppercase tracking-widest">
-                    <Link href="/services" onClick={() => setIsOpen(false)}>
-                      Get A Quote <ArrowRight className="ml-2 h-4 w-4" />
-                    </Link>
-                 </Button>
-                 <div className="flex gap-2">
-                    <Button asChild variant="outline" className="flex-1 rounded-none h-14 border-white/10">
-                       <a href="tel:0837086050" className="flex items-center justify-center gap-2">Call Now</a>
-                    </Button>
-                    <Button asChild variant="outline" className="flex-1 rounded-none h-14 border-white/10">
-                       <a href="https://wa.me/27837086050" className="flex items-center justify-center gap-2">WhatsApp</a>
+            <div className="p-6 flex flex-col gap-4">
+              <div className="relative w-full flex items-center mb-4">
+                <input
+                  type="text"
+                  placeholder="Search..."
+                  className="w-full h-11 pl-4 pr-12 rounded-lg bg-slate-50 text-slate-900 text-sm focus:outline-none border border-slate-200"
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      const query = e.currentTarget.value;
+                      if (query.trim()) {
+                        window.location.href = `/inventory?search=${encodeURIComponent(query)}`;
+                        setIsOpen(false);
+                      }
+                    }
+                  }}
+                />
+                <button 
+                  onClick={(e) => {
+                    const input = e.currentTarget.parentElement?.querySelector('input');
+                    const query = input?.value;
+                    if (query?.trim()) {
+                      window.location.href = `/inventory?search=${encodeURIComponent(query)}`;
+                      setIsOpen(false);
+                    }
+                  }}
+                  className="absolute right-0 h-full px-4 rounded-r-lg bg-[#ef4444]"
+                >
+                  <Search className="w-5 h-5 text-black" />
+                </button>
+              </div>
+              <Link href="/inventory" className="text-sm font-black uppercase py-3 border-b border-slate-50 text-slate-900">Products</Link>
+              <Link href="/services" className="text-sm font-black uppercase py-3 border-b border-slate-50 text-slate-900">Catalog</Link>
+              <Link href="/about" className="text-sm font-black uppercase py-3 border-b border-slate-50 text-slate-900">About</Link>
+              
+              {/* Mobile Auth */}
+              {session ? (
+                 <div className="py-3 border-b border-slate-50 flex items-center gap-3">
+                    <Avatar className="h-10 w-10">
+                        <AvatarImage src={session.user.image || ""} />
+                        <AvatarFallback className="bg-slate-200">
+                          {session.user.name?.charAt(0).toUpperCase() || "U"}
+                        </AvatarFallback>
+                    </Avatar>
+                    <div className="flex flex-col">
+                        <span className="text-sm font-bold text-slate-900">{session.user.name}</span>
+                        <span className="text-xs text-slate-500">{session.user.email}</span>
+                    </div>
+                    <Button variant="ghost" size="icon" onClick={() => signOut()} className="ml-auto text-red-500">
+                        <LogOut className="h-5 w-5" />
                     </Button>
                  </div>
+              ) : (
+                 <div className="py-3">
+                    <LoginDialog />
+                 </div>
+              )}
+
+              <div className="flex flex-col gap-2 mt-2">
+                <Link href="/contact" className="w-full h-14 bg-[#ef4444] text-white rounded-xl flex items-center justify-center font-black uppercase tracking-widest shadow-lg shadow-red-500/20 transition-all hover:bg-black">Contact Us</Link>
               </div>
             </div>
           </motion.div>
         )}
       </AnimatePresence>
-    </nav>
+    </header>
   );
 }
+

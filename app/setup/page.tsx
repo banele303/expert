@@ -27,10 +27,10 @@ export default function SetupPage() {
         </h1>
         <p className="text-muted-foreground mb-8">
           Click the button below to populate the database with demo products for
-          Xpert Panel Beaters.
+          Xpert Auto Parts.
         </p>
         <Button onClick={handleSeed} className="btn-primary rounded-full px-8">
-          Seed Database with Demo Cars
+          Seed Database with Demo Spares
         </Button>
       </div>
     </div>

@@ -17,6 +17,7 @@ import {
   ClipboardCheck,
   Mail,
   MapPin,
+  Package,
 } from "lucide-react";
 
 const fadeInUp = {
@@ -34,59 +35,59 @@ const staggerContainer = {
 
 const services = [
   {
-    icon: Hammer,
-    title: "PANEL BEATING",
-    image: "/panel-pitting.png",
-    description: "Our team of experienced panel beaters takes pride in restoring your vehicle to its original condition—down to the smallest detail. Whether it's minor dents or major collision repairs, we use precision techniques and high-quality materials to ensure a flawless finish. With years of hands-on experience and a commitment to excellence, you can trust us to get the job done right, every time.",
+    icon: Package,
+    title: "INVENTORY MGMT",
+    image: "/workshop-services.png",
+    description: "Our world-class inventory management system ensures that ~Spares City maintains a consistent stock of over 10,000 unique SKU's. From rare engine components to high-demand service kits, we track every part to ensure immediate availability for our retail and wholesale clients across South Africa.",
     features: [
-      "Accident repairs",
-      "Dent removal",
-      "Chassis alignment",
-      "Bumper repairs",
+      "Real-time stock tracking",
+      "OEM & Aftermarket parts",
+      "Bulk inventory storage",
+      "Quality control checks",
     ],
   },
   {
-    icon: SprayCan,
-    title: "SPRAY PAINTING",
-    image: "/spray-paint.png",
-    description: "Our professional spray booth is designed to deliver showroom-quality paintwork with maximum efficiency and minimal environmental impact. We use premium automotive paints and advanced spraying technology to ensure a smooth, durable finish that perfectly matches your vehicle’s original color. Whether it's a full respray or a touch-up, your car leaves looking as good as new.",
-    features: [
-      "Color matching",
-      "Full resprays",
-      "Touch-ups",
-      "Clear coating",
-    ],
-  },
-  {
-    icon: Wrench,
-    title: "MECHANICAL WORKSHOP",
+    icon: Settings,
+    title: "ORDER FULFILLMENT",
     image: "/work-shop.png",
-    description: "Our qualified mechanics are here to keep your vehicle running at its best. From diagnostics and routine servicing to complex mechanical repairs, we bring a high level of skill, training, and attention to detail to every job. With certifications and real-world experience, our team ensures your car is safe, reliable, and road-ready.",
+    description: "Efficiency is at the core of our Bramley warehouse operations. Our dedicated fulfillment team processes hundreds of orders daily, ensuring that every part is picked, packed, and dispatched with precision. Whether you're ordering a single spark plug or a full engine rebuild kit, we handle it with expert care.",
     features: [
-      "General servicing",
-      "Diagnostics",
-      "Engine repairs",
-      "Safety checks",
+      "Same-day processing",
+      "Precision picking",
+      "Secure industrial packing",
+      "Order status tracking",
+    ],
+  },
+  {
+    icon: Shield,
+    title: "PARTS PROCUREMENT",
+    image: "/vehicle-maintenance.png",
+    description: "Can't find a specific component? Our procurement specialists have a global network of suppliers to source any automotive part. We specialize in finding hard-to-reach components for vintage models and early-release imports, maintaining the highest standards of certification and reliability.",
+    features: [
+      "Special order sourcing",
+      "Global supplier network",
+      "Certified authenticity",
+      "Express import options",
     ],
   },
 ];
 
 export default function WorkshopServicesPage() {
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-white">
       {/* Hero */}
       <section className="relative min-h-[80vh] flex items-center justify-center overflow-hidden pt-20">
         {/* Background Image */}
         <div className="absolute inset-0 z-0">
           <NextImage
             src="/workshop-services.png"
-            alt="Workshop Background"
+            alt="Warehouse Background"
             fill
-            className="object-cover"
+            className="object-cover grayscale opacity-20"
             priority
           />
-          <div className="absolute inset-0 bg-black/80 backdrop-blur-sm" />
-          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-background/20 to-background" />
+          <div className="absolute inset-0 bg-white/60 backdrop-blur-sm" />
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-white/20 to-white" />
         </div>
 
         <div className="container mx-auto px-6 relative z-10 py-20">
@@ -98,50 +99,46 @@ export default function WorkshopServicesPage() {
           >
             <motion.div
               variants={fadeInUp}
-              className="inline-flex items-center gap-2 px-6 py-3 glass rounded-full text-sm font-medium text-primary mb-8 border border-primary/20"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-black rounded-none text-sm font-black mb-8 shadow-xl"
             >
-              <Wrench className="h-4 w-4" />
-              <span className="tracking-wide uppercase">Premium Workshop Services</span>
+              <Package className="h-4 w-4" />
+              <span className="tracking-widest uppercase">Center of Excellence</span>
             </motion.div>
             
             <motion.h1
               variants={fadeInUp}
-              className="text-5xl md:text-7xl lg:text-8xl font-bold mb-8 leading-tight tracking-tight text-white"
-              style={{ fontFamily: "'Outfit', sans-serif" }}
+              className="text-5xl md:text-7xl lg:text-9xl font-black mb-8 leading-tight tracking-tighter text-slate-900"
             >
-              Master Craftsmen <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-white to-primary animate-gradient bg-300%">
-                For Your Ride
-              </span>
+              DISTRIBUTION <br />
+              <span className="gradient-text italic">HUB.</span>
             </motion.h1>
 
             <motion.p
               variants={fadeInUp}
-              className="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto mb-10 leading-relaxed font-light"
+              className="text-xl md:text-3xl text-slate-500 max-w-3xl mx-auto mb-10 leading-relaxed font-medium italic"
             >
-              Experience automotive restoration excellence at our Johannesburg facility. 
-              Where precision panel beating meets factory-grade spray painting.
+              Our Bramley warehouse is the heart of our retail operation, managing the flow of quality motor spares across South Africa.
             </motion.p>
 
             <motion.div
               variants={fadeInUp}
               className="flex flex-col sm:flex-row items-center justify-center gap-6"
             >
-              <Button asChild size="xl" className="btn-primary rounded-full px-12 py-8 text-lg hover:scale-105 transition-all duration-300 shadow-xl shadow-primary/25">
-                <a href="https://wa.me/27837086050" target="_blank" rel="noopener noreferrer">
-                  <MessageCircle className="mr-3 h-6 w-6 text-white" />
-                  Request a Quote
+              <Button asChild size="xl" className="btn-primary rounded-none px-12 py-8 text-xl font-black uppercase tracking-widest hover:scale-105 transition-all duration-300 shadow-2xl shadow-primary/25">
+                <a href="tel:+27829624108">
+                  <Phone className="mr-3 h-6 w-6" />
+                  Request Parts
                 </a>
               </Button>
               <Button
                 asChild
                 size="xl"
                 variant="outline"
-                className="rounded-full px-12 py-8 text-lg glass border-white/20 hover:bg-white/10 hover:border-white/40 transition-all duration-300"
+                className="rounded-none px-12 py-8 text-xl font-black uppercase tracking-widest border-2 border-slate-200 hover:bg-slate-50 transition-all duration-300"
               >
-                <a href="tel:0837086050">
-                  <Phone className="mr-3 h-5 w-5" />
-                  Talk to a Specialist
+                <a href="https://wa.me/27829624108">
+                  <MessageCircle className="mr-3 h-6 w-6" />
+                  WhatsApp Stock Check
                 </a>
               </Button>
             </motion.div>
@@ -150,7 +147,7 @@ export default function WorkshopServicesPage() {
       </section>
 
       {/* Services Grid */}
-      <section className="py-20 md:py-32 bg-gradient-to-b from-background to-[oklch(0.1_0.01_260)]">
+      <section className="py-20 md:py-32 bg-white">
         <div className="container mx-auto px-6">
           <motion.div
             initial="hidden"
@@ -163,37 +160,38 @@ export default function WorkshopServicesPage() {
               <motion.div
                 key={index}
                 variants={fadeInUp}
-                className="glass rounded-[2.5rem] p-8 border border-white/5 card-hover overflow-hidden"
+                className="bg-slate-50 rounded-none p-10 border border-slate-100 hover:border-primary/30 transition-all duration-500 shadow-sm hover:shadow-2xl overflow-hidden group"
               >
                 {/* Image Section */}
-                <div className="relative aspect-[16/10] overflow-hidden rounded-3xl mb-8">
+                <div className="relative aspect-square overflow-hidden rounded-none mb-10 border border-slate-200">
                   <NextImage
                     src={service.image}
                     alt={service.title}
                     fill
-                    className="object-cover hover:scale-105 transition-transform duration-500"
+                    className="object-cover grayscale group-hover:grayscale-0 group-hover:scale-110 transition-all duration-700"
                   />
+                  <div className="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity" />
                 </div>
 
                 <div className="flex items-center gap-4 mb-6">
-                  <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-primary/30 to-primary/10 flex items-center justify-center">
-                    <service.icon className="h-6 w-6 text-primary" />
+                  <div className="w-14 h-14 bg-white flex items-center justify-center border border-slate-100 group-hover:bg-primary transition-colors">
+                    <service.icon className="h-6 w-6 text-slate-700 group-hover:text-black" />
                   </div>
-                  <h3 className="text-3xl font-display font-bold">
+                  <h3 className="text-2xl font-black text-slate-900 tracking-tighter uppercase">
                     {service.title}
                   </h3>
                 </div>
                 
-                <p className="text-lg text-muted-foreground mb-8 leading-relaxed font-light">
+                <p className="text-slate-500 mb-10 leading-relaxed font-medium text-sm italic">
                   {service.description}
                 </p>
                 <div className="space-y-4">
                   {service.features.map((feature, i) => (
-                    <div key={i} className="flex items-center gap-3">
-                      <div className="flex-shrink-0 w-6 h-6 rounded-full bg-primary/20 flex items-center justify-center">
-                         <CheckCircle className="h-4 w-4 text-primary" />
+                    <div key={i} className="flex items-center gap-4">
+                      <div className="flex-shrink-0 w-6 h-6 rounded-none bg-primary flex items-center justify-center">
+                         <CheckCircle className="h-3 w-3 text-black" />
                       </div>
-                      <span className="text-muted-foreground">{feature}</span>
+                      <span className="text-slate-900 font-bold text-xs uppercase tracking-tight">{feature}</span>
                     </div>
                   ))}
                 </div>
@@ -204,68 +202,7 @@ export default function WorkshopServicesPage() {
       </section>
 
       {/* Why Choose Us */}
-      <section className="py-20 md:py-32 bg-secondary/10">
-        <div className="container mx-auto px-6">
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={staggerContainer}
-            className="max-w-5xl mx-auto"
-          >
-            <motion.h2
-              variants={fadeInUp}
-              className="text-4xl md:text-6xl font-display font-medium tracking-tighter mb-12 text-center"
-            >
-              The Xpert <span className="gradient-text italic">Standard.</span>
-            </motion.h2>
-            <motion.div
-              variants={fadeInUp}
-              className="glass-premium rounded-[3rem] p-10 md:p-16 border border-white/5"
-            >
-              <div className="grid md:grid-cols-2 gap-10">
-                {[
-                  {
-                    icon: Shield,
-                    title: "Insurance Approved",
-                    description: "Accredited by all major insurance providers in South Africa.",
-                  },
-                  {
-                    icon: Hammer,
-                    title: "Master Artisans",
-                    description: "Highly skilled panel beaters with decades of cumulative experience.",
-                  },
-                  {
-                    icon: SprayCan,
-                    title: "Precision Color",
-                    description: "Advanced computerized color matching for a factory finish.",
-                  },
-                  {
-                    icon: ClipboardCheck,
-                    title: "Lifetime Warranty",
-                    description: "We stand behind our craftsmanship with comprehensive guarantees.",
-                  },
-                ].map((item, index) => (
-                  <div key={index} className="flex gap-6">
-                    <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center flex-shrink-0">
-                      <item.icon className="h-8 w-8 text-primary" />
-                    </div>
-                    <div>
-                      <h4 className="text-xl font-bold mb-2">{item.title}</h4>
-                      <p className="text-muted-foreground font-light leading-relaxed">
-                        {item.description}
-                      </p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </motion.div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Meet Our Team */}
-      <section className="py-20 md:py-32 relative">
+      <section className="py-24 md:py-40 bg-slate-900 border-y-8 border-primary">
         <div className="container mx-auto px-6">
           <motion.div
             initial="hidden"
@@ -276,54 +213,111 @@ export default function WorkshopServicesPage() {
           >
             <motion.h2
               variants={fadeInUp}
-              className="text-4xl md:text-5xl font-bold mb-20 text-center tracking-tight"
+              className="text-4xl md:text-7xl font-black tracking-tighter mb-16 text-center text-white"
             >
-              The Restoration <span className="gradient-text italic">Specialists.</span>
+              THE ~SPARES CITY <span className="text-primary italic">ADVANTAGE.</span>
             </motion.h2>
-
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <motion.div
+              variants={fadeInUp}
+              className="grid md:grid-cols-2 lg:grid-cols-4 gap-8"
+            >
               {[
                 {
-                  role: "Director",
+                  icon: Shield,
+                  title: "Certified Spares",
+                  description: "Every part in our warehouse is certified for performance and reliability.",
+                },
+                {
+                  icon: Package,
+                  title: "Massive Inventory",
+                  description: "Over 10,000 components in stock for immediate retail dispatch.",
+                },
+                {
+                  icon: Settings,
+                  title: "Fast Logistics",
+                  description: "Streamlined picking and packing for nationwide delivery within 48 hours.",
+                },
+                {
+                  icon: ClipboardCheck,
+                  title: "Expert Advice",
+                  description: "Our counter staff are certified automotive parts specialists.",
+                },
+              ].map((item, index) => (
+                <div key={index} className="p-8 border border-white/10 hover:border-primary/50 transition-colors group">
+                  <div className="w-16 h-16 bg-white/5 flex items-center justify-center mb-8 group-hover:bg-primary transition-all">
+                    <item.icon className="h-8 w-8 text-white group-hover:text-black" />
+                  </div>
+                  <h4 className="text-xl font-bold mb-4 text-white uppercase tracking-tight">{item.title}</h4>
+                  <p className="text-slate-400 font-medium text-sm leading-relaxed">
+                    {item.description}
+                  </p>
+                </div>
+              ))}
+            </motion.div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Team section updated for Parts Sales */}
+      <section className="py-20 md:py-32 bg-white">
+        <div className="container mx-auto px-6">
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={staggerContainer}
+            className="max-w-6xl mx-auto"
+          >
+            <motion.h2
+              variants={fadeInUp}
+              className="text-4xl md:text-6xl font-black mb-20 text-center tracking-tighter text-slate-900"
+            >
+              PARTS SALES & <span className="gradient-text italic">SUPPORT.</span>
+            </motion.h2>
+
+            <div className="grid md:grid-cols-3 gap-8">
+              {[
+                {
+                  role: "Managing Director",
                   name: "Francois Marais",
-                  email: "francois@xpertpanelbeaters.co.za",
-                  phone: "083 708 6050",
+                  email: "sales@sparescity.co.za",
+                  phone: "082 962 4108",
                 },
                 {
-                  role: "Operations Manager",
+                  role: "Warehouse Manager",
                   name: "Albertus Marais",
-                  email: "albertus@xpertpanelbeaters.co.za",
-                  phone: "083 708 6050",
+                  email: "info@sparescity.co.za",
+                  phone: "082 962 4108",
                 },
                 {
-                  role: "Production & Estimating",
+                  role: "Parts Specialist",
                   name: "Logan Richardson",
-                  email: "logan@xpertpanelbeaters.co.za",
-                  phone: "083 708 6050",
+                  email: "sales@sparescity.co.za",
+                  phone: "082 962 4108",
                 },
               ].map((member, index) => (
                 <motion.div
                   key={index}
                   variants={fadeInUp}
-                  className="glass-premium rounded-[2.5rem] p-10 border border-white/5 card-hover text-center group"
+                  className="bg-slate-50 p-12 text-center group border border-slate-100 hover:border-primary/30 transition-all"
                 >
-                  <div className="w-20 h-20 rounded-2xl bg-primary/10 mx-auto mb-8 flex items-center justify-center group-hover:scale-110 transition-transform">
-                    <span className="text-3xl font-display font-black text-primary">
+                  <div className="w-20 h-20 bg-white border border-slate-200 mx-auto mb-8 flex items-center justify-center group-hover:bg-primary transition-colors">
+                    <span className="text-3xl font-black text-slate-900">
                       {member.name.charAt(0)}
                     </span>
                   </div>
-                  <h3 className="text-2xl font-bold mb-2">
+                  <h3 className="text-2xl font-black mb-2 text-slate-900 uppercase">
                     {member.name}
                   </h3>
-                  <p className="text-xs font-bold text-accent mb-8 uppercase tracking-widest">
+                  <p className="text-xs font-black text-primary mb-8 uppercase tracking-widest italic">
                     {member.role}
                   </p>
-                  <div className="space-y-4 pt-6 border-t border-white/5">
-                    <a href={`mailto:${member.email}`} className="flex items-center justify-center gap-3 text-sm text-muted-foreground hover:text-primary transition-colors">
+                  <div className="space-y-4 pt-6 border-t border-slate-200">
+                    <a href={`mailto:${member.email}`} className="flex items-center justify-center gap-3 text-sm text-slate-500 font-bold hover:text-black transition-colors">
                       <Mail className="h-4 w-4" />
                       {member.email}
                     </a>
-                    <a href={`tel:${member.phone.replace(/\s/g, "")}`} className="flex items-center justify-center gap-3 text-sm text-muted-foreground hover:text-primary transition-colors font-bold">
+                    <a href={`tel:${member.phone.replace(/\s/g, "")}`} className="flex items-center justify-center gap-3 text-sm text-slate-900 font-black hover:text-primary transition-colors">
                       <Phone className="h-4 w-4" />
                       {member.phone}
                     </a>
@@ -336,9 +330,12 @@ export default function WorkshopServicesPage() {
               variants={fadeInUp}
               className="mt-24 text-center"
             >
-              <div className="inline-flex items-center gap-4 glass-premium px-10 py-5 rounded-full border border-primary/20">
-                <MapPin className="h-6 w-6 text-primary" />
-                <span className="text-xl font-medium">Main Reef Rd, Johannesburg</span>
+              <div className="inline-flex items-center gap-6 bg-slate-900 px-12 py-6 text-white border-b-8 border-primary">
+                <MapPin className="h-10 w-10 text-primary" />
+                <div className="text-left">
+                  <span className="block text-2xl font-black uppercase tracking-tighter">Bramley Store</span>
+                  <span className="text-slate-400 font-medium">593 Louis Botha Ave, Bramley, JHB</span>
+                </div>
               </div>
             </motion.div>
           </motion.div>
@@ -346,32 +343,30 @@ export default function WorkshopServicesPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-24 md:py-32 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-transparent to-accent/10" />
-
+      <section className="py-24 md:py-32 relative overflow-hidden bg-white">
         <div className="container mx-auto px-6 relative z-10">
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
-            className="glass-premium rounded-[4rem] p-12 md:p-20 text-center border border-white/5 max-w-5xl mx-auto"
+            className="bg-slate-900 p-12 md:p-24 text-center border-t-8 border-primary max-w-5xl mx-auto shadow-2xl"
           >
-            <h2 className="text-4xl md:text-6xl font-display font-medium tracking-tighter mb-8 italic">
-              Restore Your Car to <span className="gradient-text not-italic font-black">Perfection.</span>
+            <h2 className="text-4xl md:text-7xl font-black tracking-tighter mb-8 italic text-white leading-tight">
+              Order Your Parts <br/><span className="text-primary not-italic uppercase">Today.</span>
             </h2>
-            <p className="text-lg md:text-2xl text-muted-foreground font-light mb-12 max-w-2xl mx-auto leading-relaxed">
-              Join thousands of satisfied clients in Johannesburg and get your vehicle back in showroom condition today.
+            <p className="text-lg md:text-2xl text-slate-400 font-medium mb-12 max-w-2xl mx-auto leading-relaxed italic">
+              Experience the efficiency of South Africa's premier automotive parts distributor. Delivering quality components nationwide.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
-              <Button asChild size="xl" className="btn-gold rounded-full px-12 group">
-                <a href="https://wa.me/27837086050" target="_blank" rel="noopener noreferrer">
-                  <MessageCircle className="mr-3 h-6 w-6 text-green-500" />
-                  WhatsApp Us
+              <Button asChild size="xl" className="w-full sm:w-auto btn-primary rounded-none px-12 py-10 text-2xl font-black uppercase tracking-[0.2em] shadow-2xl">
+                <a href="tel:+27829624108" target="_blank" rel="noopener noreferrer">
+                  <Phone className="mr-4 h-10 w-10" />
+                  Call Sales
                 </a>
               </Button>
-              <Button asChild size="xl" variant="outline" className="rounded-full glass border-white/10 px-12">
+              <Button asChild size="xl" variant="outline" className="w-full sm:w-auto border-2 border-white/20 text-white rounded-none px-12 py-10 text-2xl font-black uppercase tracking-widest hover:bg-white hover:text-black transition-all">
                 <Link href="/contact">
-                  Our Location
+                  View Map
                 </Link>
               </Button>
             </div>

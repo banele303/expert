@@ -99,8 +99,8 @@ export default function AdminSidebar() {
           {/* Logo/Brand */}
           <div className="flex h-16 items-center border-b px-6">
             <Link href="/admin" className="flex items-center space-x-2 cursor-pointer">
-              <span className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-blue-600">
-                Xpert Admin
+              <span className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-red-600 to-rose-600">
+                ~Spares City Admin
               </span>
             </Link>
           </div>
@@ -119,7 +119,7 @@ export default function AdminSidebar() {
                   className={cn(
                     "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all hover:bg-accent cursor-pointer",
                     isActive
-                      ? "bg-linear-to-r from-violet-500/10 to-purple-500/10 text-violet-600 dark:text-violet-400 border border-violet-500/20"
+                      ? "bg-linear-to-r from-red-500/10 to-rose-500/10 text-red-600 dark:text-red-400 border border-red-500/20"
                       : "text-muted-foreground hover:text-foreground"
                   )}
                 >
@@ -151,7 +151,7 @@ export default function AdminSidebar() {
               )}
             </Button>
             <div className="text-xs text-muted-foreground text-center">
-              © 2026 Xpert Panel Beaters
+              © 2026 ~Spares City
             </div>
           </div>
         </div>

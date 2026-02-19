@@ -1,4 +1,5 @@
 "use client";
+import Link from "next/link";
 
 import { useState } from "react";
 import { useQuery, useMutation } from "convex/react";
@@ -41,7 +42,8 @@ import {
   Image as ImageIcon,
   Search,
   Plus,
-  Car
+  Car,
+  Eye
 } from "lucide-react";
 import { Id } from "@/convex/_generated/dataModel";
 
@@ -55,7 +57,7 @@ const TRANSMISSIONS = ["Automatic", "Manual"];
 
 export default function AdminProductsTab({ initialCategory }: AdminProductsTabProps) {
   // We ignore initialCategory as we only manage Cars
-  const cars = useQuery(api.cars.getAll, { make: "all" });
+  const cars = useQuery(api.cars.getAllAdmin, { make: "all" });
   const createCar = useMutation(api.cars.create);
   const updateCar = useMutation(api.cars.update);
   const deleteCar = useMutation(api.cars.remove);
@@ -310,6 +312,15 @@ export default function AdminProductsTab({ initialCategory }: AdminProductsTabPr
                     </TableCell>
                     <TableCell className="text-right">
                       <div className="flex justify-end gap-1">
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          asChild
+                        >
+                          <Link href={`/car/${car._id}`} target="_blank">
+                             <Eye className="h-4 w-4" />
+                          </Link>
+                        </Button>
                         <Button
                           variant="ghost"
                           size="icon"

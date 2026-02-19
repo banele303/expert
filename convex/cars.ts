@@ -1,31 +1,104 @@
 import { v } from "convex/values";
 import { query, mutation } from "./_generated/server";
 
-// Get all available cars
+// Helper to resolve images
+const resolveImages = async (ctx: any, cars: any[]) => {
+  return await Promise.all(
+    cars.map(async (car) => {
+      const images = await Promise.all(
+        car.images.map(async (img: string) => {
+          if (img.startsWith("http")) return img;
+          return (await ctx.storage.getUrl(img)) || img;
+        })
+      );
+      return { ...car, images };
+    })
+  );
+};
+
+// Shared Logic for fetching and filtering cars
+const fetchCars = async (ctx: any, args: any) => {
+    let cars = await ctx.db
+      .query("cars")
+      .withIndex("by_available", (q: any) => q.eq("isAvailable", true))
+      .collect();
+
+    // In-memory filtering (efficient enough for < 1000 items)
+    if (args.make && args.make !== "all") {
+      cars = cars.filter(
+        (car: any) => car.make.toLowerCase() === args.make!.toLowerCase()
+      );
+    }
+    
+    if (args.search) {
+        const lowerSearch = args.search.toLowerCase();
+        cars = cars.filter((c: any) => 
+            c.make.toLowerCase().includes(lowerSearch) || 
+            c.model.toLowerCase().includes(lowerSearch) ||
+            c.description.toLowerCase().includes(lowerSearch)
+        );
+    }
+
+    if (args.minPrice !== undefined) {
+        cars = cars.filter((c: any) => c.price >= args.minPrice!);
+    }
+
+    if (args.maxPrice !== undefined) {
+        cars = cars.filter((c: any) => c.price <= args.maxPrice!);
+    }
+
+    // Sort by newest first
+    cars.sort((a: any, b: any) => b.createdAt - a.createdAt);
+
+    if (args.limit) {
+      return cars.slice(0, args.limit);
+    }
+
+    return cars;
+};
+
+// Get all available cars with filtering (Public - Resolves Image URLs)
 export const getAll = query({
   args: {
     make: v.optional(v.string()),
+    model: v.optional(v.string()),
     limit: v.optional(v.number()),
+    search: v.optional(v.string()),
+    minPrice: v.optional(v.number()),
+    maxPrice: v.optional(v.number()),
   },
   handler: async (ctx, args) => {
-    let carsQuery = ctx.db
-      .query("cars")
-      .withIndex("by_available", (q) => q.eq("isAvailable", true));
+    const cars = await fetchCars(ctx, args);
+    return await resolveImages(ctx, cars);
+  },
+});
 
-    const cars = await carsQuery.collect();
-
-    let filteredCars = cars;
-    if (args.make && args.make !== "all") {
-      filteredCars = cars.filter(
-        (car) => car.make.toLowerCase() === args.make!.toLowerCase()
-      );
-    }
-
-    if (args.limit) {
-      return filteredCars.slice(0, args.limit);
-    }
-
-    return filteredCars;
+// Get all cars for Admin (Raw Storage IDs)
+export const getAllAdmin = query({
+  args: {
+    make: v.optional(v.string()),
+    model: v.optional(v.string()),
+    limit: v.optional(v.number()),
+    search: v.optional(v.string()),
+    minPrice: v.optional(v.number()),
+    maxPrice: v.optional(v.number()),
+  },
+  handler: async (ctx, args) => {
+    // Admin checks all cars, not just available ones? 
+    // The original getAll checked "isAvailable=true".
+    // Wait, the AdminProductsTab uses "getAll" which filtered only available?
+    // Let's check AdminProductsTab again. If it uses getAll, it only sees "Available" cars?
+    // In AdminProductsTab, there is a switch for "isAvailable".
+    // If getAll filtered by isAvailable=true, then setting isAvailable=false would make it disappear from the list!
+    // This implies the original getAll WAS NOT correct for Admin if Admin needs to see sold items.
+    // Let's check the original code again: 
+    // Line 17: .withIndex("by_available", (q) => q.eq("isAvailable", true))
+    // Yes! The previous Admin implementation was FLAWED if it used getAll to manage inventory, because "Sold" items would disappear.
+    // I should fix this for Admin.
+    
+    let cars = await ctx.db.query("cars").collect(); // Get ALL cars
+    cars.sort((a, b) => b.createdAt - a.createdAt);
+    return cars;
   },
 });
 
@@ -41,12 +114,13 @@ export const getFeatured = query({
       .collect();
 
     const availableCars = cars.filter((car) => car.isAvailable);
+    const resolvedCars = await resolveImages(ctx, availableCars);
 
     if (args.limit) {
-      return availableCars.slice(0, args.limit);
+      return resolvedCars.slice(0, args.limit);
     }
 
-    return availableCars;
+    return resolvedCars;
   },
 });
 
@@ -59,7 +133,10 @@ export const getDealOfWeek = query({
       .collect();
 
     const availableCars = cars.filter((car) => car.isAvailable);
-    return availableCars[0] || null;
+    if (availableCars.length === 0) return null;
+    
+    const resolved = await resolveImages(ctx, [availableCars[0]]);
+    return resolved[0];
   },
 });
 
@@ -67,7 +144,10 @@ export const getDealOfWeek = query({
 export const getById = query({
   args: { id: v.id("cars") },
   handler: async (ctx, args) => {
-    return await ctx.db.get(args.id);
+    const car = await ctx.db.get(args.id);
+    if (!car) return null;
+    const resolved = await resolveImages(ctx, [car]);
+    return resolved[0];
   },
 });
 

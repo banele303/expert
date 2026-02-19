@@ -1,654 +1,913 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import { motion } from "framer-motion";
+import { useSession } from "@/lib/auth-client";
+import { motion, Variants, AnimatePresence, useScroll, useTransform } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { Skeleton } from "@/components/ui/skeleton";
-import Image from "next/image";
-import {
-  ArrowRight,
-  Star,
-  Shield,
+import { 
+  Search, 
+  ArrowRight, 
+  Settings, 
+  Disc, 
+  Zap, 
+  Activity, 
+  ShieldCheck, 
+  Truck, 
+  Clock, 
   Award,
-  CreditCard,
-  Wrench,
-  Users,
   ChevronRight,
   Phone,
-  MessageCircle,
-  MapPin,
-  Car,
-  CheckCircle,
-  Sparkles,
-  Settings,
-  Gauge,
-  ClipboardCheck,
-  Hammer,
-  SprayCan,
-  Bike,
-  Globe,
   Package,
-  FileCheck,
+  ShoppingBag,
+  Star,
+  Quote,
+  LayoutGrid,
+  Cog,
+  Gauge,
+  Flame,
+  ShieldAlert,
+  Play,
+  Cpu,
+  Layers,
+  Box,
+  Terminal,
+  Sparkles,
+  BadgeCheck,
+  ShoppingCart,
+  Calendar,
+  User,
+  CreditCard,
+  Headset
 } from "lucide-react";
-import NextImage from "next/image";
+import Image from "next/image";
+import { cn } from "@/lib/utils";
 
-// Animation variants
-const fadeInUp = {
-  hidden: { opacity: 0, y: 30 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
+// Elite Animation Variants
+const fadeInUp: Variants = {
+  hidden: { opacity: 0, y: 60, filter: "blur(10px)" },
+  visible: { opacity: 1, y: 0, filter: "blur(0px)", transition: { duration: 1, ease: [0.16, 1, 0.3, 1] } },
 };
 
 const staggerContainer = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
-    transition: { staggerChildren: 0.1 },
+    transition: { staggerChildren: 0.15 },
   },
 };
 
+const heroSlides = [
+  {
+    title: "V12",
+    subtitle: "PERFORMANCE",
+    desc: "South Africa's most aggressive spares catalog. Direct-to-workshop pricing.",
+    image: "/hero-sp.png",
+    tag: "Warehouse Exclusive",
+    accent: "text-[#ef4444]"
+  },
+  {
+    title: "CARBON",
+    subtitle: "PRECISION",
+    desc: "Verified OEM components for elite builds. Dispatching nationwide every 24H.",
+    image: "/hero-sp2.png",
+    tag: "Bramley HQ",
+    accent: "text-[#dc2626]"
+  },
+  {
+    title: "FORGED",
+    subtitle: "VELOCITY",
+    desc: "Full-stack engine kits and braking systems. Engineered for the extreme.",
+    image: "/herosp3.png",
+    tag: "Track Tested",
+    accent: "text-[#ef4444]"
+  }
+];
+
+const categories = [
+  { 
+    name: "Performance Engines", 
+    icon: Settings, 
+    count: "450+ Spares",
+    image: "/engine.png",
+    href: "/dealership?category=engines"
+  },
+  { 
+    name: "Braking Systems", 
+    icon: Disc, 
+    count: "1.2k Items",
+    image: "https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?q=80&w=1200&auto=format&fit=crop",
+    href: "/dealership?category=brakes"
+  },
+  { 
+    name: "Body Panels", 
+    icon: ShieldCheck, 
+    count: "800+ Panels",
+    image: "/car-body.png",
+    href: "/dealership?category=body"
+  },
+  { 
+    name: "Precision Lighting", 
+    icon: Zap, 
+    count: "2.5k Units",
+    image: "/tires.png",
+    href: "/dealership?category=lighting"
+  },
+  { 
+    name: "Limited Wheels", 
+    icon: Activity, 
+    count: "300+ Alloys",
+    image: "/tire2.png",
+    href: "/dealership?category=wheels"
+  }
+
+];
+
+const features = [
+  {
+    icon: Truck,
+    title: "Nationwide Shipping",
+    desc: "Express delivery to all major South African cities within 24-48 hours."
+  },
+  {
+    icon: ShieldCheck,
+    title: "OEM Guaranteed",
+    desc: "Authentic parts with manufacturer warranty and quality certification."
+  },
+  {
+    icon: Clock,
+    title: "Quick Support",
+    desc: "Expert technical advice from our Bramley-based specialist team."
+  },
+  {
+    icon: Award,
+    title: "Best Price",
+    desc: "Direct-to-consumer warehouse prices with no hidden markup."
+  }
+];
+
+const homeBlogPosts = [
+  {
+    title: "Choosing the Right Oil for Your Engine",
+    excerpt: "Discover the differences between synthetic and mineral oils, and which grade is best for your vehicle.",
+    date: "Feb 12, 2026",
+    category: "Maintenance",
+    image: "/spray-paint.png",
+    slug: "engine-oil-guide"
+  },
+  {
+    title: "When to Replace Your Brake Pads",
+    excerpt: "Learn the warning signs of worn brake pads and when you should visit ~Spares City for a replacement.",
+    date: "Feb 10, 2026",
+    category: "Braking",
+    image: "/workshop-services.png",
+    slug: "brake-pad-replacement"
+  },
+  {
+    title: "Maximizing Battery Life in Heat",
+    excerpt: "Johannesburg summers can be brutal on car batteries. Here's how to ensure your battery maintains its charge.",
+    date: "Feb 08, 2026",
+    category: "Batteries",
+    image: "/repair-services.png",
+    slug: "battery-life-tips"
+  }
+];
+
 export default function Home() {
+  const { data: session } = useSession();
+  const [searchQuery, setSearchQuery] = useState("");
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const containerRef = useRef(null);
+  
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end end"]
+  });
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
+    }, 8000);
+    return () => clearInterval(timer);
+  }, []);
+
   return (
-    <div className="flex flex-col">
-      {/* Hero Section - The "WOW" Factor */}
-      <section className="relative min-h-screen flex items-center overflow-hidden bg-[#020202]">
-        {/* Deep Space Background with Glows */}
-        <div className="absolute inset-0 z-0">
-          <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-primary/20 blur-[200px] rounded-full animate-pulse-slow" />
-          <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-blue-500/10 blur-[200px] rounded-full animate-pulse-slow" />
-          
-          {/* Mobile Background Image - NEW */}
-          <div className="absolute inset-0 lg:hidden block">
-            <NextImage 
-              src="/repair-services.png" 
-              alt="Repair Background" 
-              fill 
-              className="object-cover brightness-[0.2]" 
-              priority
-            />
-          </div>
+    <div ref={containerRef} className="flex flex-col bg-white text-slate-900 selection:bg-primary selection:text-black overflow-hidden">
+      {/* ═══════════════════════════════════════════════════════ */}
+      {/*  SECTION 1: HERO — MATCHING REFERENCE IMAGE           */}
+      {/* ═══════════════════════════════════════════════════════ */}
+      <section className="bg-[#f0f2f5] pt-4 pb-6 px-4">
+        <div className="max-w-7xl mx-auto">
 
-          <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-10" />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/80 to-black lg:from-transparent lg:via-black/50 lg:to-black" />
-        </div>
+          {/* Main 3-Column Grid */}
+          <div className="grid grid-cols-12 gap-3">
 
-        <div className="container mx-auto px-6 relative z-20 pt-32 md:pt-40 pb-12">
-          <div className="flex flex-col lg:grid lg:grid-cols-2 gap-12 lg:gap-20 items-center text-center lg:text-left">
-            {/* Left Content */}
-            <motion.div
-              initial="hidden"
-              animate="visible"
-              variants={staggerContainer}
-              className="relative"
-            >
-              <motion.div
-                variants={fadeInUp}
-                className="inline-flex items-center gap-3 px-6 py-2 glass-premium rounded-none border-l-4 border-primary mb-10"
-              >
-                <div className="flex gap-1">
-                  {[...Array(5)].map((_, i) => <Star key={i} className="h-3 w-3 fill-primary text-primary" />)}
+            {/* LEFT SIDEBAR — Stacked Part Images */}
+            <div className="hidden lg:flex col-span-2 flex-col gap-2">
+              {[
+                "/tire.png",
+                "/break.png",
+              ].map((img, i) => (
+                <div key={i} className="relative w-full aspect-[3/4] rounded-xl overflow-hidden bg-white shadow-sm group cursor-pointer">
+                  <Image
+                    src={img}
+                    alt={i === 0 ? "Tire replacement" : "Brake replacement"}
+                    fill
+                    className="object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
                 </div>
-                <span className="text-[10px] font-black uppercase tracking-[0.5em] text-white">
-                  Elite Restoration Studio
-                </span>
-              </motion.div>
+              ))}
+            </div>
 
-              <motion.h1
-                variants={fadeInUp}
-                className="text-5xl sm:text-7xl md:text-9xl lg:text-[11rem] font-bold leading-[0.8] mb-6 md:mb-8 tracking-tighter"
-                style={{ fontFamily: "'Outfit', sans-serif" }}
-              >
-                <span className="text-white drop-shadow-[0_10px_30px_rgba(255,255,255,0.1)]">MASTER</span>
-                <br />
-                <span className="gradient-text italic opacity-90 drop-shadow-[0_0_80px_rgba(237,137,54,0.4)]">PIECE.</span>
-              </motion.h1>
-
-              <motion.p
-                variants={fadeInUp}
-                className="text-lg md:text-3xl text-muted-foreground mb-10 md:mb-12 max-w-xl leading-[1.1] font-light italic"
-              >
-                Beyond repair. We specialize in <span className="text-white font-black not-italic decoration-primary decoration-4 underline-offset-8 text-base md:text-2xl">TOTAL REBIRTH</span> of your automotive assets.
-              </motion.p>
-
-              <motion.div
-                variants={fadeInUp}
-                className="flex flex-col sm:flex-row items-center lg:items-center justify-center lg:justify-start gap-6 md:gap-8"
-              >
-                <Button
-                  asChild
-                  size="xl"
-                  className="btn-primary rounded-none h-20 md:h-24 px-10 md:px-16 text-xl md:text-2xl font-black uppercase tracking-widest group relative overflow-hidden"
-                >
-                  <Link href="/services">
-                    <span className="relative z-10 flex items-center gap-4">
-                      Explore Services
-                      <ArrowRight className="h-6 w-6 md:h-8 md:w-8 group-hover:translate-x-3 transition-transform" />
-                    </span>
-                    <div className="absolute inset-0 bg-white/20 -translate-x-full group-hover:translate-x-0 transition-transform duration-500" />
-                  </Link>
-                </Button>
+                {/* CENTER — Wide Dark Yellow Slider */}
+            <div className="col-span-12 lg:col-span-7">
+              <div className="relative w-full aspect-[16/9] rounded-md overflow-hidden shadow-2xl bg-[#1a0505]">
                 
-                <div className="flex flex-col">
-                  <span className="text-[10px] uppercase tracking-widest text-primary font-black mb-1">Direct Hotline</span>
-                  <a href="tel:0837086050" className="text-3xl font-display font-bold text-white hover:text-primary transition-colors tracking-tighter">083 708 6050</a>
+                {/* Consistent Background Glow & Overlay (Always There) */}
+                <div className="absolute inset-0 z-0">
+                  <div className="absolute inset-0 bg-gradient-to-r from-[#0a0202] via-[#1a0505]/60 to-transparent z-20" />
+                  <div className="absolute inset-0 bg-[#ef4444]/15 z-10" />
                 </div>
-              </motion.div>
-            </motion.div>
 
-            {/* Right Side: Futuristic 3D Visual */}
-            <div className="relative h-[400px] md:h-[600px] lg:h-[800px] w-full flex items-center justify-center lg:mt-0 mt-12">
-               {/* Orbital Glow */}
-               <div className="absolute w-[80%] h-[80%] border border-primary/20 rounded-full animate-spin-slow" />
-               <div className="absolute w-[90%] h-[90%] border border-blue-500/10 rounded-full animate-spin-reverse-slow" />
-               
-               {/* Main "COOL" Visual: ximage.png with 3D Float */}
-               <motion.div
-                 initial={{ opacity: 0, scale: 0.8, rotateY: 30, z: -100 }}
-                 animate={{ opacity: 1, scale: 1, rotateY: 0, z: 0 }}
-                 transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
-                 className="relative z-10 w-full h-full flex items-center justify-center"
-               >
+                <AnimatePresence>
                   <motion.div
-                    animate={{ 
-                      y: [0, -30, 0],
-                      rotate: [0, 2, 0]
-                    }}
-                    transition={{ 
-                      duration: 8, 
-                      repeat: Infinity, 
-                      ease: "easeInOut" 
-                    }}
-                    className="relative w-full h-full drop-shadow-[0_50px_100px_rgba(0,0,0,0.8)]"
+                    key={currentSlide}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.8 }}
+                    className="absolute inset-0 flex items-end"
                   >
-                    <Image
-                      src="/vehicle-maintenance.png"
-                      alt="Expert Vehicle Maintenance"
-                      fill
-                      className="object-contain"
-                      priority
-                    />
+                    {/* Background product images with "Barks with Yellow" theme */}
+                    <div className="absolute inset-0">
+                      <Image
+                        src={heroSlides[currentSlide].image}
+                        alt="Hero slide"
+                        fill
+                        className="object-cover opacity-50 transition-opacity duration-1000"
+                      />
+                    </div>
+
+
+
+                    {/* Text content on left */}
+                    <div className="relative z-10 p-6 sm:p-10 max-w-md">
+                      <motion.span
+                        initial={{ y: 10, opacity: 0 }}
+                        animate={{ y: 0, opacity: 1 }}
+                        className="inline-block bg-[#ef4444] text-white text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-md mb-3"
+                      >
+                        Featured
+                      </motion.span>
+
+                      <motion.h2
+                        initial={{ y: 20, opacity: 0 }}
+                        animate={{ y: 0, opacity: 1 }}
+                        transition={{ delay: 0.1 }}
+                        className="text-3xl sm:text-5xl font-black text-white italic leading-tight mb-3 uppercase drop-shadow-lg"
+                      >
+                        PREMIUM<br />AUTO PARTS
+                      </motion.h2>
+
+                      <motion.p
+                        initial={{ y: 20, opacity: 0 }}
+                        animate={{ y: 0, opacity: 1 }}
+                        transition={{ delay: 0.2 }}
+                        className="text-white/90 text-sm mb-6 max-w-xs font-medium drop-shadow-md"
+                      >
+                        Upgrade your ride with high-quality parts and accessories
+                      </motion.p>
+
+                      <motion.div
+                        initial={{ y: 20, opacity: 0 }}
+                        animate={{ y: 0, opacity: 1 }}
+                        transition={{ delay: 0.3 }}
+                        className="flex gap-3"
+                      >
+                        <Link href="/dealership">
+                          <Button className="rounded-full bg-white text-black hover:bg-slate-100 font-bold px-6 h-10 text-sm shadow-md">
+                            Shop Parts
+                          </Button>
+                        </Link>
+                        <Link href="/api/auth/signin">
+                          <Button className="rounded-full bg-[#dc2626] text-white hover:bg-[#b91c1c] font-bold px-6 h-10 text-sm border border-white/30">
+                            Become A Seller
+                          </Button>
+                        </Link>
+                      </motion.div>
+                    </div>
                   </motion.div>
-               </motion.div>
+                </AnimatePresence>
 
-               {/* Floating Elements */}
-               <motion.div
-                 animate={{ y: [20, -20, 20] }}
-                 transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-                 className="absolute top-20 right-0 glass-premium p-6 rounded-none border border-white/20 z-20 backdrop-blur-3xl"
-               >
-                  <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 bg-primary rounded-none flex items-center justify-center">
-                      <Shield className="h-6 w-6 text-white" />
-                    </div>
-                    <div>
-                      <p className="text-xs font-black text-white uppercase tracking-widest leading-none">Insurance</p>
-                      <p className="text-[10px] text-primary font-bold">Approved Provider</p>
-                    </div>
-                  </div>
-               </motion.div>
+                {/* Slider Dots */}
+                <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-20">
+                  {heroSlides.map((_, i) => (
+                    <button
+                      key={i}
+                      onClick={() => setCurrentSlide(i)}
+                      className={cn(
+                        "w-3 h-3 rounded-full transition-all border-2",
+                        currentSlide === i
+                          ? "bg-white border-white scale-110"
+                          : "bg-transparent border-white/50 hover:border-white"
+                      )}
+                    />
+                  ))}
+                </div>
+              </div>
 
-               <motion.div
-                 animate={{ x: [-20, 20, -20] }}
-                 transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-                 className="absolute bottom-40 left-0 glass-premium p-6 rounded-none border border-white/20 z-20"
-               >
-                  <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 bg-white rounded-none flex items-center justify-center">
-                      <CheckCircle className="h-6 w-6 text-black" />
+              {/* Smooth Scrolling Products Strip */}
+              <div className="mt-3 overflow-hidden rounded-md bg-white shadow-sm">
+                <div className="flex animate-marquee-slow gap-5 py-4 px-3">
+                  {[...Array(2)].map((_, setIdx) => (
+                    <div key={setIdx} className="flex gap-5 shrink-0">
+                      {[
+                        { name: "Brake Pads", price: "R450", img: "https://images.unsplash.com/photo-1558618666-fcd25c85f82e?q=80&w=200" },
+                        { name: "Oil Filter", price: "R120", img: "https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?q=80&w=200" },
+                        { name: "Spark Plugs", price: "R85", img: "https://images.unsplash.com/photo-1517524285303-d6fc683dddf8?q=80&w=200" },
+                        { name: "Air Filter", price: "R250", img: "https://images.unsplash.com/photo-1544724569-5f546fd6f2b5?q=80&w=200" },
+                        { name: "Headlights", price: "R1,200", img: "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?q=80&w=200" },
+                        { name: "Turbo Kit", price: "R8,500", img: "https://images.unsplash.com/photo-1558618666-fcd25c85f82e?q=80&w=200" },
+                        { name: "Exhaust", price: "R3,200", img: "https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?q=80&w=200" },
+                        { name: "Rims Set", price: "R6,800", img: "https://images.unsplash.com/photo-1517524285303-d6fc683dddf8?q=80&w=200" },
+                      ].map((product, idx) => (
+                        <div key={`${setIdx}-${idx}`} className="flex items-center gap-4 bg-slate-50 rounded-md px-4 py-3 min-w-[220px] hover:bg-slate-100 transition-colors cursor-pointer group">
+                          <div className="w-14 h-14 rounded-sm overflow-hidden relative shrink-0">
+                            <Image src={product.img} alt={product.name} fill unoptimized className="object-cover" />
+                          </div>
+                          <div>
+                            <p className="text-sm font-bold text-slate-800 group-hover:text-[#dc2626] transition-colors">{product.name}</p>
+                            <p className="text-xs font-semibold text-[#dc2626]">{product.price}</p>
+                          </div>
+                        </div>
+                      ))}
                     </div>
-                    <div>
-                      <p className="text-xs font-black text-white uppercase tracking-widest leading-none">Quality</p>
-                      <p className="text-[10px] text-muted-foreground font-bold">100% Guaranteed</p>
-                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* RIGHT SIDEBAR — User Profile + Hot Deals */}
+            <div className="hidden lg:flex col-span-3 flex-col gap-3">
+
+              {/* User Profile Card */}
+              <div className="bg-white rounded-2xl p-5 shadow-sm text-center">
+                <div className="flex justify-center mb-3">
+                  <div className="w-14 h-14 rounded-full bg-[#7c3aed] flex items-center justify-center overflow-hidden">
+                    {session?.user?.image ? (
+                        <Image src={session.user.image} alt={session.user.name || "User"} width={56} height={56} className="object-cover w-full h-full" unoptimized />
+                    ) : (
+                        <span className="text-white text-2xl font-bold">
+                          {session?.user?.name ? session.user.name.charAt(0).toUpperCase() : "👤"}
+                        </span>
+                    )}
                   </div>
-               </motion.div>
+                </div>
+                <h3 className="font-bold text-slate-800 text-base mb-4">
+                  {session?.user?.name || "Guest User"}
+                </h3>
+
+                <div className="grid grid-cols-3 gap-1 mb-4">
+                  {[
+                    { icon: "👤", label: "Account" },
+                    { icon: "📋", label: "Orders" },
+                    { icon: "💜", label: "Wishlist" },
+                  ].map((item, idx) => (
+                    <div key={idx} className="flex flex-col items-center gap-1 cursor-pointer hover:opacity-80 transition-opacity">
+                      <span className="text-xl">{item.icon}</span>
+                      <span className="text-[10px] font-semibold text-slate-500">{item.label}</span>
+                    </div>
+                  ))}
+                </div>
+
+                {session?.user?.email === "alexsouthflow2@gmail.com" ? (
+                  <Link href="/admin">
+                    <Button variant="outline" className="w-full rounded-lg border-slate-200 text-slate-700 font-semibold text-xs h-9 hover:bg-slate-50">
+                      Switch to Seller Dashboard
+                    </Button>
+                  </Link>
+                ) : (
+                   <Link href="/profile">
+                    <Button variant="outline" className="w-full rounded-lg border-slate-200 text-slate-700 font-semibold text-xs h-9 hover:bg-slate-50">
+                      My Account
+                    </Button>
+                  </Link>
+                )}
+              </div>
+
+              {/* Hot Deals Card */}
+              <div className="bg-gradient-to-br from-[#ef4444] to-[#dc2626] rounded-2xl p-5 shadow-sm text-white flex-1 flex flex-col">
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="text-lg">🔥</span>
+                  <span className="text-[10px] font-black uppercase tracking-widest">Hot Deals</span>
+                </div>
+                <h4 className="font-bold text-lg mb-1">Your Favorite Store</h4>
+                <p className="text-slate-900/70 text-xs mb-4">Check out the latest new deals</p>
+
+                <div className="bg-white rounded-xl p-3 flex items-center justify-center flex-1 relative overflow-hidden">
+                  <Image
+                    src="https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?q=80&w=400"
+                    alt="Hot deal product"
+                    fill
+                    unoptimized
+                    className="object-contain p-2"
+                  />
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          {/* Bottom Deals Strip — Premium Midnight Amber Bar */}
+          <div className="mt-4 bg-slate-900 border-l-4 border-red-500 rounded-md py-5 px-8 flex flex-col sm:flex-row items-center justify-between gap-6 shadow-xl relative overflow-hidden">
+            {/* Subtle background flair */}
+            <div className="absolute top-0 right-0 w-32 h-32 bg-red-500/10 rounded-full blur-3xl -mr-16 -mt-16" />
+            
+            <div className="text-center sm:text-left relative z-10">
+              <div className="flex items-center justify-center sm:justify-start gap-2 mb-1">
+                <span className="text-red-500 animate-pulse font-black text-xs uppercase tracking-tighter">● Live</span>
+                <h3 className="text-xl font-black text-white uppercase tracking-tighter">Discover Amazing Deals!</h3>
+              </div>
+              <p className="text-slate-400 text-xs font-bold uppercase tracking-widest flex items-center justify-center sm:justify-start gap-2">
+                <span>Top Quality</span>
+                <span className="w-1 h-1 bg-slate-700 rounded-full" />
+                <span>Best Prices</span>
+                <span className="w-1 h-1 bg-slate-700 rounded-full" />
+                <span className="text-red-500">Save up to 40%</span>
+              </p>
+            </div>
+
+            <div className="flex gap-3 overflow-x-auto no-scrollbar relative z-10">
+              {[
+                "/engine.png", 
+                "/tires.png", 
+                "/break.png", 
+                "/car-body.png", 
+                "/tire2.png", 
+              ].map((imgUrl, i) => (
+                <div key={i} className="group w-16 h-16 rounded-sm bg-slate-800 border border-slate-700 p-1 shrink-0 cursor-pointer hover:border-red-500/50 transition-all shadow-lg active:scale-95">
+                  <div className="w-full h-full bg-slate-900 rounded-xs overflow-hidden relative">
+                    <Image
+                      src={imgUrl}
+                      alt="Deal"
+                      fill
+                      unoptimized
+                      className="object-cover group-hover:scale-110 transition-transform duration-500"
+                    />
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
 
-          {/* Bottom High-Tech Stats Bar */}
-          <motion.div
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 1, duration: 1 }}
-            className="mt-20 lg:mt-32 grid grid-cols-2 md:grid-cols-4 gap-px bg-white/10 border border-white/10"
-          >
-            {[
-              { label: "Workshop Capacity", val: "50+ Vehicles", icon: Car },
-              { label: "Years Experience", val: "25+ Expertly", icon: Award },
-              { label: "Success Rate", val: "99.9% Perfect", icon: Gauge },
-              { label: "Claims Processed", val: "10k+ Done", icon: FileCheck },
-            ].map((stat, i) => (
-              <div key={i} className="bg-black/40 backdrop-blur-xl p-6 md:p-8 group hover:bg-primary transition-colors duration-500">
-                <div className="flex items-center gap-4 mb-2">
-                  <stat.icon className="h-4 w-4 md:h-5 md:w-5 text-primary group-hover:text-white" />
-                  <span className="text-[10px] font-black uppercase tracking-[0.3em] text-muted-foreground group-hover:text-white/70">{stat.label}</span>
-                </div>
-                <p className="text-xl md:text-2xl font-display font-bold text-white group-hover:text-white">{stat.val}</p>
-              </div>
-            ))}
-          </motion.div>
         </div>
       </section>
 
-      {/* Scrolling Marquee */}
-      <div className="bg-primary py-3 md:py-4 overflow-hidden">
-        <div className="animate-marquee flex whitespace-nowrap">
-          {[...Array(3)].map((_, i) => (
-            <div key={i} className="flex items-center gap-6 md:gap-12 mx-6 md:mx-12">
-              <span className="text-sm md:text-lg font-semibold text-primary-foreground flex items-center gap-2">
-                <Sparkles className="h-4 w-4 md:h-5 md:w-5" /> Xpert Panel Beaters
-              </span>
-              <span className="text-sm md:text-lg text-primary-foreground/60">•</span>
-              <span className="text-sm md:text-lg font-semibold text-primary-foreground flex items-center gap-2">
-                <Hammer className="h-4 w-4 md:h-5 md:w-5" /> Professional Panel Beating
-              </span>
-              <span className="text-sm md:text-lg text-primary-foreground/60">•</span>
-              <span className="text-sm md:text-lg font-semibold text-primary-foreground flex items-center gap-2">
-                <SprayCan className="h-4 w-4 md:h-5 md:w-5" /> Showroom Spray Painting
-              </span>
-              <span className="text-sm md:text-lg text-primary-foreground/60">•</span>
-              <span className="text-sm md:text-lg font-semibold text-primary-foreground flex items-center gap-2">
-                <Package className="h-4 w-4 md:h-5 md:w-5" /> Auto Body Parts Supplier
-              </span>
-              <span className="text-sm md:text-lg text-primary-foreground/60">•</span>
-              <span className="text-sm md:text-lg font-semibold text-primary-foreground flex items-center gap-2">
-                <Shield className="h-4 w-4 md:h-5 md:w-5" /> Insurance Approved Fixes
-              </span>
-              <span className="text-sm md:text-lg text-primary-foreground/60">•</span>
-            </div>
-          ))}
+
+
+      {/* ═══════════════════════════════════════════════════════ */}
+      {/*  SECTION 2: BRAND TRUST MARQUEE                       */}
+      {/* ═══════════════════════════════════════════════════════ */}
+      <section className="py-12 bg-white border-b border-slate-100">
+        <div className="marquee-container">
+          <div className="marquee-content gap-16 items-center" style={{ "--duration": "30s" } as React.CSSProperties}>
+            {[...Array(2)].map((_, setIdx) => (
+              <div key={setIdx} className="flex items-center gap-16 px-8 text-black">
+                {["Toyota", "BMW", "Mercedes", "VW", "Ford", "Nissan", "Hyundai", "Kia", "Audi", "Honda"].map((brand) => (
+                  <span key={`${setIdx}-${brand}`} className="text-slate-300 text-2xl font-black uppercase tracking-widest whitespace-nowrap hover:text-slate-900 transition-colors cursor-default">
+                    {brand}
+                  </span>
+                ))}
+              </div>
+            ))}
+          </div>
         </div>
-      </div>
+      </section>
 
-      {/* Offerings Section - Upgraded */}
-      <section className="py-12 md:py-20 lg:py-32 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-background via-primary/5 to-background" />
-        <div className="container mx-auto px-6 relative z-10">
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={staggerContainer}
-            className="text-center mb-10 md:mb-16 lg:mb-24"
-          >
-            <motion.span
-              variants={fadeInUp}
-              className="inline-block px-4 py-2 glass-premium rounded-full text-[10px] md:text-xs font-bold tracking-[0.2em] uppercase text-primary mb-4 md:mb-6"
-            >
-              The Xpert Experience
-            </motion.span>
-            <motion.h2
-              variants={fadeInUp}
-              className="text-3xl sm:text-4xl md:text-7xl font-display font-medium tracking-tighter mb-4 md:mb-6 lg:mb-8"
-            >
-              Curated <span className="gradient-text italic">Excellence</span> <br className="hidden md:block" /> Across Every Drive
-            </motion.h2>
-            <motion.p
-              variants={fadeInUp}
-              className="text-xl text-muted-foreground max-w-2xl mx-auto font-light"
-            >
-              From the roar of a premium engine to the precision of professional tools, we define quality on your terms.
-            </motion.p>
-          </motion.div>
+      {/* ═══════════════════════════════════════════════════════ */}
+      {/*  SECTION 3: SHOP BY CATEGORY — Compact 5-Column Grid   */}
+      {/* ═══════════════════════════════════════════════════════ */}
+      <section className="py-12 bg-[#f8fafc] text-slate-900 border-b border-slate-100">
+        <div className="container mx-auto px-6">
+          <div className="flex items-end justify-between mb-8">
+            <div>
+              <span className="text-[#ef4444] font-black text-[10px] uppercase tracking-widest mb-1 block">Inventory</span>
+              <h2 className="text-2xl font-black text-slate-900 leading-none uppercase italic">Shop By <span className="text-[#ef4444]">Category</span></h2>
+            </div>
+            <Link href="/dealership" className="text-[10px] font-black uppercase tracking-widest text-[#ef4444] hover:underline">
+              View All
+            </Link>
+          </div>
 
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={staggerContainer}
-            className="grid md:grid-cols-2 lg:grid-cols-4 gap-8"
-          >
-            {[
-              {
-                icon: Hammer,
-                title: "PANEL BEATING",
-                subtitle: "Precision Repair",
-                description: "Expert restoring of vehicle bodies to their original factory condition.",
-                gradient: "from-blue-500/20 to-indigo-500/10",
-              },
-              {
-                icon: SprayCan,
-                title: "SPRAY PAINTING",
-                subtitle: "Factory Finish",
-                description: "Computerized color matching and high-quality oven-baked finish.",
-                gradient: "from-emerald-500/20 to-green-500/10",
-              },
-              {
-                icon: Package,
-                title: "BODY PARTS",
-                subtitle: "Quality Supplier",
-                description: "Wide range of genuine and aftermarket auto body parts in Johannesburg.",
-                gradient: "from-amber-500/20 to-orange-500/10",
-              },
-              {
-                icon: Shield,
-                title: "INSURANCE",
-                subtitle: "Approved Repairs",
-                description: "Seamless processing of insurance claims for all major providers.",
-                gradient: "from-purple-500/20 to-pink-500/10",
-              },
-            ].map((feature, index) => (
-              <motion.div
-                key={index}
-                variants={fadeInUp}
-                className="group relative h-full"
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+            {categories.slice(0, 5).map((category, idx) => (
+              <Link
+                key={category.name}
+                href={category.href}
+                className="group relative h-[180px] overflow-hidden rounded-md bg-white shadow-sm"
               >
-                <div className="relative glass-card rounded-[2rem] p-6 md:p-10 h-full border border-white/5 transition-all duration-500 group-hover:border-primary/50 overflow-hidden">
-                  <div className={`absolute -top-20 -right-20 w-40 h-40 bg-gradient-to-br ${feature.gradient} blur-[60px] opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
-                  
-                  <div className="w-16 h-16 rounded-2xl bg-white/5 flex items-center justify-center mb-8 border border-white/10 group-hover:scale-110 group-hover:bg-primary/20 transition-all duration-300">
-                    <feature.icon className="h-8 w-8 text-primary" />
+                {/* Background Image */}
+                <Image
+                  src={category.image}
+                  alt={category.name}
+                  fill
+                  unoptimized
+                  className="object-cover group-hover:scale-110 transition-transform duration-700"
+                />
+                
+                {/* Overlay Gradient */}
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent group-hover:from-[#ef4444]/60 transition-all duration-500" />
+
+                {/* Content */}
+                <div className="absolute inset-0 p-4 flex flex-col justify-end">
+                  <div className="mb-2 p-1.5 w-fit bg-white/10 backdrop-blur-md rounded border border-white/20 translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all">
+                    <category.icon className="w-4 h-4 text-white" />
                   </div>
                   
-                  <h3 className="text-2xl font-display font-black tracking-tight mb-2 group-hover:text-primary transition-colors">
-                    {feature.title}
+                  <h3 className="text-sm font-black text-white uppercase italic tracking-tighter leading-tight">
+                    {category.name}
                   </h3>
-                  <p className="text-[10px] text-accent font-bold uppercase tracking-widest mb-4">
-                    {feature.subtitle}
-                  </p>
-                  <p className="text-muted-foreground leading-relaxed font-light">
-                    {feature.description}
+                  
+                  <p className="text-[9px] font-bold text-white/60 uppercase group-hover:text-white transition-colors">
+                    {category.count}
                   </p>
                 </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ═══════════════════════════════════════════════════════ */}
+      {/*  SECTION 4: WHY CHOOSE US                             */}
+      {/* ═══════════════════════════════════════════════════════ */}
+      {/* ═══════════════════════════════════════════════════════ */}
+      {/*  SECTION 4: WHY CHOOSE US                             */}
+      {/* ═══════════════════════════════════════════════════════ */}
+      <section className="relative py-32 bg-slate-900 rounded-[48px] mx-4 sm:mx-6 overflow-hidden text-white">
+        {/* Background Image Overlay */}
+        <div className="absolute inset-0 z-0 opacity-20">
+          <Image 
+            src="/hero-deco.jpg" 
+            alt="Background" 
+            fill 
+            className="object-cover grayscale"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-slate-900" />
+        </div>
+
+        <div className="container mx-auto px-6 relative z-10">
+          <div className="text-center mb-20">
+            <span className="text-primary font-black uppercase tracking-[0.3em] text-[11px] block mb-4">Why Industry Trusts Us</span>
+            <h2 className="text-5xl lg:text-7xl font-black tracking-tighter leading-none">
+              THE ~SPARES CITY <span className="text-primary italic uppercase">ADVANTAGE.</span>
+            </h2>
+          </div>
+
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            {features.map((feature, index) => (
+              <motion.div
+                key={feature.title}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
+                className="bg-white/5 backdrop-blur-md rounded-3xl p-10 hover:bg-white/10 hover:-translate-y-2 transition-all duration-500 group border border-white/10"
+              >
+                <div className="w-16 h-16 bg-primary/20 rounded-2xl flex items-center justify-center mb-8 group-hover:bg-primary group-hover:scale-110 transition-all duration-300">
+                  <feature.icon className="h-7 w-7 text-primary group-hover:text-black transition-colors" />
+                </div>
+                <h3 className="text-xl font-black uppercase tracking-tight mb-3 text-white">{feature.title}</h3>
+                <p className="text-slate-400 font-medium leading-relaxed group-hover:text-slate-300 transition-colors">{feature.desc}</p>
               </motion.div>
             ))}
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Workshop Section - High-End Aesthetic */}
-      <section className="py-20 md:py-32 lg:py-48 relative overflow-hidden bg-[#0a0a0a]">
-        <div className="container mx-auto px-6">
-          <div className="grid lg:grid-cols-2 gap-20 lg:gap-32 items-center">
-            <motion.div
-              initial={{ opacity: 0, x: -50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              className="space-y-10"
-            >
-              <div>
-                <span className="inline-block px-4 py-2 bg-primary/10 border border-primary/20 rounded-none text-[10px] font-black tracking-[0.4em] uppercase text-primary mb-6">
-                  Elite Craftsmanship
-                </span>
-                <h2 className="text-5xl md:text-8xl font-display font-medium tracking-tighter leading-[0.85] text-white">
-                  THE <span className="gradient-text italic">GOLD</span> <br />
-                  STANDARD.
-                </h2>
-              </div>
-              
-              <p className="text-xl md:text-2xl text-muted-foreground font-light leading-relaxed max-w-xl">
-                Our state-of-the-art facility in Johannesburg isn't just a workshop—it's a sanctuary for automotive perfection. 
-              </p>
-              
-              <div className="grid sm:grid-cols-2 gap-8 pt-6">
-                {[
-                  { title: "Artisanal Panel Beating", desc: "Hand-crafted precision for complex bodywork.", icon: Hammer },
-                  { title: "Spectro Color Match", desc: "Digital color matching for a flawless finish.", icon: SprayCan },
-                  { title: "Structural Integrity", desc: "Rigorous chassis realignment to factory spec.", icon: Gauge },
-                  { title: "Insurance Direct", desc: "Seamless handling of all major providers.", icon: Shield },
-                ].map((item, i) => (
-                  <div key={i} className="space-y-3 group">
-                    <div className="w-12 h-12 rounded-none border border-white/10 flex items-center justify-center group-hover:bg-primary group-hover:border-primary transition-all duration-300">
-                      <item.icon className="h-5 w-5 text-primary group-hover:text-white" />
-                    </div>
-                    <h4 className="text-lg font-bold text-white uppercase tracking-tight">{item.title}</h4>
-                    <p className="text-sm text-muted-foreground leading-snug">{item.desc}</p>
-                  </div>
-                ))}
-              </div>
-
-              <div className="pt-10 flex flex-col sm:flex-row gap-6">
-                <Button
-                  asChild
-                  size="xl"
-                  className="btn-gold rounded-none px-12 py-8 text-lg font-black uppercase tracking-widest"
-                >
-                  <Link href="/services">
-                    Our Expertise
-                  </Link>
-                </Button>
-                <Button
-                  asChild
-                  size="xl"
-                  variant="outline"
-                  className="glass border-white/10 rounded-none px-12 py-8 text-lg font-black uppercase tracking-widest"
-                >
-                  <Link href="/contact">
-                    Find Us
-                  </Link>
-                </Button>
-              </div>
-            </motion.div>
-
-            {/* Showcase Visuals: x2image.png */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              className="relative"
-            >
-              <div className="absolute inset-0 bg-primary/20 blur-[120px] rounded-full animate-float-slow" />
-              <div className="relative z-10 grid grid-cols-12 gap-4">
-                <div className="col-span-8 space-y-4">
-                  <div className="relative aspect-[4/5] rounded-none overflow-hidden border border-white/10 shadow-3xl">
-                    <Image 
-                      src="/work-shop.png" 
-                      alt="Workshop Excellence" 
-                      fill 
-                      className="object-cover hover:scale-110 transition-transform duration-[2s]" 
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
-                    <div className="absolute bottom-6 left-6">
-                       <span className="text-3xl font-black text-white italic tracking-tighter">Elite Facility</span>
-                    </div>
-                  </div>
-                </div>
-                <div className="col-span-4 space-y-4 pt-12">
-                   <div className="relative aspect-[3/4] rounded-none overflow-hidden border border-white/10 grayscale hover:grayscale-0 transition-all duration-700">
-                    <Image 
-                      src="/panel-pitting.png" 
-                      alt="Artisan Work" 
-                      fill 
-                      className="object-cover" 
-                    />
-                  </div>
-                  <div className="bg-primary p-8 rounded-none flex flex-col justify-end aspect-square">
-                     <span className="text-4xl font-black text-white tracking-tighter">100%</span>
-                     <span className="text-[10px] uppercase font-bold text-white/70 tracking-widest leading-tight">Accurate Alignment</span>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
           </div>
         </div>
       </section>
 
-      {/* Process Section - Cinematic Steps */}
-      <section className="py-24 md:py-48 relative overflow-hidden bg-background">
-         <div className="container mx-auto px-6">
-            <motion.div 
-               initial={{ opacity: 0, y: 30 }}
-               whileInView={{ opacity: 1, y: 0 }}
-               viewport={{ once: true }}
-               className="text-center mb-24 md:mb-32"
-            >
-               <span className="text-[10px] font-black uppercase tracking-[0.5em] text-primary mb-6 block">The Master Workflow</span>
-               <h2 className="text-5xl md:text-8xl font-display font-medium tracking-tighter text-white">
-                  FROM CRASH TO <span className="gradient-text italic">CONCOURS.</span>
-               </h2>
-            </motion.div>
 
-            <div className="grid md:grid-cols-3 gap-0 border border-white/5 divide-x divide-white/5">
-                {[
-                  {
-                    step: "01",
-                    title: "ASSESSMENT",
-                    desc: "Precision digital appraisal and insurance integration."
-                  },
-                  {
-                    step: "02",
-                    title: "RESTORATION",
-                    desc: "Artisanal panel beating and factory-grade finishes."
-                  },
-                  {
-                    step: "03",
-                    title: "DELIVERY",
-                    desc: "Final concours-level inspection and showroom reveal."
-                  }
-                ].map((item, i) => (
-                  <motion.div 
-                    key={i}
-                    initial={{ opacity: 0, y: 30 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: i * 0.2 }}
-                    className="p-12 md:p-20 group hover:bg-white/[0.02] transition-colors"
-                  >
-                     <span className="text-7xl md:text-[10rem] font-black text-white/5 group-hover:text-primary/10 transition-colors leading-none tracking-tighter mb-8 block">{item.step}</span>
-                     <h3 className="text-2xl font-black text-white mb-4 tracking-tight">{item.title}</h3>
-                     <p className="text-muted-foreground font-light leading-relaxed">{item.desc}</p>
-                  </motion.div>
-                ))}
-            </div>
-         </div>
-      </section>
-
-      {/* Blog Preview Section */}
-      <section className="py-12 md:py-20 lg:py-32">
-        <div className="container mx-auto px-6">
-          <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-12">
-            <div>
-              <span className="inline-block px-4 py-2 glass rounded-full text-xs md:text-sm font-medium text-primary mb-4">
-                Our Blog
-              </span>
-              <h2 className="text-3xl md:text-5xl font-display font-bold">
-                Latest Insights & <span className="gradient-text">Pro Tips.</span>
+      {/* ═══════════════════════════════════════════════════════ */}
+      {/* ═══════════════════════════════════════════════════════ */}
+      {/*  SECTION 5: FEATURED / BEST SELLERS — Clean & Simple   */}
+      {/* ═══════════════════════════════════════════════════════ */}
+      <section className="relative py-24 bg-white text-slate-900 overflow-hidden">
+        <div className="container mx-auto px-6 relative z-10">
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
+            <div className="max-w-2xl">
+              <span className="text-primary font-black uppercase tracking-widest text-xs block mb-3">Hot Right Now</span>
+              <h2 className="text-4xl lg:text-6xl font-black tracking-tighter leading-none uppercase italic">
+                Best-Selling <span className="text-primary">Parts.</span>
               </h2>
             </div>
-            <Button asChild variant="outline" className="rounded-full px-8 py-6 glass border-white/20">
-              <Link href="/blog">View All Posts <ArrowRight className="ml-2 h-4 w-4" /></Link>
-            </Button>
+            <Link href="/inventory">
+              <Button variant="outline" className="h-12 px-8 rounded-full border-slate-200 text-slate-900 hover:bg-slate-900 hover:text-white font-bold transition-all">
+                Browse All
+              </Button>
+            </Link>
+          </div>
+ 
+          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-8">
+            {[
+              { name: "BMW Adaptive LED Headlight", brand: "Bayerische", price: "R12,500", rating: 5, reviews: 24, tag: "Certified", image: "/product/bmw-headlight.png" },
+              { name: "Precision V12 Engine Block", brand: "Elite Performance", price: "R185,000", rating: 5, reviews: 8, tag: "Warehouse Item", image: "/product/engine.png" },
+              { name: "High-Pressure Cooling Radiator", brand: "Arctic", price: "R3,800", rating: 4, reviews: 42, tag: "In Stock", image: "/product/radiator.png" },
+              { name: "Heavy-Duty Gas Shock Absorber", brand: "Bilstein", price: "R4,200", rating: 5, reviews: 18, tag: "Best Seller", image: "/product/shock-absober.png" },
+              { name: "Full-Body Panel Assembly", brand: "~Spares City", price: "R52,000", rating: 4, reviews: 12, tag: "Bulk Only", image: "/product/car-body.png" },
+              { name: "Sport Performance Alloy Wheel", brand: "Vossen", price: "R6,500", rating: 5, reviews: 31, tag: "Popular", image: "/product/tire2.png" },
+              { name: "All-Terrain Rugged Tire", brand: "Goodyear", price: "R2,900", rating: 4, reviews: 56, tag: "Trending", image: "/product/tires.png" },
+              { name: "Sequential 6-Speed Gearbox", brand: "ZF Parts", price: "R42,000", rating: 5, reviews: 7, tag: "New Arrival", image: "/product/gearbox.png" },
+            ].map((item, idx) => (
+              <motion.div
+                key={idx}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: idx * 0.1 }}
+                className="group cursor-pointer bg-white rounded-xl border border-slate-200 overflow-hidden hover:shadow-xl hover:shadow-slate-200/50 hover:border-primary/30 transition-all duration-300 flex flex-col"
+              >
+                {/* Image Section */}
+                <div className="relative aspect-square bg-slate-50 overflow-hidden border-b border-slate-100">
+                  <Image 
+                    src={item.image} 
+                    alt={item.name} 
+                    fill 
+                    unoptimized
+                    className="object-cover p-2 rounded-2xl group-hover:scale-110 transition-transform duration-500 will-change-transform" 
+                  />
+                  
+                  {/* Floating Badge */}
+                  <div className="absolute top-3 left-3">
+                    <span className="bg-slate-900 text-white text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded shadow-sm">
+                      {item.tag}
+                    </span>
+                  </div>
+
+                  {/* Wishlist Button (Hidden until hover on desktop) */}
+                  <button className="absolute top-3 right-3 w-8 h-8 bg-white rounded-full shadow-sm border border-slate-100 flex items-center justify-center text-slate-400 hover:text-red-500 hover:border-red-100 transition-colors opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 duration-300">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+                  </button>
+                </div>
+
+                {/* Content Section */}
+                <div className="p-5 flex flex-col flex-1">
+                  
+                  {/* Brand & Rating */}
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-slate-400 text-[10px] font-black uppercase tracking-widest">{item.brand}</span>
+                    <div className="flex items-center gap-0.5">
+                      {[...Array(5)].map((_, i) => (
+                        <svg key={i} xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill={i < item.rating ? "#ef4444" : "#e2e8f0"} stroke="none">
+                          <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                        </svg>
+                      ))}
+                      <span className="text-[10px] text-slate-400 font-medium ml-1">({item.reviews})</span>
+                    </div>
+                  </div>
+
+                  {/* Title */}
+                  <h4 className="text-base font-bold text-slate-900 leading-tight mb-4 group-hover:text-primary transition-colors line-clamp-2">
+                    {item.name}
+                  </h4>
+
+                  {/* Price & Action */}
+                  <div className="mt-auto flex items-center justify-between pt-4 border-t border-slate-100">
+                    <div className="flex flex-col">
+                      <span className="text-[10px] text-slate-400 font-medium line-through">R{parseInt(item.price.replace(/[^0-9]/g, '')) * 1.2}</span>
+                      <span className="text-lg font-black text-slate-900">{item.price}</span>
+                    </div>
+                    <button className="h-9 w-9 bg-slate-100 rounded-lg flex items-center justify-center text-slate-900 group-hover:bg-primary group-hover:text-black transition-all shadow-sm">
+                       <ShoppingCart className="w-4 h-4" />
+                    </button>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+
+      {/* ═══════════════════════════════════════════════════════ */}
+      {/*  SECTION 6: SOCIAL PROOF                              */}
+      {/* ═══════════════════════════════════════════════════════ */}
+      <section className="py-32 bg-slate-900 text-white rounded-[48px] mx-4 sm:mx-6 overflow-hidden relative">
+        <div className="absolute inset-0 opacity-10 pointer-events-none">
+          <Image src="https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?q=80&w=2000&auto=format&fit=crop" alt="" fill className="object-cover grayscale" />
+        </div>
+
+        <div className="container mx-auto px-6 relative z-10">
+          <div className="grid lg:grid-cols-2 gap-20 items-center">
+            <div>
+              <span className="text-primary font-black uppercase tracking-[0.3em] text-[11px] block mb-6">Testimonials</span>
+              <h2 className="text-5xl lg:text-7xl font-black tracking-tighter leading-none mb-16">
+                TRUSTED BY <span className="text-primary italic">EXPERTS.</span>
+              </h2>
+              <div className="space-y-12">
+                <div className="relative pl-10 border-l-4 border-primary">
+                  <Quote className="absolute -left-7 top-0 h-14 w-14 text-primary opacity-20" />
+                  <p className="text-2xl font-medium italic mb-8 leading-relaxed text-white/80">
+                    &quot;~Spares City has transformed our workshop supply chain. Delivery is bulletproof and parts quality is always elite.&quot;
+                  </p>
+                  <div className="flex items-center gap-4">
+                    <div className="w-14 h-14 rounded-2xl bg-primary flex items-center justify-center font-black text-xl text-black">JD</div>
+                    <div>
+                      <h5 className="font-black uppercase tracking-tight text-lg">John Dube</h5>
+                      <p className="text-white/40 text-xs font-bold uppercase tracking-widest">Master Mechanic, JD Tuning</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-6">
+              {[
+                { label: "Delivery Time", val: "24h" },
+                { label: "Quality Check", val: "100%" },
+                { label: "Support Avail.", val: "18h" },
+                { label: "Return Rate", val: "<0.1%" },
+              ].map((stat, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.1 }}
+                  className="bg-white/5 backdrop-blur-sm p-10 border border-white/10 rounded-3xl text-center hover:bg-white/10 transition-colors"
+                >
+                  <h4 className="text-5xl font-black text-primary mb-3">{stat.val}</h4>
+                  <p className="text-[10px] font-black uppercase tracking-widest text-white/40">{stat.label}</p>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ═══════════════════════════════════════════════════════ */}
+      {/*  SECTION 6.5: LATEST FROM THE HUB                      */}
+      {/* ═══════════════════════════════════════════════════════ */}
+      <section className="py-32 bg-white">
+        <div className="container mx-auto px-6">
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-20 gap-8">
+            <div className="max-w-2xl text-center md:text-left">
+              <span className="text-primary font-black uppercase tracking-[0.3em] text-[11px] block mb-6">Expert Insights</span>
+              <h2 className="text-5xl lg:text-7xl font-black tracking-tighter leading-none text-slate-900 mb-8 uppercase">
+                LATEST FROM <br />
+                <span className="gradient-text italic">THE HUB.</span>
+              </h2>
+              <p className="text-xl text-slate-500 font-medium italic">
+                Technical guides, maintenance tips, and the latest automotive industry news.
+              </p>
+            </div>
+            <Link href="/blog">
+              <Button variant="outline" className="rounded-full px-10 h-14 border-2 font-bold uppercase tracking-widest text-xs hover:bg-slate-900 hover:text-white transition-all">
+                View All Articles
+                <ArrowRight className="ml-3 h-4 w-4" />
+              </Button>
+            </Link>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {[
-              {
-                title: "How to Maintain Your Car's Paint Job",
-                excerpt: "Discover the best practices for keeping your vehicle's spray paint looking fresh and vibrant for years.",
-                date: "Feb 12, 2026",
-                image: "/spray-paint.png"
-              },
-              {
-                title: "Understanding Insurance Deductibles",
-                excerpt: "Navigating the world of insurance claims can be tricky. We break down what you need to know about deductibles.",
-                date: "Feb 10, 2026",
-                image: "/workshop-services.png"
-              },
-              {
-                title: "Finding the Right Replacement Parts",
-                excerpt: "When to choose OEM vs. aftermarket body parts. An expert guide for Johannesburg car owners.",
-                date: "Feb 08, 2026",
-                image: "/repair-services.png"
-              }
-            ].map((post, i) => (
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-10">
+            {homeBlogPosts.map((post, i) => (
               <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1 }}
+                className="group cursor-pointer"
+              >
+                <Link href={`/blog`}>
+                  <div className="relative aspect-[16/10] rounded-[32px] overflow-hidden mb-8 border border-slate-100 shadow-xl shadow-black/5">
+                    <Image
+                      src={post.image}
+                      alt={post.title}
+                      fill
+                      className="object-cover group-hover:scale-110 transition-transform duration-700"
+                    />
+                    <div className="absolute top-6 left-6">
+                      <span className="px-4 py-2 bg-white/90 backdrop-blur-md rounded-full text-[10px] font-black uppercase tracking-widest text-slate-900">
+                        {post.category}
+                      </span>
+                    </div>
+                  </div>
+                  <div className="space-y-4">
+                    <div className="flex items-center gap-4 text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">
+                      <span className="flex items-center gap-1.5">
+                        <Calendar className="w-3.5 h-3.5" />
+                        {post.date}
+                      </span>
+                    </div>
+                    <h3 className="text-2xl font-black text-slate-900 leading-tight group-hover:text-primary transition-colors line-clamp-2">
+                      {post.title}
+                    </h3>
+                    <p className="text-slate-500 font-medium italic line-clamp-2 text-sm leading-relaxed">
+                      {post.excerpt}
+                    </p>
+                    <div className="flex items-center gap-2 text-primary font-black text-[10px] uppercase tracking-[0.3em] pt-2">
+                      Read Blueprint <ArrowRight className="w-4 h-4" />
+                    </div>
+                  </div>
+                </Link>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ═══════════════════════════════════════════════════════ */}
+      {/*  SECTION 6.9: CORE PILLARS (RED)                      */}
+      {/* ═══════════════════════════════════════════════════════ */}
+      <section className="py-24 bg-gradient-to-br from-[#ef4444] to-[#b91c1c] text-white overflow-hidden relative">
+        {/* Background Decorative Elements */}
+        <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
+          <div className="absolute -top-[20%] -left-[10%] w-[50%] h-[50%] rounded-full bg-white/10 blur-[100px]" />
+          <div className="absolute bottom-[0%] right-[0%] w-[40%] h-[60%] rounded-full bg-black/10 blur-[80px]" />
+        </div>
+
+        <div className="container mx-auto px-6 relative z-10">
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 divide-y md:divide-y-0 md:divide-x divide-white/20">
+            {[
+              { 
+                icon: Truck, 
+                title: "Fast Delivery", 
+                desc: "Nationwide shipping across South Africa" 
+              },
+              { 
+                icon: ShieldCheck, 
+                title: "OEM Parts", 
+                desc: "100% Genuine and certified inventory" 
+              },
+              { 
+                icon: CreditCard,
+                title: "Secure Payment", 
+                desc: "EFT, Card & Mobile payments accepted" 
+              },
+              { 
+                icon: Headset, 
+                title: "Expert Support", 
+                desc: "Direct technical advice from SPARES CITY" 
+              },
+            ].map((feature, i) => (
+              <motion.div 
                 key={i}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1 }}
-                className="glass-card rounded-[2rem] overflow-hidden border border-white/5 group"
+                className="px-6 py-4 flex flex-col items-center text-center group"
               >
-                <div className="relative aspect-[16/10] overflow-hidden">
-                  <Image src={post.image} alt={post.title} fill className="object-cover group-hover:scale-110 transition-transform duration-500" />
-                  <div className="absolute top-4 left-4 glass px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest">
-                    Repair Guide
+                <div className="mb-6 relative">
+                  <div className="w-16 h-16 rounded-2xl bg-white/20 backdrop-blur-sm flex items-center justify-center group-hover:bg-white group-hover:scale-110 transition-all duration-300 shadow-lg shadow-black/10">
+                    <feature.icon className="w-8 h-8 text-white group-hover:text-[#dc2626] transition-colors" />
                   </div>
                 </div>
-                <div className="p-8">
-                  <span className="text-xs text-accent font-bold mb-2 block">{post.date}</span>
-                  <h3 className="text-xl font-bold mb-4 group-hover:text-primary transition-colors">{post.title}</h3>
-                  <p className="text-sm text-muted-foreground leading-relaxed mb-6">{post.excerpt}</p>
-                  <Link href="/blog" className="text-sm font-bold flex items-center gap-2 group/link">
-                    Read More <ArrowRight className="h-4 w-4 group-hover/link:translate-x-1 transition-transform" />
-                  </Link>
-                </div>
+                <h3 className="text-2xl font-black uppercase tracking-tight mb-2 group-hover:text-white/90 transition-colors">
+                  {feature.title}
+                </h3>
+                <p className="text-white/80 font-medium leading-relaxed text-sm">
+                  {feature.desc}
+                </p>
               </motion.div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* CTA Section - Aggressive & Premium */}
-      <section className="relative py-24 md:py-48 overflow-hidden">
-        <div className="absolute inset-0 z-0">
-          <NextImage
-            src="/work-shop.png"
-            alt="Final Result"
-            fill
-            className="object-cover brightness-[0.2]"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-background" />
-          <div className="absolute inset-0 bg-primary/10 mix-blend-overlay" />
-        </div>
-
-        <div className="container mx-auto px-6 relative z-10">
+      {/* ═══════════════════════════════════════════════════════ */}
+      {/*  SECTION 7: FINAL CTA                                 */}
+      {/* ═══════════════════════════════════════════════════════ */}
+      <section className="py-40 bg-white text-slate-900">
+        <div className="container mx-auto px-6 text-center">
           <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            whileInView={{ opacity: 1, scale: 1 }}
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="max-w-4xl mx-auto text-center"
+            className="max-w-4xl mx-auto"
           >
-            <h2 className="text-6xl md:text-9xl font-display font-medium tracking-tighter text-white mb-10">
-              READY FOR <br />
-              <span className="gradient-text italic">PERFECTION?</span>
+            <h2 className="text-6xl lg:text-[120px] font-black tracking-tighter leading-[0.85] mb-8">
+              READY TO<br />
+              <span className="gradient-text italic uppercase">UPGRADE?</span>
             </h2>
-            
-            <p className="text-xl md:text-3xl text-muted-foreground font-light mb-16 max-w-2xl mx-auto italic">
-              Don't settle for "fixed." Demand <span className="text-white font-medium not-italic">restored.</span> 
-              Contact Johannesburg's elite panel beating team today.
+            <p className="text-xl text-slate-400 font-medium mb-14 max-w-xl mx-auto">
+              Order genuine spares today. SA-wide delivery or collection at our Bramley warehouse.
             </p>
-
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-8">
-              <Button
-                asChild
-                size="xl"
-                className="w-full sm:w-auto btn-gold rounded-none px-16 py-10 text-2xl font-black uppercase tracking-widest hover:scale-105 transition-transform"
-              >
-                <a href="tel:0837086050">
-                  <Phone className="mr-4 h-8 w-8" />
-                  Call 083 708 6050
-                </a>
-              </Button>
-              <Button
-                asChild
-                size="xl"
-                className="w-full sm:w-auto btn-primary rounded-none px-16 py-10 text-2xl font-black uppercase tracking-widest hover:scale-105 transition-transform"
-              >
-                <a href="https://wa.me/27837086050" target="_blank" rel="noopener noreferrer">
-                  <MessageCircle className="mr-4 h-8 w-8 text-green-400" />
-                  WhatsApp Us
-                </a>
-              </Button>
-            </div>
-
-            <div className="mt-20 flex flex-wrap justify-center gap-12 opacity-50 grayscale hover:grayscale-0 transition-all duration-500">
-               <div className="flex items-center gap-3">
-                  <MapPin className="h-6 w-6 text-primary" />
-                  <span className="text-sm font-bold uppercase tracking-widest text-white">Johannesburg, ZA</span>
-               </div>
-               <div className="flex items-center gap-3">
-                  <Shield className="h-6 w-6 text-primary" />
-                  <span className="text-sm font-bold uppercase tracking-widest text-white">Insurance Approved</span>
-               </div>
-               <div className="flex items-center gap-3">
-                  <Star className="h-6 w-6 text-primary" />
-                  <span className="text-sm font-bold uppercase tracking-widest text-white">Top Rated Choice</span>
-               </div>
+            <div className="flex flex-col sm:flex-row justify-center gap-6">
+              <Link href="/inventory">
+                <Button size="xl" className="h-20 px-16 rounded-full bg-slate-900 text-white hover:bg-primary hover:text-black text-xl shadow-2xl transition-all">
+                  Browse Inventory
+                  <ArrowRight className="ml-3 h-6 w-6" />
+                </Button>
+              </Link>
+              <Link href="/contact">
+                <Button size="xl" variant="outline" className="h-20 px-16 rounded-full border-2 border-slate-200 text-xl font-black uppercase tracking-wider hover:bg-slate-900 hover:text-white hover:border-slate-900 transition-all">
+                  Visit Bramley
+                </Button>
+              </Link>
             </div>
           </motion.div>
         </div>
       </section>
+
     </div>
   );
 }

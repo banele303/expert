@@ -3,17 +3,15 @@
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import NextImage from "next/image";
 import {
-  Car,
+  PackageSearch,
   CheckCircle,
   Phone,
   MessageCircle,
-  ArrowRight,
-  Shield,
-  Award,
-  FileCheck,
-  Star,
+  Globe,
+  Zap,
+  ShieldCheck,
+  Search,
 } from "lucide-react";
 
 const fadeInUp = {
@@ -31,34 +29,35 @@ const staggerContainer = {
 
 const features = [
   {
-    icon: Shield,
-    title: "Thorough Inspection",
-    description: "Every vehicle undergoes comprehensive inspection before sale",
+    icon: Search,
+    title: "Rare Part Sourcing",
+    description: "Finding hard-to-reach components for vintage and import models",
   },
   {
-    icon: FileCheck,
-    title: "Verified History",
-    description: "Complete service history and documentation provided",
+    icon: Globe,
+    title: "Global Network",
+    description: "Connections with international OEM and aftermarket suppliers",
   },
   {
-    icon: Award,
-    title: "Quality Assured",
-    description: "Only the best vehicles make it to our showroom",
+    icon: ShieldCheck,
+    title: "Vetted Quality",
+    description: "Every special order part undergoes a rigorous inspection",
   },
   {
-    icon: Star,
-    title: "Fair Pricing",
-    description: "Competitive market prices with no hidden fees",
+    icon: Zap,
+    title: "Express Import",
+    description: "Air-freight options for urgent repair requirements",
   },
 ];
 
-export default function VehicleSalesPage() {
+export default function ProcurementPage() {
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-white">
       {/* Hero */}
-      <section className="relative py-20 md:py-32 overflow-hidden">
-        <div className="absolute inset-0 hero-gradient" />
-        <div className="absolute top-1/2 left-1/4 w-[500px] h-[500px] bg-primary/20 rounded-full blur-[180px] -translate-y-1/2" />
+      <section className="relative py-20 md:py-40 overflow-hidden bg-slate-50 pt-20 md:pt-40">
+        <div className="absolute inset-0 z-0 opacity-40">
+           <div className="absolute top-0 right-0 w-[60%] h-full bg-primary/10 skew-x-12 translate-x-1/4" />
+        </div>
 
         <div className="container mx-auto px-6 relative z-10">
           <motion.div
@@ -69,43 +68,43 @@ export default function VehicleSalesPage() {
           >
             <motion.span
               variants={fadeInUp}
-              className="inline-flex items-center gap-2 px-4 py-2 glass rounded-full text-sm font-medium text-primary mb-6"
+              className="inline-flex items-center gap-2 px-6 py-2 bg-primary text-black text-[10px] font-black uppercase tracking-widest mb-8 shadow-xl shadow-primary/10"
             >
-              <Car className="h-4 w-4" />
-              Vehicle Sales
+              <PackageSearch className="h-4 w-4" />
+              Specialized Procurement
             </motion.span>
             <motion.h1
               variants={fadeInUp}
-              className="text-4xl md:text-5xl lg:text-6xl font-display font-bold mb-6"
+              className="text-5xl md:text-8xl font-black tracking-tighter leading-[0.9] text-slate-900 mb-8"
             >
-              Handpicked Quality{" "}
-              <span className="gradient-text">Vehicles</span>
+              Found & <br />
+              <span className="gradient-text italic italic uppercase">Delivered.</span>
             </motion.h1>
             <motion.p
               variants={fadeInUp}
-              className="text-xl text-muted-foreground max-w-2xl mx-auto mb-8"
+              className="text-xl md:text-3xl text-slate-600 max-w-2xl mx-auto mb-12 font-medium italic leading-snug"
             >
-              Browse our carefully curated selection of pre-owned vehicles. Each car is inspected, verified, and prepared to meet our high standards.
+              Can't find it in stock? Our procurement team specialized in sourcing rare automotive components from across the globe.
             </motion.p>
             <motion.div
               variants={fadeInUp}
-              className="flex flex-col sm:flex-row items-center justify-center gap-4"
+              className="flex flex-col sm:flex-row items-center justify-center gap-6"
             >
-              <Button asChild size="lg" className="btn-primary rounded-full px-8">
-                <Link href="/dealership">
-                  <Car className="mr-2 h-5 w-5" />
-                  View Our Collection
-                </Link>
+              <Button asChild size="xl" className="btn-primary rounded-none px-12 py-8 text-xl font-black uppercase tracking-widest shadow-2xl shadow-primary/20 h-auto">
+                <a href="https://wa.me/27829624108" target="_blank" rel="noopener noreferrer">
+                  <MessageCircle className="mr-3 h-6 w-6 text-black" />
+                  Request Rare Part
+                </a>
               </Button>
               <Button
                 asChild
-                size="lg"
+                size="xl"
                 variant="outline"
-                className="rounded-full glass border-white/20"
+                className="rounded-none px-12 py-8 text-xl font-black uppercase tracking-widest border-2 border-slate-200 hover:bg-slate-50 transition-all h-auto"
               >
-                <a href="https://wa.me/27837086050" target="_blank" rel="noopener noreferrer">
-                  <MessageCircle className="mr-2 h-5 w-5 text-green-400" />
-                  Chat on WhatsApp
+                <a href="tel:+27829624108">
+                  <Phone className="mr-3 h-6 w-6" />
+                  Call Sourcing Team
                 </a>
               </Button>
             </motion.div>
@@ -114,26 +113,26 @@ export default function VehicleSalesPage() {
       </section>
 
       {/* Features Grid */}
-      <section className="py-20 md:py-32 bg-gradient-to-b from-background to-[oklch(0.1_0.01_260)]">
+      <section className="py-24 md:py-40">
         <div className="container mx-auto px-6">
           <motion.div
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
             variants={staggerContainer}
-            className="text-center mb-16"
+            className="text-center mb-20"
           >
             <motion.h2
               variants={fadeInUp}
-              className="text-3xl md:text-4xl font-display font-bold mb-4"
+              className="text-4xl md:text-6xl font-black tracking-tighter text-slate-900 mb-6 uppercase"
             >
-              Why Choose Our <span className="gradient-text">Vehicle Sales</span>
+              Why Special <span className="text-primary italic">Orders?</span>
             </motion.h2>
             <motion.p
               variants={fadeInUp}
-              className="text-lg text-muted-foreground max-w-2xl mx-auto"
+              className="text-lg md:text-2xl text-slate-500 font-medium italic max-w-3xl mx-auto"
             >
-              We go above and beyond to ensure every vehicle meets our strict quality standards
+              We solve the parts puzzles that others can't, keeping your vehicle on the road regardless of its age or origin.
             </motion.p>
           </motion.div>
 
@@ -142,21 +141,21 @@ export default function VehicleSalesPage() {
             whileInView="visible"
             viewport={{ once: true }}
             variants={staggerContainer}
-            className="grid md:grid-cols-2 lg:grid-cols-4 gap-6"
+            className="grid md:grid-cols-2 lg:grid-cols-4 gap-8"
           >
             {features.map((feature, index) => (
               <motion.div
                 key={index}
                 variants={fadeInUp}
-                className="glass rounded-3xl p-8 border border-white/5 card-hover"
+                className="bg-slate-50 p-10 rounded-none border border-slate-100 hover:border-primary/30 hover:shadow-2xl transition-all group"
               >
-                <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-primary/30 to-primary/10 flex items-center justify-center mb-6">
-                  <feature.icon className="h-7 w-7 text-primary" />
+                <div className="w-16 h-16 bg-white border border-slate-100 flex items-center justify-center mb-8 group-hover:bg-primary transition-colors">
+                  <feature.icon className="h-8 w-8 text-slate-700 group-hover:text-black" />
                 </div>
-                <h3 className="text-xl font-display font-bold mb-3">
+                <h3 className="text-2xl font-black text-slate-900 tracking-tighter uppercase mb-4">
                   {feature.title}
                 </h3>
-                <p className="text-muted-foreground leading-relaxed">
+                <p className="text-slate-500 font-medium leading-relaxed italic text-sm">
                   {feature.description}
                 </p>
               </motion.div>
@@ -165,8 +164,9 @@ export default function VehicleSalesPage() {
         </div>
       </section>
 
-      {/* What We Offer */}
-      <section className="py-20 md:py-32">
+      {/* What's Included */}
+      <section className="py-24 md:py-40 bg-slate-900 text-white relative overflow-hidden">
+        <div className="absolute left-0 bottom-0 w-64 h-64 bg-primary/10 blur-[100px]" />
         <div className="container mx-auto px-6">
           <motion.div
             initial="hidden"
@@ -177,28 +177,28 @@ export default function VehicleSalesPage() {
           >
             <motion.h2
               variants={fadeInUp}
-              className="text-3xl md:text-4xl font-display font-bold mb-8 text-center"
+              className="text-4xl md:text-7xl font-black tracking-tighter mb-12 text-center uppercase"
             >
-              What's Included
+              The ~Spares City <span className="text-primary italic">Promise.</span>
             </motion.h2>
             <motion.div
               variants={fadeInUp}
-              className="glass rounded-3xl p-8 md:p-12 border border-white/5"
+              className="bg-slate-800 border border-slate-700 p-12 md:p-20 rounded-none"
             >
-              <div className="grid md:grid-cols-2 gap-4">
+              <div className="grid md:grid-cols-2 gap-8">
                 {[
-                  "Comprehensive vehicle inspection",
-                  "Complete service history",
-                  "Fair market pricing",
-                  "Wide selection of makes & models",
-                  "6-month warranty available",
-                  "Finance options available",
-                  "Trade-in services",
-                  "Professional after-sales support",
+                   "Global parts identification",
+                   "Verified OEM authenticity",
+                   "Real-time import tracking",
+                   "Customs and duties handling",
+                   "Technical compatibility check",
+                   "Secure payment escrow",
+                   "Expedited international shipping",
+                   "Expert fitment advice",
                 ].map((item, index) => (
-                  <div key={index} className="flex items-center gap-3">
-                    <CheckCircle className="h-5 w-5 text-primary flex-shrink-0" />
-                    <span className="text-muted-foreground">{item}</span>
+                  <div key={index} className="flex items-center gap-4 group">
+                    <CheckCircle className="h-6 w-6 text-primary flex-shrink-0" />
+                    <span className="text-lg font-bold text-slate-300 group-hover:text-white transition-colors italic">{item}</span>
                   </div>
                 ))}
               </div>
@@ -208,34 +208,31 @@ export default function VehicleSalesPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 md:py-32 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-primary/20 via-transparent to-accent/20" />
-
-        <div className="container mx-auto px-6 relative z-10">
+      <section className="py-24 md:py-40 bg-white">
+        <div className="container mx-auto px-6 text-center">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
-            className="glass rounded-3xl p-8 md:p-12 text-center border border-white/10"
+            className="bg-slate-50 p-12 md:p-32 rounded-none border border-slate-100 max-w-6xl mx-auto shadow-sm"
           >
-            <h2 className="text-3xl md:text-4xl font-display font-bold mb-4">
-              Ready to Find Your Perfect Car?
+            <h2 className="text-4xl md:text-7xl font-black tracking-tighter mb-10 text-slate-900 leading-tight uppercase">
+               Still <span className="gradient-text italic italic">Searching?</span>
             </h2>
-            <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
-              Browse our current inventory or contact us to discuss your requirements
+            <p className="text-lg md:text-2xl text-slate-500 font-medium mb-16 max-w-3xl mx-auto italic leading-relaxed">
+               Stop hunting across salvage yards and marketplaces. Let our global procurement experts find the exact component you need.
             </p>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <Button asChild size="lg" className="btn-gold rounded-full px-8">
-                <Link href="/dealership">
-                  <Car className="mr-2 h-5 w-5" />
-                  View Available Cars
-                </Link>
-              </Button>
-              <Button asChild size="lg" variant="outline" className="rounded-full glass border-white/20">
-                <a href="tel:0837086050">
-                  <Phone className="mr-2 h-5 w-5" />
-                  Call: 083 708 6050
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-10">
+              <Button asChild size="xl" className="btn-primary rounded-none px-20 py-10 h-auto text-2xl font-black uppercase tracking-[0.2em] w-full sm:w-auto shadow-xl shadow-primary/20">
+                <a href="https://wa.me/27829624108" target="_blank" rel="noopener noreferrer">
+                  <MessageCircle className="mr-4 h-8 w-8 text-black" />
+                  Query Part
                 </a>
+              </Button>
+              <Button asChild size="xl" variant="outline" className="border-4 border-slate-200 text-slate-900 rounded-none px-20 py-10 h-auto text-2xl font-black uppercase tracking-widest hover:bg-slate-900 hover:text-white transition-all w-full sm:w-auto">
+                <Link href="/contact">
+                  Visit Bramley
+                </Link>
               </Button>
             </div>
           </motion.div>

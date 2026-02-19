@@ -16,7 +16,7 @@ export default function ProductsPage() {
     <div className="space-y-6">
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-serif font-bold tracking-tight text-amber-900">Showroom Inventory</h1>
+          <h1 className="text-3xl font-serif font-bold tracking-tight text-red-900">Showroom Inventory</h1>
           <p className="text-muted-foreground mt-1">
             Manage your vehicle inventory and sales catalog
           </p>
@@ -24,10 +24,10 @@ export default function ProductsPage() {
       </div>
 
       <div className="grid gap-4 md:grid-cols-3">
-        <Card className="border-amber-100 shadow-sm">
+        <Card className="border-red-100 shadow-sm">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Jewelry</CardTitle>
-            <Package className="h-4 w-4 text-amber-600" />
+            <CardTitle className="text-sm font-medium">Total Components</CardTitle>
+            <Package className="h-4 w-4 text-red-600" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{productStats?.jewelryCount || 0}</div>
@@ -35,7 +35,7 @@ export default function ProductsPage() {
           </CardContent>
         </Card>
         
-        <Card className="border-amber-100 shadow-sm">
+        <Card className="border-red-100 shadow-sm">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Active Items</CardTitle>
             <Package className="h-4 w-4 text-green-600" />
@@ -46,7 +46,7 @@ export default function ProductsPage() {
           </CardContent>
         </Card>
 
-        <Card className="border-amber-100 shadow-sm">
+        <Card className="border-red-100 shadow-sm">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Low Stock</CardTitle>
             <Package className="h-4 w-4 text-red-600" />
@@ -58,7 +58,7 @@ export default function ProductsPage() {
         </Card>
       </div>
 
-      <Card className="border-amber-100 shadow-sm">
+      <Card className="border-red-100 shadow-sm">
         <CardHeader>
           <CardTitle>Inventory Management</CardTitle>
           <CardDescription>
@@ -66,7 +66,7 @@ export default function ProductsPage() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <AdminProductsTab initialCategory="jewelry" />
+          <AdminProductsTab initialCategory="spares" />
         </CardContent>
       </Card>
     </div>

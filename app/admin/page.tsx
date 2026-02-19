@@ -95,15 +95,15 @@ export default function AdminPage() {
           </CardContent>
         </Card>
 
-        <Card className="bg-linear-to-br from-amber-500/10 to-orange-500/10 border-amber-500/20 hover:shadow-lg transition-shadow">
+        <Card className="bg-linear-to-br from-red-500/10 to-rose-500/10 border-red-500/20 hover:shadow-lg transition-shadow">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Hire Requests</CardTitle>
-            <Calendar className="h-4 w-4 text-amber-600 dark:text-amber-400" />
+            <CardTitle className="text-sm font-medium">Part Requests</CardTitle>
+            <Calendar className="h-4 w-4 text-red-600 dark:text-red-400" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{hireStats?.totalRequests || 0}</div>
             <p className="text-xs text-muted-foreground flex items-center gap-1 mt-1">
-              <ArrowUpRight className="h-3 w-3 text-yellow-500" />
+              <ArrowUpRight className="h-3 w-3 text-red-500" />
               {hireStats?.pendingRequests || 0} pending quotes
             </p>
           </CardContent>
@@ -138,11 +138,11 @@ export default function AdminPage() {
           </CardHeader>
           <CardContent className="space-y-3">
             <div className="flex justify-between items-center">
-              <span className="text-sm text-muted-foreground">Jewelry Items</span>
+              <span className="text-sm text-muted-foreground">Mechanical Spares</span>
               <Badge variant="secondary">{productStats?.jewelryCount || 0}</Badge>
             </div>
             <div className="flex justify-between items-center">
-              <span className="text-sm text-muted-foreground">Decor Items</span>
+              <span className="text-sm text-muted-foreground">Body & Braking</span>
               <Badge variant="secondary">{productStats?.decorCount || 0}</Badge>
             </div>
             <div className="flex justify-between items-center">
@@ -150,7 +150,7 @@ export default function AdminPage() {
               <Badge variant="destructive">{productStats?.lowStock || 0}</Badge>
             </div>
             <div className="flex justify-between items-center">
-              <span className="text-sm text-muted-foreground">Featured</span>
+              <span className="text-sm text-muted-foreground">Featured Parts</span>
               <Badge variant="outline">{productStats?.featuredCount || 0}</Badge>
             </div>
             <Link href="/admin/stock" className="cursor-pointer">
@@ -168,7 +168,7 @@ export default function AdminPage() {
           <CardContent className="space-y-3">
             <div className="flex justify-between items-center">
               <span className="text-sm text-muted-foreground">Pending</span>
-              <Badge className="bg-yellow-500 hover:bg-yellow-600">{orderStats?.pendingOrders || 0}</Badge>
+              <Badge className="bg-red-500 hover:bg-red-600">{orderStats?.pendingOrders || 0}</Badge>
             </div>
             <div className="flex justify-between items-center">
               <span className="text-sm text-muted-foreground">Processing</span>
@@ -193,7 +193,7 @@ export default function AdminPage() {
           <CardContent className="space-y-3">
             <div className="flex justify-between items-center">
               <span className="text-sm text-muted-foreground">Pending</span>
-              <Badge className="bg-yellow-500 hover:bg-yellow-600">{hireStats?.pendingRequests || 0}</Badge>
+              <Badge className="bg-red-500 hover:bg-red-600">{hireStats?.pendingRequests || 0}</Badge>
             </div>
             <div className="flex justify-between items-center">
               <span className="text-sm text-muted-foreground">Quoted</span>

@@ -11,11 +11,11 @@ import {
   ArrowLeft,
   Phone,
   MessageCircle,
-  Fuel,
-  Gauge,
-  Calendar,
-  Car,
-  Palette,
+  Settings, // Changed from Fuel
+  Zap, // Changed from Gauge
+  Clock, // Changed from Calendar
+  Package, // Changed from Car
+  ShieldCheck, // Changed from Palette
   Shield,
   CreditCard,
   FileCheck,
@@ -24,6 +24,8 @@ import {
   CheckCircle,
   ChevronLeft,
   ChevronRight,
+  MapPin,
+  Truck,
 } from "lucide-react";
 import { useState } from "react";
 
@@ -42,32 +44,28 @@ export default function CarDetailPage() {
     }).format(price);
   };
 
-  const formatMileage = (km: number) => {
-    return new Intl.NumberFormat("en-ZA").format(km) + " km";
-  };
-
   if (car === undefined) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin" />
+      <div className="min-h-screen flex items-center justify-center bg-white">
+        <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-none animate-spin" />
       </div>
     );
   }
 
   if (car === null) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center bg-white">
         <div className="text-center">
-          <h1 className="text-3xl font-display font-bold mb-4">
-            Vehicle Not Found
+          <h1 className="text-5xl font-black tracking-tighter mb-4 uppercase">
+            Unit Not Found
           </h1>
-          <p className="text-muted-foreground mb-6">
-            This vehicle may no longer be available.
+          <p className="text-slate-500 mb-8 font-medium italic">
+            This component or unit may have been dispatched.
           </p>
-          <Button asChild className="btn-primary rounded-full">
-            <Link href="/dealership">
+          <Button asChild className="btn-primary rounded-none px-10 py-6">
+            <Link href="/inventory">
               <ArrowLeft className="mr-2 h-4 w-4" />
-              Back to Collection
+              Return to Catalog
             </Link>
           </Button>
         </div>
@@ -76,7 +74,7 @@ export default function CarDetailPage() {
   }
 
   const images = car.images.length > 0 ? car.images : [
-    "https://images.unsplash.com/photo-1494976388531-d1058494cdd8?q=80&w=2670&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?q=80&w=2670&auto=format&fit=crop",
   ];
 
   const nextImage = () => {
@@ -88,59 +86,58 @@ export default function CarDetailPage() {
   };
 
   const whatsappMessage = encodeURIComponent(
-    `Hi, I'm interested in the ${car.year} ${car.make} ${car.model} listed at ${formatPrice(car.price)}. Is it still available?`
+    `Hi ~Spares City, I'm interested in the ${car.year} ${car.make} ${car.model} (${car.engineSize || "Part"}). Is this unit available in the Bramley warehouse?`
   );
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-white">
       {/* Breadcrumb */}
-      <div className="container mx-auto px-6 py-6">
-        <div className="flex items-center gap-2 text-sm text-muted-foreground">
-          <Link href="/" className="hover:text-foreground transition">
+      <div className="container mx-auto px-6 py-10 pt-28">
+        <div className="flex items-center gap-3 text-[10px] font-black uppercase tracking-widest text-slate-400">
+          <Link href="/" className="hover:text-primary transition-colors">
             Home
           </Link>
-          <span>/</span>
-          <Link href="/dealership" className="hover:text-foreground transition">
-            Parts Inventory
+          <ChevronRight className="h-3 w-3" />
+          <Link href="/inventory" className="hover:text-primary transition-colors">
+            Parts Catalog
           </Link>
-          <span>/</span>
-          <span className="text-foreground">
+          <ChevronRight className="h-3 w-3" />
+          <span className="text-slate-900 border-b border-primary">
             {car.make} {car.model}
           </span>
         </div>
       </div>
 
       {/* Main Content */}
-      <div className="container mx-auto px-6 pb-20">
-        <div className="grid lg:grid-cols-2 gap-12">
+      <div className="container mx-auto px-6 pb-32">
+        <div className="grid lg:grid-cols-2 gap-20">
           {/* Image Gallery */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6 }}
-            className="space-y-4"
+            className="space-y-6"
           >
             {/* Main Image */}
-            <div className="relative aspect-[4/3] rounded-3xl overflow-hidden glass">
+            <div className="relative aspect-square bg-slate-50 border border-slate-100 overflow-hidden shadow-sm group">
               <img
                 src={images[currentImageIndex]}
                 alt={`${car.year} ${car.make} ${car.model}`}
-                className="w-full h-full object-cover"
+                className="w-full h-full object-contain p-12 group-hover:scale-105 transition-transform duration-700"
               />
-              <div className="absolute inset-0 gradient-hero opacity-30" />
-
+              
               {/* Navigation Arrows */}
               {images.length > 1 && (
                 <>
                   <button
                     onClick={prevImage}
-                    className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 glass rounded-full flex items-center justify-center hover:bg-white/20 transition"
+                    className="absolute left-6 top-1/2 -translate-y-1/2 w-16 h-16 bg-white border border-slate-200 flex items-center justify-center hover:bg-primary transition-colors z-20"
                   >
                     <ChevronLeft className="h-6 w-6" />
                   </button>
                   <button
                     onClick={nextImage}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 glass rounded-full flex items-center justify-center hover:bg-white/20 transition"
+                    className="absolute right-6 top-1/2 -translate-y-1/2 w-16 h-16 bg-white border border-slate-200 flex items-center justify-center hover:bg-primary transition-colors z-20"
                   >
                     <ChevronRight className="h-6 w-6" />
                   </button>
@@ -148,38 +145,28 @@ export default function CarDetailPage() {
               )}
 
               {/* Image Counter */}
-              <div className="absolute bottom-4 right-4 glass px-3 py-1.5 rounded-full text-sm">
-                {currentImageIndex + 1}/{images.length}
-              </div>
-
-              {/* Action Buttons */}
-              <div className="absolute top-4 right-4 flex gap-2">
-                <button className="w-10 h-10 glass rounded-full flex items-center justify-center hover:bg-white/20 transition">
-                  <Heart className="h-5 w-5" />
-                </button>
-                <button className="w-10 h-10 glass rounded-full flex items-center justify-center hover:bg-white/20 transition">
-                  <Share2 className="h-5 w-5" />
-                </button>
+              <div className="absolute bottom-6 right-6 bg-slate-900 text-white px-4 py-2 text-[10px] font-black uppercase tracking-widest z-20">
+                {currentImageIndex + 1} / {images.length}
               </div>
             </div>
 
             {/* Thumbnails */}
             {images.length > 1 && (
-              <div className="flex gap-3 overflow-x-auto scrollbar-none pb-2">
+              <div className="flex gap-4 overflow-x-auto scrollbar-none pb-4">
                 {images.map((img, index) => (
                   <button
                     key={index}
                     onClick={() => setCurrentImageIndex(index)}
-                    className={`flex-shrink-0 w-24 h-18 rounded-xl overflow-hidden border-2 transition ${
+                    className={`flex-shrink-0 w-28 h-28 bg-slate-50 border-2 transition-all p-4 ${
                       index === currentImageIndex
-                        ? "border-primary"
-                        : "border-transparent hover:border-white/30"
+                        ? "border-primary shadow-xl"
+                        : "border-slate-100 hover:border-primary/50"
                     }`}
                   >
                     <img
                       src={img}
                       alt={`View ${index + 1}`}
-                      className="w-full h-full object-cover"
+                      className="w-full h-full object-contain"
                     />
                   </button>
                 ))}
@@ -187,152 +174,113 @@ export default function CarDetailPage() {
             )}
           </motion.div>
 
-          {/* Car Details */}
+          {/* Unit Details */}
           <motion.div
             initial={{ opacity: 0, x: 30 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="space-y-6"
+            className="space-y-10"
           >
             {/* Title & Price */}
             <div>
-              <span className="inline-flex items-center gap-1.5 text-sm text-green-400 mb-2">
-                <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-                Available
-              </span>
-              <h1 className="text-4xl md:text-5xl font-display font-bold mb-2">
-                {car.year} {car.make}
+              <div className="flex items-center gap-3 mb-6">
+                <span className="inline-flex items-center gap-2 px-3 py-1 bg-green-500 text-white text-[10px] font-black uppercase tracking-widest">
+                  <div className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
+                  In Stock
+                </span>
+                <span className="text-[10px] text-slate-400 font-black uppercase tracking-widest">
+                  Ref: XP-{carId.slice(-6).toUpperCase()}
+                </span>
+              </div>
+              
+              <h1 className="text-4xl md:text-7xl font-black tracking-tighter leading-none text-slate-900 uppercase mb-4">
+                {car.make} <br />
+                <span className="gradient-text italic">{car.model}</span>
               </h1>
-              <h2 className="text-3xl md:text-4xl font-display font-bold gradient-text">
-                {car.model}
-              </h2>
-              <div className="mt-4">
-                <span className="text-sm text-muted-foreground">Price</span>
-                <div className="text-4xl font-display font-bold gradient-text-gold">
+              
+              <div className="mt-8 p-10 bg-slate-50 border-l-8 border-primary">
+                <span className="text-[10px] text-slate-400 font-black uppercase tracking-[0.3em] block mb-2">Price Estimate (ZAR)</span>
+                <div className="text-5xl md:text-6xl font-black text-slate-900 tracking-tighter">
                   {formatPrice(car.price)}
                 </div>
               </div>
             </div>
 
-            {/* Quick Specs */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-              <div className="glass rounded-xl p-4">
-                <Calendar className="h-5 w-5 text-primary mb-2" />
-                <div className="text-sm text-muted-foreground">Year</div>
-                <div className="font-semibold">{car.year}</div>
+            {/* Component Specs */}
+            <div className="grid grid-cols-2 gap-4">
+              <div className="bg-white border border-slate-100 p-6 hover:border-primary/30 transition-colors">
+                <Clock className="h-5 w-5 text-primary mb-3" />
+                <div className="text-[10px] text-slate-400 font-black uppercase tracking-widest mb-1">Model Year</div>
+                <div className="text-lg font-black text-slate-900">{car.year}</div>
               </div>
-              <div className="glass rounded-xl p-4">
-                <Gauge className="h-5 w-5 text-primary mb-2" />
-                <div className="text-sm text-muted-foreground">Mileage</div>
-                <div className="font-semibold">
-                  {car.mileage ? formatMileage(car.mileage) : "N/A"}
-                </div>
+              <div className="bg-white border border-slate-100 p-6 hover:border-primary/30 transition-colors">
+                <Settings className="h-5 w-5 text-primary mb-3" />
+                <div className="text-[10px] text-slate-400 font-black uppercase tracking-widest mb-1">Engine Code</div>
+                <div className="text-lg font-black text-slate-900">{car.engineSize || "Verified OEM"}</div>
               </div>
-              <div className="glass rounded-xl p-4">
-                <Fuel className="h-5 w-5 text-primary mb-2" />
-                <div className="text-sm text-muted-foreground">Fuel Type</div>
-                <div className="font-semibold">{car.fuelType}</div>
+              <div className="bg-white border border-slate-100 p-6 hover:border-primary/30 transition-colors">
+                <Zap className="h-5 w-5 text-primary mb-3" />
+                <div className="text-[10px] text-slate-400 font-black uppercase tracking-widest mb-1">Condition</div>
+                <div className="text-lg font-black text-slate-900">Certified Grade A</div>
               </div>
-              <div className="glass rounded-xl p-4">
-                <Car className="h-5 w-5 text-primary mb-2" />
-                <div className="text-sm text-muted-foreground">Transmission</div>
-                <div className="font-semibold">{car.transmission}</div>
+              <div className="bg-white border border-slate-100 p-6 hover:border-primary/30 transition-colors">
+                <Package className="h-5 w-5 text-primary mb-3" />
+                <div className="text-[10px] text-slate-400 font-black uppercase tracking-widest mb-1">Availability</div>
+                <div className="text-lg font-black text-slate-900">Immediate Dispatch</div>
               </div>
-              {car.color && (
-                <div className="glass rounded-xl p-4">
-                  <Palette className="h-5 w-5 text-primary mb-2" />
-                  <div className="text-sm text-muted-foreground">Color</div>
-                  <div className="font-semibold">{car.color}</div>
-                </div>
-              )}
-              {car.engineSize && (
-                <div className="glass rounded-xl p-4">
-                  <svg
-                    className="h-5 w-5 text-primary mb-2"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                  >
-                    <circle cx="12" cy="12" r="3" />
-                    <path d="M12 16v5M12 3v5M16 12h5M3 12h5" />
-                  </svg>
-                  <div className="text-sm text-muted-foreground">Engine</div>
-                  <div className="font-semibold">{car.engineSize}</div>
-                </div>
-              )}
             </div>
 
             {/* Description */}
-            <div className="glass rounded-2xl p-6">
-              <h3 className="font-display font-bold text-lg mb-3">
-                Description
-              </h3>
-              <p className="text-muted-foreground leading-relaxed">
-                {car.description}
-              </p>
+            <div className="space-y-4">
+               <h3 className="text-[10px] font-black uppercase tracking-[0.4em] text-slate-900 ml-1">Component Details</h3>
+               <div className="bg-slate-50 p-8 border border-slate-100">
+                  <p className="text-slate-600 font-medium italic leading-relaxed">
+                    {car.description || `This high-quality ${car.make} ${car.model} unit is fully inspected and certified by our technical team at the Bramley warehouse. Authentic component with guaranteed fitment performance.`}
+                  </p>
+               </div>
             </div>
 
-            {/* Features */}
-            {car.features && car.features.length > 0 && (
-              <div className="glass rounded-2xl p-6">
-                <h3 className="font-display font-bold text-lg mb-4">
-                  Features
-                </h3>
-                <div className="grid grid-cols-2 gap-3">
-                  {car.features.map((feature, index) => (
-                    <div
-                      key={index}
-                      className="flex items-center gap-2 text-sm"
-                    >
-                      <CheckCircle className="h-4 w-4 text-primary" />
-                      <span>{feature}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
             {/* Benefits */}
-            <div className="flex flex-wrap gap-3">
-              <span className="px-4 py-2 glass rounded-full text-sm flex items-center gap-2">
+            <div className="flex flex-wrap gap-4">
+              <span className="px-5 py-2.5 bg-white border border-slate-200 text-[10px] font-black uppercase tracking-widest flex items-center gap-3">
                 <Shield className="h-4 w-4 text-primary" />
-                6-Month Warranty
+                6-Month Guarantee
               </span>
-              <span className="px-4 py-2 glass rounded-full text-sm flex items-center gap-2">
-                <CreditCard className="h-4 w-4 text-accent" />
-                Finance Available
+              <span className="px-5 py-2.5 bg-white border border-slate-200 text-[10px] font-black uppercase tracking-widest flex items-center gap-3">
+                <Truck className="h-4 w-4 text-primary" />
+                Nationwide Delivery
               </span>
-              <span className="px-4 py-2 glass rounded-full text-sm flex items-center gap-2">
-                <FileCheck className="h-4 w-4 text-green-400" />
-                Trade-In Welcome
+              <span className="px-5 py-2.5 bg-white border border-slate-200 text-[10px] font-black uppercase tracking-widest flex items-center gap-3">
+                <FileCheck className="h-4 w-4 text-primary" />
+                OEM Certified
               </span>
             </div>
 
             {/* CTA Buttons */}
-            <div className="glass rounded-2xl p-6 border border-accent/20">
-              <h3 className="font-display font-bold text-lg mb-4">
-                Interested in this vehicle?
+            <div className="bg-slate-900 p-10 md:p-14 border-t-8 border-primary shadow-2xl space-y-8">
+              <h3 className="text-3xl font-black text-white uppercase tracking-tighter leading-tight">
+                CHECK STOCK <br />
+                <span className="text-primary italic italic">AVAILABILITY.</span>
               </h3>
-              <div className="flex flex-col sm:flex-row gap-4">
-                <Button asChild size="lg" className="btn-gold rounded-full flex-1">
-                  <a href="tel:0837086050">
-                    <Phone className="mr-2 h-5 w-5" />
-                    Call: 083 708 6050
+              <div className="flex flex-col sm:flex-row gap-6">
+                <Button asChild size="xl" className="btn-primary rounded-none flex-1 py-10 text-xl font-black uppercase tracking-widest shadow-xl h-auto">
+                  <a href="tel:+27829624108">
+                    <Phone className="mr-3 h-6 w-6 text-black" />
+                    Call Warehouse
                   </a>
                 </Button>
                 <Button
                   asChild
-                  size="lg"
+                  size="xl"
                   variant="outline"
-                  className="rounded-full glass border-white/20 flex-1"
+                  className="rounded-none border-2 border-white/20 text-white flex-1 py-10 text-xl font-black uppercase tracking-widest hover:bg-white hover:text-black transition-all h-auto"
                 >
                   <a
-                    href={`https://wa.me/27837086050?text=${whatsappMessage}`}
+                    href={`https://wa.me/27829624108?text=${whatsappMessage}`}
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    <MessageCircle className="mr-2 h-5 w-5 text-green-400" />
+                    <MessageCircle className="mr-3 h-6 w-6 text-primary" />
                     WhatsApp
                   </a>
                 </Button>
@@ -343,11 +291,11 @@ export default function CarDetailPage() {
             <Button
               asChild
               variant="ghost"
-              className="w-full text-muted-foreground hover:text-foreground"
+              className="w-full text-slate-400 hover:text-black font-black uppercase tracking-widest text-[10px] h-14"
             >
-              <Link href="/dealership">
-                <ArrowLeft className="mr-2 h-4 w-4" />
-                Back to Inventory
+              <Link href="/inventory">
+                <ArrowLeft className="mr-3 h-4 w-4" />
+                Return to Parts Inventory
               </Link>
             </Button>
           </motion.div>

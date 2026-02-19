@@ -1,10 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence, Variants } from "framer-motion";
 import { useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 import { toast } from "sonner";
 import {
   Phone,
@@ -14,13 +15,15 @@ import {
   MessageCircle,
   Send,
   CheckCircle,
-  Star,
-  Car,
+  Package,
+  ArrowRight,
+  ShieldCheck,
+  Truck
 } from "lucide-react";
 
-const fadeInUp = {
+const fadeInUp: Variants = {
   hidden: { opacity: 0, y: 30 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } },
 };
 
 const staggerContainer = {
@@ -41,6 +44,7 @@ export default function ContactPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
 
+  // Convex Mutation
   const createInquiry = useMutation(api.inquiries.create);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -48,259 +52,239 @@ export default function ContactPage() {
     setIsSubmitting(true);
 
     try {
-      await createInquiry(formData);
+      await createInquiry({
+        ...formData,
+      });
       setIsSubmitted(true);
-      toast.success("Message sent successfully! We'll be in touch soon.");
+      toast.success("Parts inquiry received! Our desk will check stock and call you.");
       setFormData({ name: "", email: "", phone: "", message: "" });
     } catch (error) {
-      toast.error("Failed to send message. Please try again.");
+      toast.error("Failed to process request. Please call us directly.");
     } finally {
       setIsSubmitting(false);
     }
   };
 
   return (
-    <div className="min-h-screen">
-      {/* Hero Section */}
-      <section className="relative py-20 md:py-32 lg:py-48 overflow-hidden pt-32 md:pt-48">
-        <div className="absolute inset-0 z-0">
-          <div className="absolute inset-0 bg-gradient-to-b from-background via-transparent to-background" />
-          <div className="absolute top-1/2 left-1/4 w-[500px] h-[500px] bg-primary/20 rounded-full blur-[180px] -translate-y-1/2" />
-        </div>
-
-        <div className="container mx-auto px-6 relative z-10 text-center">
+    <div className="min-h-screen bg-white">
+      {/* Cinematic Header */}
+      <section className="relative pt-48 pb-32 overflow-hidden bg-[#F8F9FB]">
+        <div className="absolute top-0 right-0 w-[50%] h-full bg-primary/5 rounded-bl-[100px] -z-0" />
+        <div className="container mx-auto px-6 relative z-10">
           <motion.div
             initial="hidden"
             animate="visible"
             variants={staggerContainer}
-            className="max-w-4xl mx-auto"
+            className="max-w-5xl"
           >
             <motion.span
               variants={fadeInUp}
-              className="inline-flex items-center gap-2 px-4 py-2 glass-premium rounded-full text-xs font-medium text-primary mb-8"
+              className="inline-flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 rounded-full text-[11px] font-bold uppercase tracking-widest text-slate-500 mb-8 shadow-sm"
             >
-              <MessageCircle className="h-4 w-4" />
-              Contact Our Experts
+              <Phone className="h-3.5 w-3.5 text-primary" /> Reach the Bramley Warehouse
             </motion.span>
+            
             <motion.h1
               variants={fadeInUp}
-              className="text-5xl md:text-8xl font-display font-medium tracking-tighter leading-[0.9] mb-8"
+              className="text-6xl md:text-[100px] font-black tracking-tighter leading-[0.85] text-slate-900 mb-8"
             >
-              Let's <span className="gradient-text italic">Connect.</span>
+              DIRECT <br />
+              <span className="gradient-text italic uppercase">COMMUNICATION.</span>
             </motion.h1>
+            
             <motion.p
               variants={fadeInUp}
-              className="text-lg md:text-2xl text-muted-foreground font-light max-w-2xl mx-auto"
+              className="text-2xl md:text-3xl text-slate-500 font-medium leading-relaxed max-w-3xl italic"
             >
-              Professional auto body assessment and parts supply in Johannesburg. Get in touch for a free quote or expert advice.
+              Bramley&apos;s most responsive <span className="text-slate-900 not-italic font-bold">auto parts desk</span>. Message us for live stock availability, pricing, and nationwide dispatch timelines.
             </motion.p>
           </motion.div>
         </div>
       </section>
 
-      {/* Main Content */}
-      <section className="pb-12 md:pb-24">
-        <div className="container mx-auto px-6">
-          <div className="grid lg:grid-cols-2 gap-12 lg:gap-24">
-            {/* Contact Info */}
+      {/* Main Interaction Area */}
+      <section className="pb-32 -mt-16 relative z-20 px-6">
+        <div className="container mx-auto px-0">
+          <div className="grid lg:grid-cols-12 gap-12 lg:gap-20">
+            {/* Contact Details Pane */}
             <motion.div
               initial={{ opacity: 0, x: -30 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-              className="space-y-12"
+              className="lg:col-span-5 space-y-10"
             >
-              <div>
-                <h2 className="text-4xl md:text-5xl font-display font-medium tracking-tighter mb-6">
-                  Visit the <br/><span className="gradient-text italic">Facility.</span>
-                </h2>
-                <p className="text-lg text-muted-foreground font-light leading-relaxed">
-                  Located in the heart of Johannesburg's industrial hub, our state-of-the-art facility is equipped for any restoration challenge.
-                </p>
-              </div>
-
-              {/* Contact Cards */}
-              <div className="grid gap-4">
-                <a
-                  href="mailto:info@xpertpanelbeaters.co.za"
-                  className="flex items-center gap-6 p-6 glass-premium rounded-[2rem] border border-white/5 hover:border-primary/20 transition-all duration-500 group"
-                >
-                  <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center group-hover:scale-110 transition-transform">
-                    <Mail className="h-7 w-7 text-primary" />
-                  </div>
-                  <div>
-                    <div className="text-[10px] text-accent font-bold uppercase tracking-widest leading-none mb-1">Email</div>
-                    <div className="text-xl font-bold">info@xpertpanelbeaters.co.za</div>
-                  </div>
-                </a>
-
-                <a
-                  href="tel:0837086050"
-                  className="flex items-center gap-6 p-6 glass-premium rounded-[2rem] border border-white/5 hover:border-primary/20 transition-all duration-500 group"
-                >
-                  <div className="w-16 h-16 rounded-2xl bg-accent/10 flex items-center justify-center group-hover:scale-110 transition-transform">
-                    <Phone className="h-7 w-7 text-accent" />
-                  </div>
-                  <div>
-                    <div className="text-[10px] text-accent font-bold uppercase tracking-widest leading-none mb-1">Phone</div>
-                    <div className="text-xl font-bold">083 708 6050</div>
-                  </div>
-                </a>
-
-                <a
-                  href="https://maps.google.com/?q=Main+Reef+Rd,+Elcedes,+Johannesburg,+1431"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-6 p-6 glass-premium rounded-[2rem] border border-white/5 hover:border-primary/20 transition-all duration-500 group"
-                >
-                  <div className="w-16 h-16 rounded-2xl bg-green-500/10 flex items-center justify-center group-hover:scale-110 transition-transform">
-                    <MapPin className="h-7 w-7 text-green-500" />
-                  </div>
-                  <div>
-                    <div className="text-[10px] text-accent font-bold uppercase tracking-widest leading-none mb-1">Location</div>
-                    <div className="text-xl font-bold">Main Reef Rd, Elcedes, JHB</div>
-                  </div>
-                </a>
-
-                <div className="flex items-center gap-6 p-6 glass-premium rounded-[2rem] border border-white/5">
-                  <div className="w-16 h-16 rounded-2xl bg-purple-500/10 flex items-center justify-center">
-                    <Clock className="h-7 w-7 text-purple-500" />
-                  </div>
-                  <div>
-                    <div className="text-[10px] text-accent font-bold uppercase tracking-widest leading-none mb-1">Hours</div>
-                    <div className="text-lg font-bold">Mon-Fri: 8:00 - 17:00 | Sat: 8:00 - 13:00</div>
-                  </div>
+              <div className="bg-slate-50 p-12 rounded-[50px] border border-slate-100 shadow-xl shadow-black/5">
+                <h3 className="text-3xl font-black uppercase tracking-tight text-slate-900 mb-8 leading-none">THE SHOWROOM <br /><span className="text-primary italic">EXPERIENCE.</span></h3>
+                <div className="space-y-8">
+                   <div className="flex gap-6 items-start">
+                      <div className="w-14 h-14 bg-white rounded-2xl flex items-center justify-center shrink-0 shadow-sm">
+                         <MapPin className="h-6 w-6 text-primary" />
+                      </div>
+                      <div>
+                         <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2">Bramley HQ</p>
+                         <p className="text-xl font-bold text-slate-900 italic leading-tight">593 Louis Botha Ave, Bramley<br />Johannesburg, 2018</p>
+                      </div>
+                   </div>
+                   <div className="flex gap-6 items-start">
+                      <div className="w-14 h-14 bg-white rounded-2xl flex items-center justify-center shrink-0 shadow-sm">
+                         <Clock className="h-6 w-6 text-primary" />
+                      </div>
+                      <div>
+                         <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2">Trading Hours</p>
+                         <p className="text-xl font-bold text-slate-900 italic leading-tight">Mon - Fri: 08:30 - 17:30<br />Sat: 08:30 - 13:00</p>
+                      </div>
+                   </div>
                 </div>
               </div>
 
-              {/* Rating Badge */}
-              <div className="glass-premium rounded-[2.5rem] p-8 border border-white/5">
-                <div className="flex items-center gap-8">
-                  <div className="text-center">
-                    <div className="text-5xl font-display font-black gradient-text">4.9</div>
-                    <div className="flex items-center gap-1 mt-2">
-                      {[...Array(5)].map((_, i) => (
-                        <Star key={i} className="h-4 w-4 fill-accent text-accent" />
-                      ))}
-                    </div>
-                  </div>
-                  <div className="h-16 w-px bg-white/10" />
-                  <div>
-                    <div className="text-xl font-bold mb-1">50+ Reviews</div>
-                    <div className="text-muted-foreground font-light">Trusted Excellence in Johannesburg</div>
-                  </div>
-                </div>
+              <div className="grid gap-6">
+                <Link href="tel:+27829624108" className="group p-8 bg-white border border-slate-100 rounded-[32px] flex items-center gap-8 hover:shadow-2xl transition-all">
+                   <div className="w-16 h-16 bg-slate-50 rounded-2xl flex items-center justify-center group-hover:bg-primary transition-colors">
+                      <Phone className="h-7 w-7 text-slate-900" />
+                   </div>
+                   <div>
+                      <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1">Direct Parts Desk</p>
+                      <h4 className="text-2xl font-black text-slate-900 italic">+27 82 962 4108</h4>
+                   </div>
+                </Link>
+                <Link href="mailto:sales@sparescity.co.za" className="group p-8 bg-white border border-slate-100 rounded-[32px] flex items-center gap-8 hover:shadow-2xl transition-all">
+                   <div className="w-16 h-16 bg-slate-50 rounded-2xl flex items-center justify-center group-hover:bg-primary transition-colors">
+                      <Mail className="h-7 w-7 text-slate-900" />
+                   </div>
+                   <div>
+                      <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1">Official Inquiry</p>
+                      <h4 className="text-2xl font-black text-slate-900 italic">sales@sparescity.co.za</h4>
+                   </div>
+                </Link>
               </div>
             </motion.div>
 
-            {/* Contact Form */}
+            {/* Smart Form Pane */}
             <motion.div
               initial={{ opacity: 0, x: 30 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.2 }}
+              className="lg:col-span-7"
             >
-              <div className="glass-premium rounded-[3rem] p-8 md:p-12 border border-white/5">
-                {isSubmitted ? (
-                  <motion.div
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    className="text-center py-20"
-                  >
-                    <div className="w-24 h-24 mx-auto mb-8 rounded-full bg-green-500/10 flex items-center justify-center">
-                      <CheckCircle className="h-12 w-12 text-green-500" />
-                    </div>
-                    <h3 className="text-3xl font-display font-bold mb-4">Message Received!</h3>
-                    <p className="text-lg text-muted-foreground font-light mb-10">Our restoration experts will contact you shortly.</p>
-                    <Button
-                      onClick={() => setIsSubmitted(false)}
-                      variant="outline"
-                      className="glass rounded-full px-8 py-6 h-auto text-sm font-bold uppercase tracking-widest"
+              <div className="bg-slate-900 p-12 md:p-20 rounded-[60px] shadow-2xl relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-[120%] h-[120%] bg-primary/5 rounded-full blur-[100px] pointer-events-none" />
+                
+                <AnimatePresence mode="wait">
+                  {isSubmitted ? (
+                    <motion.div
+                      key="success"
+                      initial={{ opacity: 0, scale: 0.95 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      className="text-center py-20 relative z-10"
                     >
-                      Send Another Message
-                    </Button>
-                  </motion.div>
-                ) : (
-                  <>
-                    <h3 className="text-3xl font-display font-bold mb-8">Send an <span className="gradient-text italic">Inquiry.</span></h3>
-                    <form onSubmit={handleSubmit} className="space-y-6">
-                      <div className="space-y-2">
-                        <label className="text-xs font-bold uppercase tracking-widest text-muted-foreground ml-4">Full Name</label>
-                        <input
-                          type="text"
-                          required
-                          value={formData.name}
-                          onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                          className="w-full px-6 py-5 rounded-[1.5rem] glass border border-white/10 bg-transparent focus:border-primary focus:ring-1 focus:ring-primary outline-none transition text-lg font-light"
-                          placeholder="John Doe"
-                        />
+                      <div className="w-24 h-24 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-10">
+                         <CheckCircle className="h-12 w-12 text-primary" />
                       </div>
-                      <div className="grid md:grid-cols-2 gap-6">
-                        <div className="space-y-2">
-                          <label className="text-xs font-bold uppercase tracking-widest text-muted-foreground ml-4">Email</label>
-                          <input
-                            type="email"
-                            required
-                            value={formData.email}
-                            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                            className="w-full px-6 py-5 rounded-[1.5rem] glass border border-white/10 bg-transparent focus:border-primary focus:ring-1 focus:ring-primary outline-none transition text-lg font-light"
-                            placeholder="john@example.com"
-                          />
-                        </div>
-                        <div className="space-y-2">
-                          <label className="text-xs font-bold uppercase tracking-widest text-muted-foreground ml-4">Phone</label>
-                          <input
-                            type="tel"
-                            required
-                            value={formData.phone}
-                            onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                            className="w-full px-6 py-5 rounded-[1.5rem] glass border border-white/10 bg-transparent focus:border-primary focus:ring-1 focus:ring-primary outline-none transition text-lg font-light"
-                            placeholder="083 708 6050"
-                          />
-                        </div>
-                      </div>
-                      <div className="space-y-2">
-                        <label className="text-xs font-bold uppercase tracking-widest text-muted-foreground ml-4">Message</label>
-                        <textarea
-                          required
-                          rows={4}
-                          value={formData.message}
-                          onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                          className="w-full px-6 py-5 rounded-[2rem] glass border border-white/10 bg-transparent focus:border-primary focus:ring-1 focus:ring-primary outline-none transition resize-none text-lg font-light"
-                          placeholder="Describe your restoration needs..."
-                        />
-                      </div>
-                      <Button
-                        type="submit"
-                        disabled={isSubmitting}
-                        className="w-full btn-primary rounded-full py-8 text-sm font-black uppercase tracking-[0.2em] shadow-xl shadow-primary/20 h-auto"
-                      >
-                        {isSubmitting ? "Processing..." : "Submit Inquiry"}
+                      <h3 className="text-4xl font-black text-white uppercase tracking-tight mb-6">Stock Inquiry <br /><span className="text-primary italic">Logged.</span></h3>
+                      <p className="text-xl text-slate-400 font-medium italic mb-12">Our automotive specialists will scan the digital inventory and contact you within the hour.</p>
+                      <Button onClick={() => setIsSubmitted(false)} className="rounded-full px-12 py-8 bg-white text-black font-black uppercase tracking-widest hover:bg-primary transition-all">
+                         New Request
                       </Button>
-                    </form>
-                  </>
-                )}
+                    </motion.div>
+                  ) : (
+                    <motion.div key="form" className="relative z-10">
+                      <h3 className="text-4xl font-black text-white uppercase tracking-tight mb-12 leading-none">REQUEST A <br /><span className="text-primary italic">COMPONENT.</span></h3>
+                      <form onSubmit={handleSubmit} className="space-y-8">
+                         <div className="grid md:grid-cols-2 gap-8">
+                            <div className="space-y-3">
+                               <label className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-500 ml-4">Full Identity</label>
+                               <input 
+                                 type="text" 
+                                 required
+                                 placeholder="e.g. John Doe"
+                                 className="w-full h-18 px-8 bg-white/5 border border-white/10 rounded-3xl text-white font-bold focus:ring-4 focus:ring-primary/20 focus:border-primary outline-none transition-all placeholder:text-white/10"
+                                 value={formData.name}
+                                 onChange={(e) => setFormData({...formData, name: e.target.value})}
+                               />
+                            </div>
+                            <div className="space-y-3">
+                               <label className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-500 ml-4">WhatsApp Contact</label>
+                               <input 
+                                 type="tel" 
+                                 required
+                                 placeholder="e.g. 082 962 4108"
+                                 className="w-full h-18 px-8 bg-white/5 border border-white/10 rounded-3xl text-white font-bold focus:ring-4 focus:ring-primary/20 focus:border-primary outline-none transition-all placeholder:text-white/10"
+                                 value={formData.phone}
+                                 onChange={(e) => setFormData({...formData, phone: e.target.value})}
+                               />
+                            </div>
+                         </div>
+                         <div className="space-y-3">
+                            <label className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-500 ml-4">Email Address</label>
+                            <input 
+                              type="email" 
+                              required
+                              placeholder="e.g. sales@sparescity.co.za"
+                              className="w-full h-18 px-8 bg-white/5 border border-white/10 rounded-3xl text-white font-bold focus:ring-4 focus:ring-primary/20 focus:border-primary outline-none transition-all placeholder:text-white/10"
+                              value={formData.email}
+                              onChange={(e) => setFormData({...formData, email: e.target.value})}
+                            />
+                         </div>
+                         <div className="space-y-3">
+                            <label className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-500 ml-4">Detailed Request (Part # or Model)</label>
+                            <textarea 
+                              required
+                              rows={5}
+                              placeholder="Tell us what you're looking for..."
+                              className="w-full p-8 bg-white/5 border border-white/10 rounded-3xl text-white font-bold focus:ring-4 focus:ring-primary/20 focus:border-primary outline-none transition-all resize-none placeholder:text-white/10"
+                              value={formData.message}
+                              onChange={(e) => setFormData({...formData, message: e.target.value})}
+                            />
+                         </div>
+                         <Button 
+                           type="submit" 
+                           disabled={isSubmitting}
+                           className="w-full h-20 rounded-[32px] btn-primary-new text-xl shadow-2xl transition-all disabled:opacity-50"
+                         >
+                           {isSubmitting ? "TRANSMITTING..." : "DISPATCH INQUIRY"}
+                        </Button>
+                      </form>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </div>
             </motion.div>
           </div>
         </div>
       </section>
 
-      {/* Map Section */}
-      <section className="py-12 md:py-24">
+      {/* Geospatial Section */}
+      <section className="py-32 bg-[#F8F9FB] rounded-[60px] mx-6 mb-12">
         <div className="container mx-auto px-6">
-          <div className="glass-premium rounded-[3rem] overflow-hidden border border-white/5 relative h-[500px]">
-            <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d114589.65825316134!2d27.9333!3d-26.2333!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1e9509657067883f%3A0x6a10061e8886369c!2sJohannesburg!5e0!3m2!1sen!2sza!4v1707817000000!5m2!1sen!2sza"
-              width="100%"
-              height="100%"
-              style={{ border: 0 }}
-              allowFullScreen
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-              className="grayscale brightness-90 hover:grayscale-0 hover:brightness-100 transition-all duration-1000"
-            />
-          </div>
+           <div className="grid lg:grid-cols-2 gap-24 items-center">
+              <div>
+                 <span className="text-primary font-black uppercase tracking-[0.4em] text-[11px] block mb-6 italic">Geographical Presence</span>
+                 <h2 className="text-5xl lg:text-7xl font-black tracking-tighter leading-none text-slate-900 mb-10">THE HEART OF <br /><span className="gradient-text uppercase italic">JO&apos;BURG SPARES.</span></h2>
+                 <p className="text-xl text-slate-500 font-medium italic mb-12">Strategically positioned on Louis Botha Avenue for rapid collections and nationwide logistics access.</p>
+                 <div className="space-y-6">
+                    <div className="flex items-center gap-4 text-slate-900 font-black uppercase tracking-widest text-[11px]">
+                       <Truck className="h-5 w-5 text-primary" /> Daily Dispatch Across SA
+                    </div>
+                    <div className="flex items-center gap-4 text-slate-900 font-black uppercase tracking-widest text-[11px]">
+                       <MapPin className="h-5 w-5 text-primary" /> Bramley Collection Center
+                    </div>
+                    <div className="flex items-center gap-4 text-slate-900 font-black uppercase tracking-widest text-[11px]">
+                       <ShieldCheck className="h-5 w-5 text-primary" /> Secure Loading Dock
+                    </div>
+                 </div>
+              </div>
+              <div className="relative rounded-[60px] overflow-hidden border-[12px] border-white shadow-2xl shadow-black/10 h-[500px]">
+                 <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3581.458826707842!2d28.0818!3d-26.1308!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1e9508d8213693e5%3A0x6a10061e8886369c!2s593%20Louis%20Botha%20Ave%2C%20Bramley!5e0!3m2!1sen!2sza!4v1707817000000!5m2!1sen!2sza"
+                    width="100%"
+                    height="100%"
+                    style={{ border: 0 }}
+                    allowFullScreen
+                    loading="lazy"
+                    className="grayscale hover:grayscale-0 transition-all duration-1000"
+                 />
+              </div>
+           </div>
         </div>
       </section>
     </div>

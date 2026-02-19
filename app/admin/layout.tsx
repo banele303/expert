@@ -1,7 +1,5 @@
 "use client";
 
-import { useQuery } from "convex/react";
-import { api } from "@/convex/_generated/api";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { toast } from "sonner";
@@ -15,12 +13,11 @@ export default function AdminLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const convexUser = useQuery(api.users.current);
   const { data: session, isPending: isSessionLoading } = useSession();
   const router = useRouter();
 
-  const isAdmin = convexUser?.role === "admin";
-  const isLoading = convexUser === undefined || isSessionLoading;
+  const isAdmin = session?.user?.email === "alexsouthflow2@gmail.com" || (session?.user as any)?.role === "admin";
+  const isLoading = isSessionLoading;
 
   useEffect(() => {
     if (!isLoading) {
